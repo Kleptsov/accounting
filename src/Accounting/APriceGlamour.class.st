@@ -1,0 +1,210 @@
+"
+Графический интерфейс цен
+
+Public API and Key Messages
+
+- message one   
+- message two 
+- (for bonus points) how to create instances.
+
+   One simple example is simply gorgeous.
+ 
+Internal Representation and Key Implementation Points.
+
+
+    Implementation Points
+"
+Class {
+	#name : #APriceGlamour,
+	#superclass : #AGlamour,
+	#category : #'Accounting-GUI'
+}
+
+{ #category : #initialization }
+APriceGlamour >> initialize [
+	super initialize.
+	self initializeBrowser.
+	self initializeTransmit.
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeAdditional [
+	(browser transmit) to: #additional;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  'Additional' translated)
+						text: #additional
+						accept: #additional:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeBaseAmount [
+	(browser transmit) to: #baseAmount;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  '* ', 'Base Currency' translated)
+						text: #baseAmount
+						accept: #baseAmount:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeBrowser [
+	browser := GLMTabulator new.
+	browser transformation: [ :m| self model: m. m ].
+	self initializeBrowserTitle.
+	self initializeBrowserActions.
+	browser row: [ :r|
+		r column: #number.
+		r column: #date.
+	] size: 43.
+	browser row: [ :r|
+		r column: #organization.
+		r column: #baseAmount ] size: 43.
+	browser row: #additional size: 43.
+	browser row: #editor size: 25.
+	browser row: #items.
+	
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeBrowserActions [
+
+	browser act: [ :p| p update; updateToolbar ]
+		icon: GLMUIThemeExtraIcons glamorousRefresh
+		entitled: 'Update' translated.
+
+	browser act: [ :p|
+		model addAccount1:(AListDialogWindow selectItemFrom: AConfig accountsList).
+						p update; updateToolbar ]
+		icon: GLMUIThemeExtraIcons glamorousInto
+		entitled: 'Add Account 1' translated.
+	
+	browser
+		act: [ :p | (p pane port: #entity) value makeKassa open ]
+		icon: GLMUIThemeExtraIcons glamorousBrowse
+		entitled: 'Open Kassa' translated.
+
+	browser
+		act: [ :p | 	model accept. p update; updateToolbar ]
+		icon: GLMUIThemeExtraIcons glamorousAccept
+		entitled: 'Accept' translated.
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeBrowserTitle [
+	browser title: [:m| m number, ' ', 'Price Document' translated].
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeDate [
+	(browser transmit) to: #date;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  '* ', 'Date' translated)
+						text: #date
+						accept: #date:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeEditor [
+	(browser transmit) to: #editor;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ATextField
+						on: model
+						text: #editor
+						accept: #editor:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeItems [
+	(browser transmit) to: #items;
+		andShow: [ :a|
+			a table
+				title: 'Prices' translated;
+				act: [:p| model addItem. p update; updateToolbar ]
+				icon: GLMUIThemeExtraIcons glamorousAdd
+				entitled: 'Add' translated;
+				
+				act: [ :p| model removeItem. p update; updateToolbar ]
+				icon: GLMUIThemeExtraIcons glamorousRemove
+				entitled: 'Remove' translated;
+				
+				onChangeOfPort: #selection act: [ :p| (p pane port: #selection) value ifNotNil: [ :el| model selection: el ] ];
+				
+				display: [ :m| m items sortByPostTime ];
+				column: 'Count' translated evaluated: [:el| 1 ] width: 100;
+				column: 'Goodies' translated evaluated: [:el| el printTags ] width: 250;
+				column: 'Price' translated evaluated: [ :el| (model priceFor: el) swapAmount amount ] width: 100;
+				column: 'Currency' translated evaluated: [ :el| model baseAmount ] width: 100.
+		]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeNumber [
+	(browser transmit) to: #number;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  '* ', 'Number' translated)
+						text: #number
+						accept: #number:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeOrganization [
+	(browser transmit) to: #organization;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  '* ', 'Organization' translated)
+						text: #organization
+						accept: #organization:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeTransmit [
+	self initializeNumber.
+	self initializeOrganization.
+	self initializeDate.
+	self initializeAdditional.
+	self initializeEditor.
+	self initializeItems.
+	self initializeBaseAmount.
+]
+
+{ #category : #initialization }
+APriceGlamour >> open [
+	browser openOn: model.
+]
+
+{ #category : #initialization }
+APriceGlamour >> priceFor: anAmount [
+	|sw|
+	sw := anAmount asSwap.
+	sw amount: 1.
+	sw swapAmount:
+		(AAmount new add: model baseAmount;
+		amount: (model basePrice / anAmount amount) asFloat).
+	^ sw
+]
