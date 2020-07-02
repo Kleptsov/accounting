@@ -31,7 +31,6 @@ ACommonReportGlamour >> initialize [
 ACommonReportGlamour >> initializeAcc1 [
 	(browser transmit) to: #acc1;
 		andShow: [ :composite|
-			self initializeBrowserActions: composite.
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
 						on: model
@@ -89,9 +88,10 @@ ACommonReportGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
 	browser transformation: [ :m| model := m ].
 	browser title: 'Common Report' translated.
+	browser row: #menu size: 18.
 	browser row: [ :r|
 			r column: #acc1.
-			r column: #acc2. ] size: 63.
+			r column: #acc2. ] size: 43.
 	browser row: [ :r|
 			r column: #acc3.
 			r column: #acc4. ] size: 43.
@@ -155,6 +155,13 @@ ACommonReportGlamour >> initializeDay [
 ]
 
 { #category : #initialization }
+ACommonReportGlamour >> initializeMenu [
+	(browser transmit) to: #menu;
+		andShow: [ :composite|
+			self initializeBrowserActions: composite]
+]
+
+{ #category : #initialization }
 ACommonReportGlamour >> initializeMonth [
 	(browser transmit) to: #month;
 		andShow: [ :composite|
@@ -173,9 +180,7 @@ ACommonReportGlamour >> initializeReport [
 	(browser transmit) to: #report;
 		andShow: [ :a| | t |
 			t := a table.
-			self initializeBrowserActions: t.
 			t
-				title: 'Common Report' translated;
 				onChangeOfPort: #selection act: [ :p| (p pane port: #selection) value ifNotNil: [:el| model selected: el asString  ] ];
 				display: [ :m| m report amounts ];
 				column: 'Count' translated
@@ -202,6 +207,7 @@ ACommonReportGlamour >> initializeSelected [
 
 { #category : #initialization }
 ACommonReportGlamour >> initializeTransmit [
+	self initializeMenu.
 	self initializeAcc1.
 	self initializeAcc2.
 	self initializeAcc3.
