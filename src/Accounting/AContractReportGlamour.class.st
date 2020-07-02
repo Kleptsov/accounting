@@ -24,7 +24,6 @@ Class {
 AContractReportGlamour >> initialize [
 	super initialize.
 	self initializeBrowser.
-	self initializeBrowserActions.
 	self initializeTransmit.
 ]
 
@@ -47,6 +46,7 @@ AContractReportGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
 	browser title: 'Contract Report' translated.
 	browser transformation: [ :m| model := m. m ].
+	browser row: #menu size: 20.
 	browser row: [ :r| r column: #organization.
 							r column: #contractNumber.
 							r column: #additionalContractNumber ] size: 43.
@@ -89,6 +89,36 @@ AContractReportGlamour >> initializeBrowserActions [
 ]
 
 { #category : #initialization }
+AContractReportGlamour >> initializeBrowserActionsAt: aBrowser [
+	aBrowser act: [ :p|
+						model addAccount1: (AListDialogWindow selectItemFrom:
+										AConfig accountsList).
+						p update; updateToolbar ]
+				icon: GLMUIThemeExtraIcons glamorousInto
+				entitled: 'Add Account 1' translated.
+				
+	aBrowser
+		act: [ :p|
+				model makeReport.
+				"model report inspect."
+				p update ]
+		icon: GLMUIThemeExtraIcons glamorousGo
+		entitled: 'Make Report' translated.
+		
+	aBrowser
+		act: [ :b|
+			model createInvoice open. ]
+		icon: GLMUIThemeExtraIcons glamorousBrowse
+		entitled: 'New Invoice' translated.
+		
+	aBrowser
+		act: [ :b|
+			model createPayment open. ]
+		icon: GLMUIThemeExtraIcons glamorousBrowse
+		entitled: 'New Payment' translated.
+]
+
+{ #category : #initialization }
 AContractReportGlamour >> initializeContractNumber [
 	(browser transmit) to: #contractNumber;
 		andShow: [ :composite|
@@ -114,6 +144,13 @@ AContractReportGlamour >> initializeDay [
 						accept: #day:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
+]
+
+{ #category : #initialization }
+AContractReportGlamour >> initializeMenu [
+	(browser transmit) to: #menu;
+		andShow: [ :composite|
+			self initializeBrowserActionsAt: composite ].
 ]
 
 { #category : #initialization }
@@ -150,7 +187,6 @@ AContractReportGlamour >> initializeReport [
 	browser transmit to: #report;
 		andShow: [ :a|
 			a table
-				title: 'Report' translated;
 				onChangeOfPort: #selection act: [ :p| (p pane port: #selection) value ifNotNil: [ :el| model selectedItem: el asString ] ];
 				display: [ :m| m report amounts ];
 				column: 'Count' translated evaluated: [ :each| each amount ] width: 100;
@@ -174,6 +210,7 @@ AContractReportGlamour >> initializeSelectedItem [
 
 { #category : #initialization }
 AContractReportGlamour >> initializeTransmit [
+	self initializeMenu.
 	self initializeContractNumber.
 	self initializeAdditionalContractNumber.
 	self initializeOrganization.

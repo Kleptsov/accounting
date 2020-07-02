@@ -24,7 +24,6 @@ Class {
 ARequestReportGlamour >> initialize [
 	super initialize.
 	self initializeBrowser.
-	self initializeBrowserActions.
 	self initializeTransmit.
 ]
 
@@ -33,16 +32,17 @@ ARequestReportGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
 	browser title: 'Request Report' translated.
 	browser transformation: [ :m| model := m. m ].
-	browser row: [ :r| r column: #organization ] size: 68.
+	browser row: #menu size: 18.
+	browser row: [ :r| r column: #organization ] size: 43.
 	browser row: [ :r| 
 		r column: #number.
 		r column: #contractNumber.
-		r column: #login ] size: 68.
+		r column: #login ] size: 43.
 	browser row: [ :r|
 		r column: #year.
 		r column: #month.
-		r column: #day ] size: 68.
-	browser row: #selectionItem size: 68.
+		r column: #day ] size: 43.
+	browser row: #selectionItem size: 43.
 	browser row: #report.
 ]
 
@@ -77,69 +77,124 @@ ARequestReportGlamour >> initializeBrowserActions [
 ]
 
 { #category : #initialization }
-ARequestReportGlamour >> initializeContractNumber [
-	(browser transmit) to: #contractNumber;
-		andShow: [ :a|
-			a text
-				title: 'Contract Number' translated;
-				onChangeOfPort: #text act: [ :textPresentation|
-					model contractNumber: textPresentation text asString ];
-				display: [ :m| m contractNumber ] ].
+ARequestReportGlamour >> initializeBrowserActionsAt: aBrowser [
+
+	aBrowser act: [ :p|
+		Clipboard clipboardText: model report printCSV. self inform: 'Copy to Clipboard' ]
+		icon: GLMUIThemeExtraIcons glamorousSave
+		entitled: 'Copy to Clipboard' translated.
+
+	aBrowser	
+		act: [ :p|
+				model addAccount1: (AListDialogWindow selectItemFrom: AConfig accountsList).
+				p update; updateToolbar ]
+		icon: GLMUIThemeExtraIcons glamorousInto
+		entitled: 'Add Account' translated.
+		
+	aBrowser
+		act: [ :p|
+				model makeReport.
+				"model report inspect."
+				p update ]
+		icon: GLMUIThemeExtraIcons glamorousGo
+		entitled: 'Make Report' translated.
+		
+	aBrowser
+		act: [ :b|
+			model createContract open. ]
+		icon: GLMUIThemeExtraIcons glamorousBrowse
+		entitled: 'New Contract' translated.
 ]
 
 { #category : #initialization }
-ARequestReportGlamour >> initializeDay [
+ARequestReportGlamour >> initializeContractNumber [
+	(browser transmit) to: #contractNumber;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Contract Number' translated
+						text: #contractNumber
+						accept: #contractNumber:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ARequestReportGlamour >> initializeDay [			
 	(browser transmit) to: #day;
-		andShow: [ :a|
-			a text
-				title: 'Day' translated;
-				onChangeOfPort: #text act: [ :textPresentation|
-					model day: textPresentation text asString ];
-				display: [ :m| m day ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Day' translated
+						text: #day
+						accept: #day:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
 ARequestReportGlamour >> initializeLogin [
 	(browser transmit) to: #login;
-		andShow: [ :a|
-			a text
-				title: 'Login' translated;
-				onChangeOfPort: #text act: [ :textPresentation|
-					model login: textPresentation text asString ];
-				display: [ :m| m login ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Login' translated
+						text: #login
+						accept: #login:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ARequestReportGlamour >> initializeMenu [
+	(browser transmit) to: #menu;
+		andShow: [ :composite|
+			self initializeBrowserActionsAt: composite ]
 ]
 
 { #category : #initialization }
 ARequestReportGlamour >> initializeMonth [
 	(browser transmit) to: #month;
-		andShow: [ :a|
-			a text
-				title: 'Month' translated;
-				onChangeOfPort: #text act: [ :textPresentation|
-					model month: textPresentation text asString ];
-				display: [ :m| m month ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Month' translated
+						text: #month
+						accept: #month:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
 ARequestReportGlamour >> initializeNumber [
 	(browser transmit) to: #number;
-		andShow: [ :a|
-			a text
-				title: 'Number' translated;
-				onChangeOfPort: #text act: [ :textPresentation|
-					model number: textPresentation text asString ];
-				display: [ :m| m number ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Number' translated
+						text: #number
+						accept: #number:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
 ARequestReportGlamour >> initializeOrganization [
 	(browser transmit) to: #organization;
-		andShow: [ :a|
-			a text
-				title: '* ', 'Organization' translated;
-				onChangeOfPort: #text act: [ :textPresentation|
-					model organization: textPresentation text asString ];
-				display: [ :m| m organization ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: '* ', 'Organization' translated
+						text: #organization
+						accept: #organization:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
@@ -148,7 +203,10 @@ ARequestReportGlamour >> initializeReport [
 	browser transmit to: #report;
 		andShow: [ :a|
 			a table
-				title: 'Report' translated;
+			
+				onChangeOfPort: #selection act: [ :p|
+						(p pane port: #selection) value ifNotNil: [:el|
+								model selectionItem: el asString  ] ];
 				
 				act: [ :p| (p pane port: #entity) value removeItem. "model removeItem"
 							p update; updateToolbar. ]
@@ -163,21 +221,26 @@ ARequestReportGlamour >> initializeReport [
 
 { #category : #initialization }
 ARequestReportGlamour >> initializeSelectionItem [
-	(browser transmit) to: #selectionItem; from: #report port: #selection;
+	"(browser transmit) to: #selectionItem; from: #report port: #selection;
 		andShow: [ :a|
 			a text
-				title: 'Selected Item' translated;
-				display: [ :m| model selectionItem: m. m] ].
+				display: [ :m| model selectionItem: m. m] ]."
 			
 	(browser transmit) to: #selectionItem;
-		andShow: [ :a|
-			a text
-				title: 'Selected Item' translated;
-				display: [ :m| m selectionItem ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Selected Item' translated
+						text: #selectionItem
+						accept: #selectionItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
 ARequestReportGlamour >> initializeTransmit [
+	self initializeMenu.
 	self initializeNumber.
 	self initializeContractNumber.
 	self initializeOrganization.
@@ -192,10 +255,13 @@ ARequestReportGlamour >> initializeTransmit [
 { #category : #initialization }
 ARequestReportGlamour >> initializeYear [
 	(browser transmit) to: #year;
-		andShow: [ :a|
-			a text
-				title: 'Year' translated;
-				onChangeOfPort: #text act: [ :textPresentation|
-					model year: textPresentation text asString ];
-				display: [ :m| m year ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'year' translated
+						text: #year
+						accept: #year:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]

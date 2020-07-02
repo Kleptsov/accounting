@@ -65,7 +65,7 @@ ACommonContractReportGlamour2 >> obligationIn: aComposer [
 							entity: contractReport;
 							title: '';
 							yourself ];
-				title: 'Obligation Report' translated.
+				title: 'Obligation Contract Report' translated.
 ]
 
 { #category : #opening }

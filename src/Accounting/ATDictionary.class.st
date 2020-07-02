@@ -224,7 +224,7 @@ ATDictionary >> n [
 ATDictionary >> o [
 	^ { 
 'Organization' -> { 'ru' -> 'Организация' } asDictionary.
-'Obligation Report' -> { 'ru' -> 'Отчет по обязательствам' } asDictionary.
+'Obligation Contract Report' -> { 'ru' -> 'Отчет по обязательствам договора' } asDictionary.
 'Organizer' -> { 'ru' -> 'Органайзер' } asDictionary.
 'Organization Account' -> { 'ru' -> 'Счет организации' } asDictionary.
 'Open Kassa' -> { 'ru' -> 'Открыть кассу' } asDictionary.
