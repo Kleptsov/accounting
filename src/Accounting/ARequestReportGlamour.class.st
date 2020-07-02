@@ -47,36 +47,6 @@ ARequestReportGlamour >> initializeBrowser [
 ]
 
 { #category : #initialization }
-ARequestReportGlamour >> initializeBrowserActions [
-
-	browser act: [ :p|
-		Clipboard clipboardText: model report printCSV. self inform: 'Copy to Clipboard' ]
-		icon: GLMUIThemeExtraIcons glamorousSave
-		entitled: 'Copy to Clipboard' translated.
-
-	browser	
-		act: [ :p|
-				model addAccount1: (AListDialogWindow selectItemFrom: AConfig accountsList).
-				p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousInto
-		entitled: 'Add Account' translated.
-		
-	browser
-		act: [ :p|
-				model makeReport.
-				"model report inspect."
-				p update ]
-		icon: GLMUIThemeExtraIcons glamorousGo
-		entitled: 'Make Report' translated.
-		
-	browser
-		act: [ :b|
-			model createContract open. ]
-		icon: GLMUIThemeExtraIcons glamorousBrowse
-		entitled: 'New Contract' translated.
-]
-
-{ #category : #initialization }
 ARequestReportGlamour >> initializeBrowserActionsAt: aBrowser [
 
 	aBrowser act: [ :p|

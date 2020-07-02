@@ -41,7 +41,6 @@ ACommonContractReportGlamour2 >> initialize [
 { #category : #intialization }
 ACommonContractReportGlamour2 >> initializeBrowser [
 	browser := GLMTabulator new.
-	browser title: 'Reports' translated.
 	browser column: #reports.
 ]
 
@@ -63,9 +62,7 @@ ACommonContractReportGlamour2 >> obligationIn: aComposer [
 				display: [ :d|
 					AContractReportGlamour new browser
 							entity: contractReport;
-							title: '';
-							yourself ];
-				title: 'Obligation Contract Report' translated.
+							yourself ].
 ]
 
 { #category : #opening }

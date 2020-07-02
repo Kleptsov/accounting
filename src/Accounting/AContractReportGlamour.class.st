@@ -44,7 +44,6 @@ AContractReportGlamour >> initializeAdditionalContractNumber [
 { #category : #initialization }
 AContractReportGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
-	browser title: 'Contract Report' translated.
 	browser transformation: [ :m| model := m. m ].
 	browser row: #menu size: 20.
 	browser row: [ :r| r column: #organization.
@@ -56,36 +55,6 @@ AContractReportGlamour >> initializeBrowser [
 		r column: #day ] size: 43.
 	browser row: #selectedItem size: 43.
 	browser row: #report.
-]
-
-{ #category : #initialization }
-AContractReportGlamour >> initializeBrowserActions [
-	browser act: [ :p|
-						model addAccount1: (AListDialogWindow selectItemFrom:
-										AConfig accountsList).
-						p update; updateToolbar ]
-				icon: GLMUIThemeExtraIcons glamorousInto
-				entitled: 'Add Account 1' translated.
-				
-	browser
-		act: [ :p|
-				model makeReport.
-				"model report inspect."
-				p update ]
-		icon: GLMUIThemeExtraIcons glamorousGo
-		entitled: 'Make Report' translated.
-		
-	browser
-		act: [ :b|
-			model createInvoice open. ]
-		icon: GLMUIThemeExtraIcons glamorousBrowse
-		entitled: 'New Invoice' translated.
-		
-	browser
-		act: [ :b|
-			model createPayment open. ]
-		icon: GLMUIThemeExtraIcons glamorousBrowse
-		entitled: 'New Payment' translated.
 ]
 
 { #category : #initialization }

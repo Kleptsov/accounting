@@ -63,9 +63,7 @@ ACommonSwapReportGlamour >> obligationIn: aComposer [
 				display: [ :d|
 					ASwapReportGlamour new browser
 							entity: swapReport;
-							title: '';
-							yourself ];
-				title: 'Obligation Report' translated
+							yourself ].
 ]
 
 { #category : #opening }
