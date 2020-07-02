@@ -31,6 +31,7 @@ ACommonReportGlamour >> initialize [
 ACommonReportGlamour >> initializeAcc1 [
 	(browser transmit) to: #acc1;
 		andShow: [ :composite|
+			self initializeBrowserActions: composite.
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
 						on: model
@@ -90,7 +91,7 @@ ACommonReportGlamour >> initializeBrowser [
 	browser title: 'Common Report' translated.
 	browser row: [ :r|
 			r column: #acc1.
-			r column: #acc2. ] size: 43.
+			r column: #acc2. ] size: 63.
 	browser row: [ :r|
 			r column: #acc3.
 			r column: #acc4. ] size: 43.
