@@ -122,16 +122,17 @@ ATaskReportModel >> login: anObject [
 { #category : #actions }
 ATaskReportModel >> makeReport [
 	| q a b t |
-	t := Time millisecondsToRun: [
-	q := self queryTask.
-	a := self accounts select: q.
-	q := self queryExecuteTask.
-	b := self accounts select: q.
-	a addAccount: b.
-	a removeEmptyAmounts.
-	self report: a].
-	self log: 'Report is created. Milliseconds to run: ', t asString, String cr.
-	^ a.
+	t := Time
+		millisecondsToRun: [ q := self queryTask.
+			a := self accounts select: q.
+			q := self queryExecuteTask.
+			b := self accounts select: q.
+			a addAccount: b.
+			a removeEmptyAmounts.
+			self report: a ].
+	self
+		trace: 'Report is created. Milliseconds to run: ' , t asString , String cr.
+	^ a
 ]
 
 { #category : #accessing }

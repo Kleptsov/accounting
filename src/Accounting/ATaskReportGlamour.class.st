@@ -17,7 +17,10 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #ATaskReportGlamour,
 	#superclass : #AGlamour,
-	#category : #'Accounting-GUI'
+	#instVars : [
+		'reportTable'
+	],
+	#category : #'Accounting-GUIReport'
 }
 
 { #category : #initialization }
@@ -46,7 +49,7 @@ ATaskReportGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
 	browser title: 'Task Report' translated.
 	browser transformation: [ :m| model := m. m ].
-	browser row: #menu size: 18.
+	browser row: #menu size: 20.
 	browser row: [ :r| r column: #organization.
 							r column: #login.
 							r column: #account ] size: 43.
@@ -58,30 +61,6 @@ ATaskReportGlamour >> initializeBrowser [
 	browser row: #a2 size: 5.
 	browser row: #selectedTask size: 43.
 	browser row: #report.
-]
-
-{ #category : #initialization }
-ATaskReportGlamour >> initializeBrowserActions [
-	browser act: [ :p|
-		model createExecuteTask open]
-		icon: GLMUIThemeExtraIcons glamorousBrowse
-		entitled: 'Create Execute Task' translated.
-	
-	browser act: [ :p|
-		Clipboard clipboardText: model report printCSV. self inform: 'copy to clipboard' ]
-		icon: GLMUIThemeExtraIcons glamorousSave
-		entitled: 'Copy to Clipboard' translated.
-	
-	browser	
-		act: [ :p|
-				model addAccount1: (AListDialogWindow selectItemFrom: AConfig accountsList).
-				p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousInto
-		entitled: 'Add Account 1' translated;
-		
-		act: [ :p| model makeReport. p update; updateToolbar]
-		icon: GLMUIThemeExtraIcons glamorousGo
-		entitled: 'Make Report' translated.
 ]
 
 { #category : #initialization }
@@ -101,11 +80,7 @@ ATaskReportGlamour >> initializeBrowserActionsAt: aBrowser [
 				model addAccount1: (AListDialogWindow selectItemFrom: AConfig accountsList).
 				p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousInto
-		entitled: 'Add Account 1' translated;
-		
-		act: [ :p| model makeReport. p update; updateToolbar]
-		icon: GLMUIThemeExtraIcons glamorousGo
-		entitled: 'Make Report' translated.
+		entitled: 'Add Account 1' translated
 ]
 
 { #category : #initialization }
@@ -177,13 +152,20 @@ ATaskReportGlamour >> initializeReport [
 	browser transmit to: #report;
 		andShow: [ :a|
 			a table
+			
+				act: [ :p| model makeReport. p update; updateToolbar ]
+					icon: GLMUIThemeExtraIcons glamorousGo
+					entitled: 'Make Report' translated;
+				
 				onChangeOfPort: #selection act: [ :p|
 						(p pane port: #selection) value ifNotNil: [ :el|
 								model selectedTask: el ] ];
+						
 				display: [ :m| m report sortByPostTime ];
 				column: 'Count' translated evaluated: [ :each| each amount ] width: 50;
 				column: 'Goodies' translated evaluated: [ :each| each printTags ] width: 600;
-				column: 'Unix Time' translated evaluated: [ :each| each unixTime ] width: 50 ]
+				column: 'Unix Time' translated evaluated: [ :each| each unixTime ] width: 50 
+		]
 ]
 
 { #category : #initialization }
