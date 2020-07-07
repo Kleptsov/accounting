@@ -22,7 +22,8 @@ Class {
 	#superclass : #ACacheTags,
 	#instVars : [
 		'amount',
-		'unixTime'
+		'unixTime',
+		'val'
 	],
 	#category : #'Accounting-Core'
 }
@@ -34,19 +35,25 @@ AAmount class >> empty [
 			yourself.
 ]
 
-{ #category : #operations }
+{ #category : #'value operations' }
 AAmount >> addAmount: anAmount [
-	amount := amount + anAmount amount
+	self initializeVal.
+	self val plus: anAmount val.
+	"amount := amount + anAmount amount"
 ]
 
-{ #category : #accessing }
+{ #category : #'value operations' }
 AAmount >> amount [
-	^ amount
+	self initializeVal.
+	^ self val value.
+	"^ amount"
 ]
 
-{ #category : #accessing }
+{ #category : #'value operations' }
 AAmount >> amount: anObject [
-	amount := anObject
+	self initializeVal.
+	self val reset plus: anObject.
+	"amount := anObject"
 ]
 
 { #category : #converting }
@@ -68,21 +75,22 @@ AAmount >> asSwap [
 AAmount >> clone [
 	| instance |
 	instance := self class new.
-	instance amount: self amount.
+	instance val plus: self amount.
 	instance addAll: self.
 	instance postTime: self postTime.
 	^ instance
 ]
 
-{ #category : #operations }
+{ #category : #'value operations' }
 AAmount >> difAmount: anAmount [
-	amount := amount - anAmount amount
+	self initializeVal.
+	self val minus: anAmount val.
+	"amount := amount - anAmount amount"
 ]
 
 { #category : #initialization }
 AAmount >> initialize [
 	super initialize.
-	amount := 0.
 	unixTime := DateAndTime now asUnixTime.
 ]
 
@@ -92,9 +100,18 @@ AAmount >> initialize: n [
 	self initialize.
 ]
 
-{ #category : #operations }
+{ #category : #initialization }
+AAmount >> initializeVal [
+	amount
+		ifNotNil: [ self val plus: amount.
+						amount := nil. ]
+]
+
+{ #category : #'value operations' }
 AAmount >> invert [
-	amount := amount * (-1).
+	self initializeVal.
+	self val invert.
+	"amount := amount * (-1)."
 ]
 
 { #category : #accessing }
@@ -122,13 +139,16 @@ AAmount >> printCSVOn: aStream [
 	aStream nextPut: $".
 ]
 
-{ #category : #printing }
+{ #category : #'value operations' }
 AAmount >> printOn: aStream [
-	aStream
+	aStream nextPutAll: (self val value round: 4) asString.
+	self do: [ :t|
+		aStream nextPutAll: ' '; nextPutAll: t ]. 
+	"aStream
 		nextPutAll: (amount round: 4) asString.
 	self do: [ :t|
 		aStream nextPutAll: ' ';
-			nextPutAll: t ].
+			nextPutAll: t ]."
 ]
 
 { #category : #printing }
@@ -165,4 +185,9 @@ AAmount >> unixTime [
 { #category : #accessing }
 AAmount >> unixTime: anUnixTime [
 	unixTime := anUnixTime
+]
+
+{ #category : #accessing }
+AAmount >> val [
+	^ val ifNil: [ val := AValue new ]
 ]

@@ -132,7 +132,7 @@ AExecuteTaskModel >> login: anObject [
 
 { #category : #accessing }
 AExecuteTaskModel >> number [
-	^ number ifNil: [ number := '' ]
+	^ (number ifNil: [ number := '' ]) asString
 ]
 
 { #category : #accessing }
@@ -177,7 +177,7 @@ AExecuteTaskModel >> percent: anObject [
 AExecuteTaskModel >> removeAccounts [
 	| rAccount |
 	rAccount := AAccount new
-		addAll: { self numberPrefix, self number. self executeTaskName };
+		addAll: { self numberPrefix, self number asString. self executeTaskName };
 		yourself.
 	self accounts remove: rAccount
 ]

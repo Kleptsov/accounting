@@ -19,7 +19,7 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #AVolume,
+	#name : #AValue,
 	#superclass : #Object,
 	#instVars : [
 		'plus',
@@ -29,35 +29,65 @@ Class {
 }
 
 { #category : #accessing }
-AVolume >> minus [
-	minus ifNil: [ minus := 0 ]
+AValue >> invert [
+	|tmp|
+	tmp := plus.
+	plus := minus.
+	minus := tmp.
 ]
 
 { #category : #accessing }
-AVolume >> minus: aValue [
-	minus ifNil: [ minus := 0 ].
-	minus := minus - aValue.
+AValue >> minus [
+	^ minus ifNil: [ minus := 0 ]
 ]
 
 { #category : #accessing }
-AVolume >> plus [
+AValue >> minus: aValue [
+	self plus; minus.
+	aValue isNumber
+		ifTrue: [ plus := plus - aValue ]
+		ifFalse: [	plus := plus - aValue plus.
+						minus := minus - aValue minus. ]
+]
+
+{ #category : #accessing }
+AValue >> plus [
 	^ plus ifNil: [ plus := 0 ].
 	
 ]
 
 { #category : #accessing }
-AVolume >> plus: aValue [
-	plus ifNil: [ plus := 0 ].
-	plus := plus + aValue.
+AValue >> plus: aValue [
+	self plus; minus.
+	aValue isNumber
+		ifTrue: [ plus := plus +aValue ]
+		ifFalse: [	plus := plus + aValue plus.
+						minus := minus + aValue minus. ]
+]
+
+{ #category : #printing }
+AValue >> printOn: aStream [
+	aStream nextPutAll: 'value('; nextPutAll: (self plus - self minus) asString; nextPutAll: ')'.
+]
+
+{ #category : #printing }
+AValue >> printString [
+	^ (self plus - self minus) asString
 ]
 
 { #category : #accessing }
-AVolume >> value [
+AValue >> reset [
+	plus := 0.
+	minus := 0.
+]
+
+{ #category : #accessing }
+AValue >> value [
 	^ self plus - self minus.
 ]
 
 { #category : #accessing }
-AVolume >> value: aValue [
+AValue >> value: aValue [
 	aValue > 0 ifTrue: [ self plus: aValue ].
 	aValue < 0 ifTrue: [ self minus: aValue ].
 ]
