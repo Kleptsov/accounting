@@ -106,17 +106,22 @@ AContractReportModel >> day: anObject [
 { #category : #actions }
 AContractReportModel >> makeReport [
 	| q c i p t |
-	t := Time millisecondsToRun: 
-	[q := self queryContract.
-	c := self accounts select: q.
-	q := self queryInvoice.
-	i := self accounts select: q.
-	q := self queryPayment.
-	p := self accounts select: q.
-	c addAccount: i; addAccount: p.
-	report := c].
-	self log: 'A contract report is created. Milliseconds to run: ', t asString, String cr.
-	^ c.
+	t := Time
+		millisecondsToRun: [ q := self queryContract.
+			c := self accounts select: q.
+			q := self queryInvoice.
+			i := self accounts select: q.
+			q := self queryPayment.
+			p := self accounts select: q.
+			c
+				addAccount: i;
+				addAccount: p.
+			report := c ].
+	self
+		trace:
+			'A contract report is created. Milliseconds to run: ' , t asString
+				, String cr.
+	^ c
 ]
 
 { #category : #accessing }
