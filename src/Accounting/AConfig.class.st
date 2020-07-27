@@ -74,7 +74,9 @@ Class {
 		'nextRecordingOfIndex',
 		'writeOffName',
 		'writeOffs',
-		'nextWriteOffIndex'
+		'nextWriteOffIndex',
+		'nomenclature',
+		'nomenclatureIndex'
 	],
 	#category : #'Accounting-Config'
 }
@@ -358,6 +360,16 @@ AConfig class >> nextWriteOffIndex [
 { #category : #accessing }
 AConfig class >> nextWriteOffIndex: anIndex [
 	nextWriteOffIndex := anIndex
+]
+
+{ #category : #accessing }
+AConfig class >> nomenclature [
+	^ 'nomenclature'
+]
+
+{ #category : #accessing }
+AConfig class >> nomenclatureIndex: anIndex [
+	nomenclatureIndex := anIndex
 ]
 
 { #category : #accessing }
