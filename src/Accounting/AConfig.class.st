@@ -75,8 +75,9 @@ Class {
 		'writeOffName',
 		'writeOffs',
 		'nextWriteOffIndex',
+		'nomenclatures',
 		'nomenclature',
-		'nomenclatureIndex'
+		'nextNomenclatureIndex'
 	],
 	#category : #'Accounting-Config'
 }
@@ -274,6 +275,12 @@ AConfig class >> nextKassaCheckIndex: anIndex [
 ]
 
 { #category : #accessing }
+AConfig class >> nextNomenclatureIndex [
+	nextNomenclatureIndex ifNil: [ nextNomenclatureIndex := 0 ].
+	^ nextNomenclatureIndex := nextNomenclatureIndex + 1.
+]
+
+{ #category : #accessing }
 AConfig class >> nextPaymentIndex2 [
 	nextPaymentIndex2 ifNil: [ nextPaymentIndex2 := 0 ].
 	^ nextPaymentIndex2 := nextPaymentIndex2 + 1.
@@ -368,8 +375,13 @@ AConfig class >> nomenclature [
 ]
 
 { #category : #accessing }
-AConfig class >> nomenclatureIndex: anIndex [
-	nomenclatureIndex := anIndex
+AConfig class >> nomenclatures [
+	^ nomenclatures ifNil: [ nomenclatures := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+AConfig class >> nomenclatures: aNomenclatures [
+	nomenclatures := aNomenclatures.
 ]
 
 { #category : #accessing }

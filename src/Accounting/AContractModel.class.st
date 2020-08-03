@@ -265,6 +265,11 @@ AContractModel >> items: someItems [
 	items := someItems.
 ]
 
+{ #category : #'as yet unclassified' }
+AContractModel >> nomenclatureName [
+	^ AConfig nomenclature
+]
+
 { #category : #accessing }
 AContractModel >> number [
 	^ number ifNil: [ number := '' ]
