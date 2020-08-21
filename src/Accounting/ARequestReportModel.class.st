@@ -109,16 +109,19 @@ ARequestReportModel >> login: anObject [
 { #category : #actions }
 ARequestReportModel >> makeReport [
 	| q a b t |
-	t := Time millisecondsToRun: 
-	[q := self queryRequest.
-	a := self accounts select: q.
-	q := self queryContract.
-	b := self accounts select: q.
-	a addAccount: b.
-	a amounts: (a amounts select: [ :am| am amount > 0 ] ).
-	report := a].
-	self log: 'A request report is created. Milliseconds to run: ', t asString, String cr.
-	^ a.
+	t := Time
+		millisecondsToRun: [ q := self queryRequest.
+			a := self accounts select: q.
+			q := self queryContract.
+			b := self accounts select: q.
+			a addAccount: b.
+			a amounts: (a amounts select: [ :am | am amount > 0 ]).
+			report := a ].
+	self
+		trace:
+			'A request report is created. Milliseconds to run: ' , t asString
+				, String cr.
+	^ a
 ]
 
 { #category : #accessing }

@@ -19,7 +19,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'isSaved',
-		'additional'
+		'additional',
+		'acceptedAccounts'
 	],
 	#category : #'Accounting-Model'
 }
@@ -69,6 +70,16 @@ AModel class >> openNew [
 { #category : #adding }
 AModel class >> remove: aDocument [
 	self documents remove: aDocument ifAbsent: [  ].
+]
+
+{ #category : #accessing }
+AModel >> acceptedAccounts [
+	^ acceptedAccounts ifNil: [ acceptedAccounts := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+AModel >> acceptedAccounts: someAcceptedAccounts [
+	acceptedAccounts := someAcceptedAccounts
 ]
 
 { #category : #configuration }
