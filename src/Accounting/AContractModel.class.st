@@ -78,12 +78,16 @@ AContractModel >> accItem2: anObject [
 { #category : #actions }
 AContractModel >> accept [
 	| accs t |
-	t := Time millisecondsToRun: [
-		self removeAccounts.
-		accs := self createAccounts.
-		self accounts addAll: accs ].
-	self log: self number asString, '-', self additionalNumber, ' contract is saved. Milliseconds to run: ', t asString, String cr.
-	^ accs.
+	t := Time
+		millisecondsToRun: [ self removeAccounts.
+			accs := self createAccounts.
+			self accounts addAll: accs ].
+	self
+		trace:
+			self number asString , '-' , self additionalNumber
+				, ' contract is saved. Milliseconds to run: ' , t asString
+				, String cr.
+	^ accs
 ]
 
 { #category : #actions }
