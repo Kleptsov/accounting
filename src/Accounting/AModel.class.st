@@ -20,7 +20,8 @@ Class {
 	#instVars : [
 		'isSaved',
 		'additional',
-		'acceptedAccounts'
+		'acceptedAccounts',
+		'barcode'
 	],
 	#category : #'Accounting-Model'
 }
@@ -73,6 +74,26 @@ AModel class >> remove: aDocument [
 ]
 
 { #category : #accessing }
+AModel >> accItem1 [
+	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+AModel >> accItem1: anObject [
+	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+AModel >> accItem2 [
+	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+AModel >> accItem2: anObject [
+	self subclassResponsibility 
+]
+
+{ #category : #accessing }
 AModel >> acceptedAccounts [
 	^ acceptedAccounts ifNil: [ acceptedAccounts := OrderedCollection new ]
 ]
@@ -87,6 +108,17 @@ AModel >> accounts [
 	^ self configClass accounts
 ]
 
+{ #category : #actions }
+AModel >> addBarcode [
+	| acc am |
+	acc := AAccount new add: self barcode; yourself.
+	AConfig barcodes delete: acc.
+	am := AAmount new add: self accItem1; add: self accItem2; yourself.
+	acc addAmount: am.
+	AConfig barcodes add: acc.
+	
+]
+
 { #category : #accessing }
 AModel >> additional [
 	^ additional ifNil: [ additional := '' ]
@@ -95,6 +127,18 @@ AModel >> additional [
 { #category : #accessing }
 AModel >> additional: anObject [
 	additional := anObject
+]
+
+{ #category : #accessing }
+AModel >> barcode [
+	^ barcode ifNil: [ barcode := '' ]
+]
+
+{ #category : #accessing }
+AModel >> barcode: anObject [
+	barcode := anObject.
+	self updateAccountItems.
+	self changed: #barcode.
 ]
 
 { #category : #configuration }
@@ -207,6 +251,17 @@ AModel >> transferName [
 { #category : #configuration }
 AModel >> transfers [
 	^ self configClass transfers
+]
+
+{ #category : #actions }
+AModel >> updateAccountItems [
+	| tags resultAmount |
+	resultAmount := AConfig barcodes
+		select: (AAccount new add: self barcode; yourself) at: 1.
+	tags := resultAmount asOrderedCollection.
+	tags isEmpty ifFalse: [ self accItem1: tags first ].
+	tags size > 1 ifTrue: [ self accItem2: tags second ].
+		
 ]
 
 { #category : #configuration }

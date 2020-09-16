@@ -77,7 +77,8 @@ Class {
 		'nextWriteOffIndex',
 		'nomenclatures',
 		'nomenclature',
-		'nextNomenclatureIndex'
+		'nextNomenclatureIndex',
+		'barcodes'
 	],
 	#category : #'Accounting-Config'
 }
@@ -120,6 +121,16 @@ AConfig class >> anyOrganizaion [
 { #category : #accessing }
 AConfig class >> anyOrganization [
 	^ anyOrganization ifNil: [ anyOrganization := 'any_organization' ]
+]
+
+{ #category : #accessing }
+AConfig class >> barcodes [
+	^ barcodes ifNil: [ barcodes := AAccounts new ]
+]
+
+{ #category : #accessing }
+AConfig class >> barcodes: anAccount [
+	barcodes := anAccount
 ]
 
 { #category : #accessing }

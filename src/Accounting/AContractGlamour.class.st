@@ -98,11 +98,25 @@ AContractGlamour >> initializeAmountItem [
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
 						on: model
-						label: 'Amount' translated
+						label: 'Count' translated
 						text: #amountItem
 						accept: #amountItem:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 			] ]
+]
+
+{ #category : #initialization }
+AContractGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  'Barcode' translated)
+						text: #barcode
+						accept: #barcode:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
@@ -122,7 +136,9 @@ AContractGlamour >> initializeBrowser [
 		r column: #contractor.
 	] size: 43.
 	browser row: #a2 size: 5.
-	browser row: #additional size: 43.
+	browser row: [ :r|
+		r column: #barcode span: 0.3.
+		r column: #additional span: 0.7 ] size: 43.
 	browser row: #a3 size: 5.
 	browser row: [ :r| 
 		r column: #amountItem span: 0.1.
@@ -136,6 +152,12 @@ AContractGlamour >> initializeBrowser [
 { #category : #initialization }
 AContractGlamour >> initializeBrowserActions [
 
+	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
+	
 	browser act: [ :p|
 		Clipboard clipboardText: model items printCSV. self inform: 'copy to clipboard' ]
 		icon: GLMUIThemeExtraIcons glamorousSave
@@ -311,6 +333,7 @@ AContractGlamour >> initializeTransmit [
 	self initializeOrganization.
 	self initializeContractor.
 	self initializeDate.
+	self initializeBarcode.
 	self initializeAdditional.
 	self initializeAmountItem.
 	self initializeAccItem1.
@@ -330,4 +353,9 @@ AContractGlamour >> upSelectionFrom: aPresentation [
 	| aSwap |
 	aSwap := (aPresentation pane port: #selection) value.
 	model upItem: aSwap.
+]
+
+{ #category : #actions }
+AContractGlamour >> updateAccountItems [
+	
 ]

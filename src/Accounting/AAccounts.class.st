@@ -93,6 +93,12 @@ AAccounts >> addAll: anAccounts [
 ]
 
 { #category : #'adding/removing' }
+AAccounts >> delete: anAccount [
+	self actIndexes remove: anAccount ifAbsent: [ nil ].
+	^ self accIndexes remove: anAccount ifAbsent: [ nil ].
+]
+
+{ #category : #'adding/removing' }
 AAccounts >> difAccIndexes: anAccount [
 	| accounts |
 	accounts := anAccount indexes.
@@ -134,4 +140,14 @@ AAccounts >> select: aTags [
 	^ (accIndexes like: acc)
 			ifNil: [ AAccount new ]
 			ifNotNil: [ :account| account clone ]
+]
+
+{ #category : #enumerating }
+AAccounts >> select: anAccount at: anIndex [
+	| account amounts|
+	account := self select: anAccount.
+	amounts := account amounts asOrderedCollection.
+	amounts size < anIndex
+		ifFalse: [ ^ amounts at: anIndex ]
+		ifTrue: [ ^ AAmount new ]
 ]
