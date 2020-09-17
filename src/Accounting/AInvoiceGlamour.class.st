@@ -92,6 +92,20 @@ AInvoiceGlamour >> initializeAmountItem [
 ]
 
 { #category : #initialization }
+AInvoiceGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Barcode' translated
+						text: #barcode
+						accept: #barcode:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AInvoiceGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
 	browser title: [ :m| m number, ' ', 'Invoice' translated ] .
@@ -107,19 +121,26 @@ AInvoiceGlamour >> initializeBrowser [
 		r column: #contractor.
 		r column: #store.
 	] size: 43.
-	browser row: #additional size: 43.
+	browser row: [ :r|
+		r column: #barcode span: 0.3.
+		r column: #additional span: 0.7 ] size: 43.
 	browser row: [ :r|
 		r column: #amountItem span: 0.1.
 		r column: #accItem1 span: 0.35.
 		r column: #accItem2 span: 0.35.
 		r column: #sumItem span: 0.1.
-		r column: #currencyItem span: 0.1 ].
+		r column: #currencyItem span: 0.1 ] size: 43.
 	browser row: #items.
 ]
 
 { #category : #initialization }
 AInvoiceGlamour >> initializeBrowserActions [
 
+	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
 	
 	browser act: [ :p|
 		Clipboard clipboardText: model items printCSV. self inform: 'Copy to Clipboard' translated ]
@@ -232,7 +253,8 @@ AInvoiceGlamour >> initializeItems [
 			table
 				title: '* ', 'Items' translated;
 				
-				onChangeOfPort: #selection act: [ :p| (p pane port: #selection) value ifNotNil: [ :el| model selectionItem: el asString ] ];
+				onChangeOfPort: #selection act: [ :p|
+					(p pane port: #selection) value ifNotNil: [ :v| model updateEditor: v ] ];
 				
 				act: [ :p| self upSelectionFrom: p. p update; updateToolbar ]
 				icon: GLMUIThemeExtraIcons glamorousUp
@@ -242,8 +264,8 @@ AInvoiceGlamour >> initializeItems [
 				icon: GLMUIThemeExtraIcons glamorousDown
 				entitled: 'Down' translated;
 				
-				act: [ :p| (p pane port: #entity) value addItem. "model addItem"
-								p update ]
+				act: [:p| model updateOrAddSwapItem.
+						p update; updateToolbar ]
 				icon: GLMUIThemeExtraIcons glamorousAdd
 				entitled: 'Add' translated;
 				
@@ -334,6 +356,7 @@ AInvoiceGlamour >> initializeTransmit [
 	self initializeDate.
 	self initializeContractNumber.
 	self initializeStore.
+	self initializeBarcode.
 	self initializeAdditional.
 	self initializeAmountItem.
 	self initializeAccItem1.

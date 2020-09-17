@@ -6,7 +6,8 @@ Class {
 		'accItem1',
 		'accItem2',
 		'sumItem',
-		'currencyItem'
+		'currencyItem',
+		'currentSwap'
 	],
 	#category : #'Accounting-Model'
 }
@@ -55,6 +56,16 @@ AAccountEditor >> currencyItem: anObject [
 	self changed: #currencyItem.
 ]
 
+{ #category : #accessing }
+AAccountEditor >> currentSwap [
+	^ currentSwap ifNil: [ currentSwap := ASwap new ]
+]
+
+{ #category : #accessing }
+AAccountEditor >> currentSwap: aCurrentSwap [
+	currentSwap := aCurrentSwap
+]
+
 { #category : #actions }
 AAccountEditor >> makeSwap [
 	| sw |
@@ -88,6 +99,7 @@ AAccountEditor >> sumItem: anObject [
 AAccountEditor >> updateEditor: anSwap [
 	| coll |
 	anSwap ifNil: [ ^ self ].
+	currentSwap := anSwap.
 	self amountItem: anSwap amount asString.
 	coll := anSwap asOrderedCollection.
 	coll isEmpty

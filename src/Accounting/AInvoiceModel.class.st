@@ -176,17 +176,6 @@ AInvoiceModel >> downItem: aSwap [
 ]
 
 { #category : #accessing }
-AInvoiceModel >> editor [
-	^ editor ifNil: [ editor := '' ]
-]
-
-{ #category : #accessing }
-AInvoiceModel >> editor: anObject [
-	editor := anObject.
-	self changed: #editor
-]
-
-{ #category : #accessing }
 AInvoiceModel >> items [
 	^ items ifNil: [ items := AAccount new ]
 ]
@@ -234,7 +223,8 @@ AInvoiceModel >> removeAccounts [
 
 { #category : #actions }
 AInvoiceModel >> removeItem [
-	self items amounts remove: selectionItem ifAbsent: [  ]
+	self items amounts
+		remove: (self accountEditor currentSwap) ifAbsent: [ ]
 ]
 
 { #category : #accessing }
@@ -262,4 +252,12 @@ AInvoiceModel >> store: anObject [
 { #category : #actions }
 AInvoiceModel >> upItem: aSwap [
 	self items upAmount: aSwap.
+]
+
+{ #category : #actions }
+AInvoiceModel >> updateOrAddSwapItem [
+	| sw |
+	sw := self accountEditor makeSwap.
+	sw ifNil: [ ^ self ].
+	self items updateOrAddAmount: sw.
 ]

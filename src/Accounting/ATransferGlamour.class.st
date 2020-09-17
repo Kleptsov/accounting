@@ -112,22 +112,21 @@ ATransferGlamour >> initializeBrowser [
 	self initializeBrowserActions.
 	browser row: [ :r|
 		r column: #number.
-		r column: #date.
+		r column: #date. ] size: 43.
+	browser row: [ :r1|
+		r1 column: #organization.
+		r1 column: #sourceAccount.
+		r1 column: #destAccount.
 	] size: 43.
-	browser row: [ :r|
-		r column: #organization.
-		r column: #sourceAccount.
-		r column: #destAccount.
-	] size: 43.
-	browser row: [:r1|
-		r1 column: #barcode2 span: 0.3.
-		r1 column: #additional span: 0.7 ] size: 43.
-	browser row: [:r|
-		r column: #amountItem span: 0.1.
-		r column: #accItem1 span: 0.35.
-		r column: #accItem2 span: 0.35.
-		r column: #sumItem span: 0.1.
-		r column: #currencyItem span: 0.1 ] size: 43.
+	browser row: [:r2|
+		r2 column: #barcode2 span: 0.3.
+		r2 column: #additional span: 0.7. ] size: 43.
+	browser row: [:r3|
+		r3 column: #amountItem span: 0.1.
+		r3 column: #accItem1 span: 0.35.
+		r3 column: #accItem2 span: 0.35.
+		r3 column: #sumItem span: 0.1.
+		r3 column: #currencyItem span: 0.1 ] size: 43.
 	browser row: #items.
 ]
 
