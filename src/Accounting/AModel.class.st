@@ -113,10 +113,12 @@ AModel >> addBarcode [
 	| acc am |
 	acc := AAccount new add: self barcode; yourself.
 	AConfig barcodes delete: acc.
-	am := AAmount new add: self accItem1; add: self accItem2; yourself.
+	am := AAmount new.
+	self accItem1 = '' ifFalse: [ am add: self accItem1 ].
+	self accItem2 = '' ifFalse: [ am add: self accItem2 ].
+	am isEmpty ifTrue: [ ^ self ].
 	acc addAmount: am.
-	AConfig barcodes add: acc.
-	
+	AConfig barcodes add: acc
 ]
 
 { #category : #accessing }
