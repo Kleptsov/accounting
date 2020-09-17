@@ -36,14 +36,9 @@ Class {
 		'sourceAccount',
 		'destAccount',
 		'date',
-		'editor',
 		'items',
 		'selectionItem',
-		'amountItem',
-		'accItem1',
-		'accItem2',
-		'sumItem',
-		'currencyItem'
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -56,28 +51,6 @@ ATransferModel class >> documents [
 { #category : #adding }
 ATransferModel class >> nextIndex [
 	^ self configClass nextTransferIndex asString
-]
-
-{ #category : #accessing }
-ATransferModel >> accItem1 [
-	^ accItem1 ifNil: [ accItem1 := '' ]
-]
-
-{ #category : #accessing }
-ATransferModel >> accItem1: anAccItem1 [
-	accItem1 := anAccItem1.
-	self changed: #accItem1.
-]
-
-{ #category : #accessing }
-ATransferModel >> accItem2 [
-	^ accItem2 ifNil: [ accItem2 := '' ]
-]
-
-{ #category : #accessing }
-ATransferModel >> accItem2: anAccItem2 [
-	accItem2 := anAccItem2.
-	self changed: accItem2.
 ]
 
 { #category : #actions }
@@ -95,6 +68,11 @@ ATransferModel >> accept [
 			self number asString , ' transfer saved. Milliseconds to run: '
 				, t asString , String cr.
 	^ accs
+]
+
+{ #category : #accessing }
+ATransferModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
 ]
 
 { #category : #actions }
@@ -119,16 +97,6 @@ ATransferModel >> addAccount2: anArray [
 ATransferModel >> addItem [
 	self items updateOrAddAmount: 
 		(AAmountBuilder new string: self editor; build).
-]
-
-{ #category : #accessing }
-ATransferModel >> amountItem [
-	^ amountItem ifNil: [ amountItem := '' ]
-]
-
-{ #category : #accessing }
-ATransferModel >> amountItem: anAmountItem [
-	amountItem := anAmountItem
 ]
 
 { #category : #accessing }
@@ -161,17 +129,6 @@ ATransferModel >> createSourceAmounts [
 ]
 
 { #category : #accessing }
-ATransferModel >> currencyItem [
-	^ currencyItem ifNil: [ currencyItem := '' ]
-]
-
-{ #category : #accessing }
-ATransferModel >> currencyItem: anCurrencyItem [
-	currencyItem := anCurrencyItem.
-	self changed: #currencyItem.
-]
-
-{ #category : #accessing }
 ATransferModel >> date [
 	^ date ifNil: [ date := self today ]
 ]
@@ -194,16 +151,6 @@ ATransferModel >> destAccount: anObject [
 { #category : #actions }
 ATransferModel >> downItem: aSwap [
 	self items downAmount: aSwap.
-]
-
-{ #category : #accessing }
-ATransferModel >> editor [
-	^ editor ifNil: [ editor := '' ]
-]
-
-{ #category : #accessing }
-ATransferModel >> editor: anObject [
-	editor := anObject
 ]
 
 { #category : #accessing }
@@ -275,36 +222,7 @@ ATransferModel >> sourceAccount: anObject [
 	sourceAccount := anObject
 ]
 
-{ #category : #accessing }
-ATransferModel >> sumItem [
-	^ sumItem ifNil: [ sumItem := '' ]
-]
-
-{ #category : #accessing }
-ATransferModel >> sumItem: aSumItem [
-	sumItem := aSumItem.
-	self changed: #sumItem.
-]
-
 { #category : #actions }
 ATransferModel >> upItem: aSwap [
 	self items upAmount: aSwap.
-]
-
-{ #category : #actions }
-ATransferModel >> updateOrAddSwapItem [
-	| sw |
-	(self amountItem = '' or:
-		[ self sumItem = '' or:
-			[ self currencyItem = '' ] ])
-				ifTrue: [ Error signal: 'Empty field amount or sum or currency'. ^ self ].
-	(self accItem1 = '' and: [ self accItem2 = '' ] )
-		ifTrue: [ Error signal: 'Empty unit or properties goods' ].
-	sw := ASwap new.
-	sw amount: (self amountItem asNumber).
-	self accItem1 = '' ifFalse: [ sw add: accItem1 asString ].
-	self accItem2 = '' ifFalse: [ sw add: accItem2 asString ].
-	sw swapAmount amount: (self sumItem asNumber);
-			add: self currencyItem.
-	self items updateOrAddAmount: sw.
 ]

@@ -75,22 +75,22 @@ AModel class >> remove: aDocument [
 
 { #category : #accessing }
 AModel >> accItem1 [
-	self subclassResponsibility 
+	^ self accountEditor accItem1
 ]
 
 { #category : #accessing }
 AModel >> accItem1: anObject [
-	self subclassResponsibility 
+	self accountEditor accItem1: anObject
 ]
 
 { #category : #accessing }
 AModel >> accItem2 [
-	self subclassResponsibility 
+	^ self accountEditor accItem2.
 ]
 
 { #category : #accessing }
 AModel >> accItem2: anObject [
-	self subclassResponsibility 
+	self accountEditor accItem2: anObject
 ]
 
 { #category : #accessing }
@@ -103,6 +103,11 @@ AModel >> acceptedAccounts: someAcceptedAccounts [
 	acceptedAccounts := someAcceptedAccounts
 ]
 
+{ #category : #accessing }
+AModel >> accountEditor [
+	^ self
+]
+
 { #category : #configuration }
 AModel >> accounts [
 	^ self configClass accounts
@@ -110,12 +115,13 @@ AModel >> accounts [
 
 { #category : #actions }
 AModel >> addBarcode [
-	| acc am |
+	| acc am accEditor |
 	acc := AAccount new add: self barcode; yourself.
 	AConfig barcodes delete: acc.
 	am := AAmount new.
-	self accItem1 = '' ifFalse: [ am add: self accItem1 ].
-	self accItem2 = '' ifFalse: [ am add: self accItem2 ].
+	accEditor := self accountEditor.
+	accEditor accItem1 = '' ifFalse: [ am add: accEditor accItem1 ].
+	accEditor accItem2 = '' ifFalse: [ am add: accEditor accItem2 ].
 	am isEmpty ifTrue: [ ^ self ].
 	acc addAmount: am.
 	AConfig barcodes add: acc
@@ -261,9 +267,14 @@ AModel >> updateAccountItems [
 	resultAmount := AConfig barcodes
 		select: (AAccount new add: self barcode; yourself) at: 1.
 	tags := resultAmount asOrderedCollection.
-	tags isEmpty ifFalse: [ self accItem1: tags first ].
-	tags size > 1 ifTrue: [ self accItem2: tags second ].
+	tags isEmpty ifFalse: [ self accountEditor accItem1: tags first ].
+	tags size > 1 ifTrue: [ self accountEditor accItem2: tags second ].
 		
+]
+
+{ #category : #actions }
+AModel >> updateEditor: anSwap [
+	self accountEditor updateEditor: anSwap.
 ]
 
 { #category : #configuration }

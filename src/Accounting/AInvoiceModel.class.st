@@ -37,7 +37,8 @@ Class {
 		'editor',
 		'items',
 		'store',
-		'selectionItem'
+		'selectionItem',
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -63,7 +64,17 @@ AInvoiceModel >> accept [
 	^ swaps.
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
+AInvoiceModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+AInvoiceModel >> accountEditor: anAccountEditor [
+	accountEditor := anAccountEditor.
+]
+
+{ #category : #accessing }
 AInvoiceModel >> addAccount1: anArray [
 	anArray ifNil: [ ^ self ].
 	anArray size < 1 ifTrue: [ ^ self ].

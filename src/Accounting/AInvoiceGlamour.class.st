@@ -36,6 +36,34 @@ AInvoiceGlamour >> initialize [
 ]
 
 { #category : #initialization }
+AInvoiceGlamour >> initializeAccItem1 [
+	(browser transmit) to: #accItem1;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Account' translated, ' 1'
+						text: #accItem1
+						accept: #accItem1:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AInvoiceGlamour >> initializeAccItem2 [
+	(browser transmit) to: #accItem2;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Account' translated, ' 2'
+						text: #accItem2
+						accept: #accItem2:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AInvoiceGlamour >> initializeAdditional [
 	(browser transmit) to: #additional;
 		andShow: [ :composite|
@@ -45,6 +73,20 @@ AInvoiceGlamour >> initializeAdditional [
 						label: 'Additional' translated
 						text: #additional
 						accept: #additional:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AInvoiceGlamour >> initializeAmountItem [
+	(browser transmit) to: #amountItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Count ' translated
+						text: #amountItem
+						accept: #amountItem:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]
@@ -66,7 +108,12 @@ AInvoiceGlamour >> initializeBrowser [
 		r column: #store.
 	] size: 43.
 	browser row: #additional size: 43.
-	browser row: #editor size: 25.
+	browser row: [ :r|
+		r column: #amountItem span: 0.1.
+		r column: #accItem1 span: 0.35.
+		r column: #accItem2 span: 0.35.
+		r column: #sumItem span: 0.1.
+		r column: #currencyItem span: 0.1 ].
 	browser row: #items.
 ]
 
@@ -132,6 +179,20 @@ AInvoiceGlamour >> initializeContractor [
 						label: '* ', 'Contractor' translated
 						text: #contractor
 						accept: #contractor:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AInvoiceGlamour >> initializeCurrencyItem [
+	(browser transmit) to: #currencyItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Currency' translated
+						text: #currencyItem
+						accept: #currencyItem:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]
@@ -248,6 +309,20 @@ AInvoiceGlamour >> initializeStore [
 ]
 
 { #category : #initialization }
+AInvoiceGlamour >> initializeSumItem [
+	(browser transmit) to: #sumItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Sum' translated
+						text: #sumItem
+						accept: #sumItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AInvoiceGlamour >> initializeTmp [
 ]
 
@@ -260,7 +335,11 @@ AInvoiceGlamour >> initializeTransmit [
 	self initializeContractNumber.
 	self initializeStore.
 	self initializeAdditional.
-	self initializeEditor.
+	self initializeAmountItem.
+	self initializeAccItem1.
+	self initializeAccItem2.
+	self initializeSumItem.
+	self initializeCurrencyItem.
 	self initializeItems.
 	
 ]
