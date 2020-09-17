@@ -141,6 +141,18 @@ AContractModel >> asCSV [
 ]
 
 { #category : #accessing }
+AContractModel >> barcode [
+	^ barcode ifNil: [ barcode := '' ]
+]
+
+{ #category : #accessing }
+AContractModel >> barcode: anObject [
+	barcode := anObject.
+	self updateAccountItems.
+	self changed: #barcode.
+]
+
+{ #category : #accessing }
 AContractModel >> contractor [
 	^ contractor ifNil: [ contractor := '' ]
 ]
@@ -263,6 +275,11 @@ AContractModel >> items [
 { #category : #accessing }
 AContractModel >> items: someItems [
 	items := someItems.
+]
+
+{ #category : #'as yet unclassified' }
+AContractModel >> nomenclatureName [
+	^ AConfig nomenclature
 ]
 
 { #category : #accessing }

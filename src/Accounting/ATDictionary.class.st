@@ -60,7 +60,10 @@ ATDictionary >> a [
 'Additional Number' -> { 'ru' -> 'Номер дополнительного соглашения' } asDictionary.
 'Add Account 1' -> { 'ru' -> 'Установить первый счет' } asDictionary.
 'Add Account 2' -> { 'ru' -> 'Установить второй счет' } asDictionary.
+'Added as' -> { 'ru' -> 'добавлен в качестве' } asDictionary.
 'Accept' -> { 'ru' -> 'Провести' } asDictionary.
+'Amount' -> { 'ru' -> 'Количество' } asDictionary.
+'Add Barcode' -> { 'ru' -> 'Добавить штрихкод' } asDictionary.
 		
 	 } asDictionary
 ]
@@ -69,6 +72,7 @@ ATDictionary >> a [
 ATDictionary >> b [
 	^ { 
 'Base Currency' -> { 'ru' -> 'Базовая валюта' } asDictionary.
+'Barcode' -> { 'ru' -> 'Штрихкод' } asDictionary.
 	 } asDictionary
 ]
 

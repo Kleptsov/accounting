@@ -23,14 +23,19 @@ Class {
 	#category : #'Accounting-Core'
 }
 
-{ #category : #operations }
+{ #category : #'value operations' }
 ASwap >> addAmount: anAmount [
-	amount := amount + anAmount amount.
+	self initializeVal.
+	self val plus: anAmount val.
+	anAmount class = self class ifFalse: [ ^ self ].
+	self swapAmount. anAmount swapAmount. "lazy initialization"
+	swapAmount val plus: anAmount swapAmount val.
+	"amount := amount + anAmount amount.
 	anAmount class = self class
 		ifTrue: [ swapAmount
 						ifNil: [ swapAmount := anAmount swapAmount clone ]
 						ifNotNil: [ anAmount swapAmount
-											ifNotNil: [ swapAmount amount: swapAmount amount + anAmount swapAmount amount ] ] ]
+											ifNotNil: [ swapAmount amount: swapAmount amount + anAmount swapAmount amount ] ] ]"
 ]
 
 { #category : #converting }
@@ -53,14 +58,25 @@ ASwap >> clone [
 	^ instance
 ]
 
-{ #category : #operations }
+{ #category : #'value operations' }
 ASwap >> difAmount: anAmount [
-	amount := amount - anAmount amount.
+	self initializeVal.
+	self val minus: anAmount val.
+	anAmount class = self class ifFalse: [ ^ self ].
+	self swapAmount. anAmount swapAmount. "lazy initialization"
+	swapAmount val minus: anAmount swapAmount val.
+	"amount := amount - anAmount amount.
 	anAmount class = self class
 		ifTrue: [ swapAmount
 						ifNil: [ swapAmount := anAmount swapAmount clone invert ]
 						ifNotNil: [ anAmount swapAmount
-											ifNotNil: [ swapAmount amount: swapAmount amount - anAmount swapAmount amount ] ] ]
+											ifNotNil: [ swapAmount amount: swapAmount amount - anAmount swapAmount amount ] ] ]"
+]
+
+{ #category : #'value operations' }
+ASwap >> initializeVal [
+	super initializeVal.
+	self swapAmount initializeVal.
 ]
 
 { #category : #printing }
@@ -72,13 +88,17 @@ ASwap >> printCSVOn: aStream [
 
 { #category : #printing }
 ASwap >> printOn: aStream [
-	aStream
+	aStream nextPutAll: (self amount round: 4) asString.
+	self do: [ :t| aStream nextPutAll: ' '; nextPutAll: t ].
+	aStream nextPutAll: ' = '.
+	swapAmount printOn: aStream.
+	"aStream
 		nextPutAll: (amount round: 4) asString.
 	self do: [ :t|
 		aStream nextPutAll: ' ';
 			nextPutAll: t ].
 	aStream nextPutAll: ' = '.
-	swapAmount printOn: aStream.
+	swapAmount printOn: aStream."
 ]
 
 { #category : #accessing }

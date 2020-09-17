@@ -27,7 +27,7 @@ Class {
 		'model',
 		'browser'
 	],
-	#category : #'Accounting-GUI'
+	#category : #'Accounting-GUIReport'
 }
 
 { #category : #intialization }

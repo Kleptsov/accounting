@@ -17,7 +17,7 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #ASwapReportGlamour,
 	#superclass : #AGlamour,
-	#category : #'Accounting-GUI'
+	#category : #'Accounting-GUIReport'
 }
 
 { #category : #initialization }
@@ -56,11 +56,6 @@ ASwapReportGlamour >> initializeBrowserActionsAt: aBrowser [
 						p update; updateToolbar ]
 				icon: GLMUIThemeExtraIcons glamorousInto
 				entitled: 'Add Account 1' translated.
-				
-	aBrowser
-		act: [ :p| model makeReport. p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousGo
-		entitled: 'Make Report' translated.
 ]
 
 { #category : #initialization }
@@ -118,9 +113,15 @@ ASwapReportGlamour >> initializeReport [
 	browser transmit to: #report;
 		andShow: [ :a|
 			a table
+			
+				act: [ :p| model makeReport. p update; updateToolbar ]
+				icon: GLMUIThemeExtraIcons glamorousGo
+				entitled: 'Make Report' translated;
+				
 				onChangeOfPort: #selection act: [ :p|
 						(p pane port: #selection) value ifNotNil: [:el|
 								model selectedItem: el asString  ] ];
+						
 				display: [ :m| m report amounts];
 				column: 'Count' translated evaluated: [ :each| each amount ] width: 100;
 				column: 'Goodies' translated evaluated: [ :each| each printTags ] width: 600;

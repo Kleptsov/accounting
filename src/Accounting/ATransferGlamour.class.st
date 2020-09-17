@@ -35,13 +35,73 @@ ATransferGlamour >> initialize [
 ]
 
 { #category : #initialization }
-ATransferGlamour >> initializeAdditional [
+ATransferGlamour >> initializeAccItem1 [
+	(browser transmit) to: #accItem1;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: ('Account' translated, ' 1')
+						text: #accItem1
+						accept: #accItem1:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ATransferGlamour >> initializeAccItem2 [
+	(browser transmit) to: #accItem2;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: ('Account' translated, ' 2')
+						text: #accItem2
+						accept: #accItem2:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ATransferGlamour >> initializeAdditional [			
 	(browser transmit) to: #additional;
-		andShow: [ :a|
-			a text
-				title: 'Additional' translated;
-				onChangeOfPort: #text act: [ :tp| model additional: tp text asString ];
-				display: [ :m| m additional ] ]
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Additional' translated
+						text: #additional
+						accept: #additional:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ATransferGlamour >> initializeAmountItem [
+	(browser transmit) to: #amountItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Count' translated
+						text: #amountItem
+						accept: #amountItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ATransferGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode2;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: ('Barcode' translated)
+						text: #barcode
+						accept: #barcode:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
@@ -53,20 +113,32 @@ ATransferGlamour >> initializeBrowser [
 	browser row: [ :r|
 		r column: #number.
 		r column: #date.
-	] size: 68.
+	] size: 43.
 	browser row: [ :r|
 		r column: #organization.
 		r column: #sourceAccount.
 		r column: #destAccount.
-	] size: 68.
-	browser row: #tmp size: 0.
-	browser row: #additional size: 68.
-	browser row: #editor size: 35.
+	] size: 43.
+	browser row: [:r1|
+		r1 column: #barcode2 span: 0.3.
+		r1 column: #additional span: 0.7 ] size: 43.
+	browser row: [:r|
+		r column: #amountItem span: 0.1.
+		r column: #accItem1 span: 0.35.
+		r column: #accItem2 span: 0.35.
+		r column: #sumItem span: 0.1.
+		r column: #currencyItem span: 0.1 ] size: 43.
 	browser row: #items.
 ]
 
 { #category : #initialization }
 ATransferGlamour >> initializeBrowserActions [
+
+	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
 	
 	browser act: [ :p|
 		Clipboard clipboardText: model items printCSV. self inform: 'copy to clipboard' ]
@@ -93,52 +165,45 @@ ATransferGlamour >> initializeBrowserActions [
 ]
 
 { #category : #initialization }
+ATransferGlamour >> initializeCurrencyItem [
+	(browser transmit) to: #currencyItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Currency' translated
+						text: #currencyItem
+						accept: #currencyItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 ATransferGlamour >> initializeDate [
 	(browser transmit) to: #date;
-		andShow: [ :a|
-			a text
-				title: ('* ', 'Date' translated, ' ','dd:mm:yyyy' translated);
-				onChangeOfPort: #text act: [ :tp| model date: tp text asString ];
-				display: [ :m| m date ] ]
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Date' translated
+						text: #date
+						accept: #date:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
-ATransferGlamour >> initializeDestAccount [
+ATransferGlamour >> initializeDestAccount [			
 	(browser transmit) to: #destAccount;
-		andShow: [ :a|
-			a text
-				title: 'Destination Account' translated;
-				onChangeOfPort: #text act: [ :tp| model destAccount: tp text asString ];
-				display: [ :m| m destAccount ] ]
-]
-
-{ #category : #initialization }
-ATransferGlamour >> initializeEditor [
-	"display when created"
-	(browser transmit) to: #editor;
-		andShow: [ :a|
-			a text
-				onChangeOfPort: #text act: [ :textPresentation | 
-					model editor: textPresentation text asString ];
-				format: [ :m| m isText ifTrue: [ m ] ifFalse: [ m editor ] ];
-				display: [ :m| m ]
-		].
-	
-	"display when select an item"
-	(browser transmit) from: #items port: #selection; from: #tmp; to: #editor;
-		andShow: [ :a|
-			a text
-				allowNil;
-				onChangeOfPort: #text act: [ :textPresentation | 
-					model editor: textPresentation text asString ];
-				display: [ :item :tmp| item asString ].
-			
-			a text
-				allowAllNil;
-				onChangeOfPort: #text act: [ :textPresentation | 
-					model editor: textPresentation text asString ];
-				display: [ :item :tmp| model editor asString ].
-			 ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Destination Account' translated
+						text: #destAccount
+						accept: #destAccount:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
@@ -156,8 +221,8 @@ ATransferGlamour >> initializeItems [
 				icon: GLMUIThemeExtraIcons glamorousDown
 				entitled: 'Down' translated;
 				
-				act: [ :p| (p pane port: #entity) value addItem. "model addItem"
-								p update ]
+				act: [:p| model updateOrAddSwapItem.
+						p update; updateToolbar ]
 				icon: GLMUIThemeExtraIcons glamorousAdd
 				entitled: 'Add' translated;
 				
@@ -165,6 +230,9 @@ ATransferGlamour >> initializeItems [
 								p update ]
 				icon: GLMUIThemeExtraIcons glamorousRemove
 				entitled: 'Remove' translated;
+				
+				onChangeOfPort: #selection act: [ :p|
+					(p pane port: #selection) value ifNotNil: [ :v| model updateEditor: v ] ];
 
 				display: [ :m| m items sortByPostTime ];
 				
@@ -176,38 +244,57 @@ ATransferGlamour >> initializeItems [
 { #category : #initialization }
 ATransferGlamour >> initializeNumber [
 	(browser transmit) to: #number;
-		andShow: [ :a|
-			a text
-				title: '* ', 'Number' translated;
-				onChangeOfPort: #text act: [ :tp| model number: tp text asString ];
-				display: [ model number ] ].
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Number' translated
+						text: #number
+						accept: #number:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
-ATransferGlamour >> initializeOrganization [
+ATransferGlamour >> initializeOrganization [			
 	(browser transmit) to: #organization;
-		andShow: [ :a|
-			a text
-				title: '* ', 'Organization' translated;
-				onChangeOfPort: #text act: [ :tp| model organization: tp text asString ];
-				display: [ :m| m organization ] ]
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: '* ', 'Organization' translated
+						text: #organization
+						accept: #organization:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
-ATransferGlamour >> initializeSourceAccount [
+ATransferGlamour >> initializeSourceAccount [			
 	(browser transmit) to: #sourceAccount;
-		andShow: [ :a|
-			a text
-				title: 'Source Account' translated;
-				onChangeOfPort: #text act: [ :tp| model sourceAccount: tp text asString ];
-				display: [ :m| m sourceAccount ] ]
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Source Account' translated
+						text: #sourceAccount
+						accept: #sourceAccount:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
-ATransferGlamour >> initializeTmp [
-	(browser transmit) to: #tmp; from: #items port: #selection;
-		andShow: [ :a|
-			a text display: [ :sel| model selectionItem: sel. '' ] ]
+ATransferGlamour >> initializeSumItem [
+	(browser transmit) to: #sumItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Sum' translated
+						text: #sumItem
+						accept: #sumItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
@@ -218,9 +305,13 @@ ATransferGlamour >> initializeTransmit [
 	self initializeSourceAccount.
 	self initializeDestAccount.
 	self initializeAdditional.
-	self initializeEditor.
+	self initializeBarcode.
+	self initializeAmountItem.
+	self initializeAccItem1.
+	self initializeAccItem2.
+	self initializeSumItem.
+	self initializeCurrencyItem.
 	self initializeItems.
-	self initializeTmp.
 	
 ]
 

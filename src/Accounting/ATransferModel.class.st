@@ -36,9 +36,9 @@ Class {
 		'sourceAccount',
 		'destAccount',
 		'date',
-		'editor',
 		'items',
-		'selectionItem'
+		'selectionItem',
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -68,6 +68,11 @@ ATransferModel >> accept [
 			self number asString , ' transfer saved. Milliseconds to run: '
 				, t asString , String cr.
 	^ accs
+]
+
+{ #category : #accessing }
+ATransferModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
 ]
 
 { #category : #actions }
@@ -146,16 +151,6 @@ ATransferModel >> destAccount: anObject [
 { #category : #actions }
 ATransferModel >> downItem: aSwap [
 	self items downAmount: aSwap.
-]
-
-{ #category : #accessing }
-ATransferModel >> editor [
-	^ editor ifNil: [ editor := '' ]
-]
-
-{ #category : #accessing }
-ATransferModel >> editor: anObject [
-	editor := anObject
 ]
 
 { #category : #accessing }
