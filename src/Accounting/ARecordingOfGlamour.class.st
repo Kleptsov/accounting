@@ -133,6 +133,20 @@ ARecordingOfGlamour >> initializeAmountItem [
 ]
 
 { #category : #initialization }
+ARecordingOfGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Barcode' translated
+						text: #barcode
+						accept: #barcode:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 ARecordingOfGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
 	browser title: [ :m| m number, ' ', 'Recording of' translated ] .
@@ -147,7 +161,8 @@ ARecordingOfGlamour >> initializeBrowser [
 		r column: #account2.
 		r column: #account3.
 	] size: 43.
-	browser row: #additional size: 43.
+	browser row: [ :r| r column: #barcode span: 0.3.
+					r column: #additional span: 0.7 ] size: 43.
 	browser row: #editor size: 0.
 	browser row: [ :r|
 		r column: #amountItem span: 0.1.
@@ -270,6 +285,7 @@ ARecordingOfGlamour >> initializeTransmit [
 	self initializeOrganization.
 	self initializeAccount2.
 	self initializeAccount3.
+	self initializeBarcode.
 	self initializeAdditional.
 	self initializeAmountItem.
 	self initializeAccItem2.
