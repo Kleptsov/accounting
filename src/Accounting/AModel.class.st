@@ -269,7 +269,7 @@ AModel >> updateAccountItems [
 	tags := resultAmount asOrderedCollection.
 	tags isEmpty ifFalse: [ self accountEditor accItem1: tags first ].
 	tags size > 1 ifTrue: [ self accountEditor accItem2: tags second ].
-		
+	^ resultAmount
 ]
 
 { #category : #actions }

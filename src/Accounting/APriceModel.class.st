@@ -77,10 +77,10 @@ APriceModel >> addAccount1: anArray [
 
 { #category : #actions }
 APriceModel >> addItem [
-	| swap baseSwap mul |
+	| swap baseConvert mul |
 	swap := self accountEditor makeSwap.
-	baseSwap := self baseSwap: (swap swapAmount).
-	mul := swap amount / (swap swapAmount amount / baseSwap amount).
+	baseConvert := self baseConvert: (swap swapAmount).
+	mul := swap amount / (swap swapAmount amount / baseConvert amount).
 	swap amount: mul.
 	self items updateOrAddAmount: swap asAmount.
 ]
@@ -96,18 +96,18 @@ APriceModel >> baseAmount: anObject [
 	self changed: #baseAmount.
 ]
 
-{ #category : #accessing }
-APriceModel >> basePrice [
-	^ (self baseSwap: (AAmount new add: baseAmount; amount: 1)) amount
-]
-
 { #category : #actions }
-APriceModel >> baseSwap: anAmount [
+APriceModel >> baseConvert: anAmount [
 	| bs |
 	(self items amounts like: anAmount)
 		ifNil: [ bs := AAmount new amount: 1 ]
 		ifNotNil: [ :a| bs := a asAmount ].
 	^ bs.
+]
+
+{ #category : #accessing }
+APriceModel >> basePrice [
+	^ (self baseConvert: (AAmount new add: baseAmount; amount: 1)) amount
 ]
 
 { #category : #copying }
@@ -213,7 +213,9 @@ APriceModel >> selection [
 
 { #category : #accessing }
 APriceModel >> selection: anObject [
-	selection := anObject.
-	self editor: anObject.
+	|sel|
+	sel := anObject asSwap clone.
+	sel swapAmount.
+	self accountEditor updateEditor: anObject.
 	self changed: #selection
 ]

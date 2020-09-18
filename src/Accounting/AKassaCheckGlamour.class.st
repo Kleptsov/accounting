@@ -46,13 +46,74 @@ AKassaCheckGlamour >> initialize [
 ]
 
 { #category : #initialization }
+AKassaCheckGlamour >> initializeAccItem1 [
+	(browser transmit) to: #accItem1;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:('Account' translated, ' 1')
+						text: #accItem1
+						accept: #accItem1:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AKassaCheckGlamour >> initializeAccItem2 [
+	(browser transmit) to: #accItem2;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:('Account' translated, ' 2')
+						text: #accItem2
+						accept: #accItem2:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AKassaCheckGlamour >> initializeAmountItem [
+	(browser transmit) to: #amountItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:('Count' translated)
+						text: #amountItem
+						accept: #amountItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AKassaCheckGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  'Selector' translated)
+						text: #barcode
+						accept: #barcode:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AKassaCheckGlamour >> initializeBrowser [
 	browser := GLMTabulator new.
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser title: [:m| m number, ' ', 'Check' translated].
-	browser row: #morphEditor size: 64.
-	browser row: #tmp size: 0.
+	browser row: #barcode size: 46.
+	browser row: [ :r|
+		r column: #amountItem span: 0.1.
+		r column: #accItem1 span: 0.35.
+		r column: #accItem2 span: 0.35.
+		r column: #sumItem span: 0.1.
+		r column: #currencyItem span: 0.1 ] size: 46.
 	browser row: [ :r|
 		r column: #sum.
 		r column: #clientSum.
@@ -62,6 +123,12 @@ AKassaCheckGlamour >> initializeBrowser [
 
 { #category : #initialization }
 AKassaCheckGlamour >> initializeBrowserActions [
+
+	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
 
 	browser 
 		act: [ :p| p update; updateToolbar]
@@ -111,6 +178,20 @@ AKassaCheckGlamour >> initializeClientSum [
 ]
 
 { #category : #initialization }
+AKassaCheckGlamour >> initializeCurrencyItem [
+	(browser transmit) to: #currencyItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:('Currency' translated)
+						text: #currencyItem
+						accept: #currencyItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AKassaCheckGlamour >> initializeItems [	
 	"browser transmit to: #items; andShow: [ :composite|
 		composite title: 'List' translated.
@@ -126,22 +207,8 @@ AKassaCheckGlamour >> initializeItems [
 	(browser transmit) to: #items;
 		andShow: [ :a| self glmItemsfor: a].
 		
-	(browser transmit) to: #items; from: #morphEditor;
+	(browser transmit) to: #items; from: #barcode;
 		andShow: [ :a| self glmItemsfor: a ]
-]
-
-{ #category : #initialization }
-AKassaCheckGlamour >> initializeMorphEditor [
-	(browser transmit) to: #morphEditor;
-		andShow: [ :composite|
-			composite morph morph: [ :morphPresentation|
-					ALabeledText
-						on: model
-						label:(  'Selector' translated)
-						text: #editor
-						accept: #editor:
-						acceptAction: [ :v| morphPresentation selection: v asString ].
-		] ]
 ]
 
 { #category : #initialization }
@@ -171,25 +238,31 @@ AKassaCheckGlamour >> initializeSum [
 ]
 
 { #category : #initialization }
-AKassaCheckGlamour >> initializeTmp [
-	(browser transmit) to: #tmp;
-		andShow: [ :a|
-			a text
-				display: [ :m| '' ]
-		].
-	
-	(browser transmit) to: #tmp; from: #items port: #selection;
-		andShow: [ :a| a text display: [ :sel| model selection: sel. '' ] ]
+AKassaCheckGlamour >> initializeSumItem [
+	(browser transmit) to: #sumItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:('Sum' translated)
+						text: #sumItem
+						accept: #sumItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
 AKassaCheckGlamour >> initializeTransmit [
 	self initializeItems.
-	self initializeMorphEditor.
+	self initializeBarcode.
+	self initializeAmountItem.
+	self initializeAccItem1.
+	self initializeAccItem2.
+	self initializeSumItem.
+	self initializeCurrencyItem. 
 	self initializeSum.
 	self initializeChange.
 	self initializeClientSum.
-	self initializeTmp
 ]
 
 { #category : #initialization }

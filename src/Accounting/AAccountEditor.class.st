@@ -45,6 +45,16 @@ AAccountEditor >> amountItem: anObject [
 	self changed: #amountItem
 ]
 
+{ #category : #actions }
+AAccountEditor >> clean [
+	self amountItem: ''.
+	self accItem1: ''.
+	self accItem2: ''.
+	self sumItem: ''.
+	self currencyItem: ''.
+	currentSwap := nil.
+]
+
 { #category : #accessing }
 AAccountEditor >> currencyItem [
 	^ currencyItem ifNil: [ currencyItem := '' ]
@@ -69,18 +79,12 @@ AAccountEditor >> currentSwap: aCurrentSwap [
 { #category : #actions }
 AAccountEditor >> makeSwap [
 	| sw |
-	(self amountItem = '' or:
-		[ self sumItem = '' or:
-			[ self currencyItem = '' ] ])
-				ifTrue: [ Error signal: 'Empty field amount or sum or currency'. ^ nil ].
-	(self accItem1 = '' and: [ self accItem2 = '' ] )
-		ifTrue: [ Error signal: 'Empty unit or properties goods'. ^ nil].
 	sw := ASwap new.
-	sw amount: (self amountItem asNumber).
+	[ sw amount: (self amountItem asNumber) ] on: Error do: [ :ex| ].
 	self accItem1 = '' ifFalse: [ sw add: accItem1 asString ].
 	self accItem2 = '' ifFalse: [ sw add: accItem2 asString ].
-	sw swapAmount amount: (self sumItem asNumber);
-			add: self currencyItem.
+	[ sw swapAmount amount: (self sumItem asNumber);
+			add: self currencyItem ] on: Error do: [ :ex| ].
 	^ sw
 ]
 
@@ -97,17 +101,14 @@ AAccountEditor >> sumItem: anObject [
 
 { #category : #actions }
 AAccountEditor >> updateEditor: anSwap [
-	| coll |
+	| coll sw |
 	anSwap ifNil: [ ^ self ].
-	currentSwap := anSwap.
-	self amountItem: anSwap amount asString.
-	coll := anSwap asOrderedCollection.
-	coll isEmpty
-		ifFalse: [ self accItem1: coll first asString ]
-		ifTrue: [self accItem1: ''; accItem2: '' ].
-	coll size > 1
-		ifTrue: [ self accItem2: coll second asString ]
-		ifFalse: [self accItem2: ''].
-	self sumItem: anSwap swapAmount amount asString.
-	self currencyItem: anSwap swapAmount asOrderedCollection first asString.
+	sw := anSwap asSwap.
+	self amountItem: sw amount.
+	self sumItem: sw swapAmount amount.
+	coll := sw asOrderedCollection.
+	coll isEmpty ifFalse: [ self accItem1: coll first ].
+	coll size > 1 ifTrue: [ self accItem2: coll second ].
+	coll := sw swapAmount asOrderedCollection.
+	coll isEmpty ifFalse: [ self currencyItem: coll first ] 
 ]

@@ -140,6 +140,12 @@ APriceGlamour >> initializeBrowser [
 { #category : #initialization }
 APriceGlamour >> initializeBrowserActions [
 
+	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
+
 	browser act: [ :p| p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousRefresh
 		entitled: 'Update' translated.

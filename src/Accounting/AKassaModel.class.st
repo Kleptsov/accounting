@@ -37,7 +37,8 @@ Class {
 		'items',
 		'editor',
 		'currency',
-		'clientSum'
+		'clientSum',
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -62,6 +63,16 @@ AKassaModel >> accept [
 	sw secondAmounts: self items amounts.
 	res := sw build.
 	^ res.
+]
+
+{ #category : #accessing }
+AKassaModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+AKassaModel >> accountEditor: anAccountEditor [
+	accountEditor := anAccountEditor
 ]
 
 { #category : #operations }
@@ -373,4 +384,13 @@ AKassaModel >> tryTranslate: anObject [
 			sw := g asSwapAmount.
 			^ self priceFor: sw ].
 	^ false.
+]
+
+{ #category : #operations }
+AKassaModel >> updateAccountItems [
+	| sw |
+	super updateAccountItems.
+	sw := self accountEditor makeSwap.
+	sw isEmpty ifTrue: [ ^ self ].
+	
 ]
