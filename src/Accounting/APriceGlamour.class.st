@@ -28,6 +28,34 @@ APriceGlamour >> initialize [
 ]
 
 { #category : #initialization }
+APriceGlamour >> initializeAccItem1 [
+	(browser transmit) to: #accItem1;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:(  'Account' translated, ' 1')
+						text: #accItem1
+						accept: #accItem1:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeAccItem2 [
+	(browser transmit) to: #accItem2;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:(  'Account' translated, ' 2')
+						text: #accItem2
+						accept: #accItem2:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 APriceGlamour >> initializeAdditional [
 	(browser transmit) to: #additional;
 		andShow: [ :composite|
@@ -37,6 +65,34 @@ APriceGlamour >> initializeAdditional [
 						label:(  'Additional' translated)
 						text: #additional
 						accept: #additional:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeAmountItem [
+	(browser transmit) to: #amountItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:(  'Count' translated)
+						text: #amountItem
+						accept: #amountItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+APriceGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  'Barcode' translated)
+						text: #barcode
+						accept: #barcode:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]
@@ -68,8 +124,15 @@ APriceGlamour >> initializeBrowser [
 	browser row: [ :r|
 		r column: #organization.
 		r column: #baseAmount ] size: 43.
-	browser row: #additional size: 43.
-	browser row: #editor size: 25.
+	browser row: [:r|
+		r column: #barcode span: 0.3.
+		r column: #additional span: 0.7 ] size: 43.
+	browser row: [ :r|
+		r column: #amountItem span: 0.1.
+		r column: #accItem1 span: 0.35.
+		r column: #accItem2 span: 0.35.
+		r column: #sumItem span: 0.1.
+		r column: #currencyItem span: 0.1. ] size: 43.
 	browser row: #items.
 	
 ]
@@ -104,6 +167,20 @@ APriceGlamour >> initializeBrowserTitle [
 ]
 
 { #category : #initialization }
+APriceGlamour >> initializeCurrencyItem [
+	(browser transmit) to: #currencyItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:('Currency' translated)
+						text: #currencyItem
+						accept: #currencyItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 APriceGlamour >> initializeDate [
 	(browser transmit) to: #date;
 		andShow: [ :composite|
@@ -113,19 +190,6 @@ APriceGlamour >> initializeDate [
 						label:(  '* ', 'Date' translated)
 						text: #date
 						accept: #date:
-						acceptAction: [ :v| morphPresentation selection: v asString ].
-		] ]
-]
-
-{ #category : #initialization }
-APriceGlamour >> initializeEditor [
-	(browser transmit) to: #editor;
-		andShow: [ :composite|
-			composite morph morph: [ :morphPresentation|
-					ATextField
-						on: model
-						text: #editor
-						accept: #editor:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]
@@ -183,12 +247,31 @@ APriceGlamour >> initializeOrganization [
 ]
 
 { #category : #initialization }
+APriceGlamour >> initializeSumItem [
+	(browser transmit) to: #sumItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:('Sum' translated)
+						text: #sumItem
+						accept: #sumItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 APriceGlamour >> initializeTransmit [
 	self initializeNumber.
 	self initializeOrganization.
 	self initializeDate.
+	self initializeBarcode.
 	self initializeAdditional.
-	self initializeEditor.
+	self initializeAmountItem.
+	self initializeAccItem1.
+	self initializeAccItem2.
+	self initializeSumItem.
+	self initializeCurrencyItem.
 	self initializeItems.
 	self initializeBaseAmount.
 ]

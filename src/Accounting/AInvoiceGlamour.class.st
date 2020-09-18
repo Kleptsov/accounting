@@ -36,6 +36,34 @@ AInvoiceGlamour >> initialize [
 ]
 
 { #category : #initialization }
+AInvoiceGlamour >> initializeAccItem1 [
+	(browser transmit) to: #accItem1;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Account' translated, ' 1'
+						text: #accItem1
+						accept: #accItem1:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AInvoiceGlamour >> initializeAccItem2 [
+	(browser transmit) to: #accItem2;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Account' translated, ' 2'
+						text: #accItem2
+						accept: #accItem2:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AInvoiceGlamour >> initializeAdditional [
 	(browser transmit) to: #additional;
 		andShow: [ :composite|
@@ -45,6 +73,34 @@ AInvoiceGlamour >> initializeAdditional [
 						label: 'Additional' translated
 						text: #additional
 						accept: #additional:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AInvoiceGlamour >> initializeAmountItem [
+	(browser transmit) to: #amountItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Count ' translated
+						text: #amountItem
+						accept: #amountItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+AInvoiceGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label: 'Barcode' translated
+						text: #barcode
+						accept: #barcode:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]
@@ -65,14 +121,26 @@ AInvoiceGlamour >> initializeBrowser [
 		r column: #contractor.
 		r column: #store.
 	] size: 43.
-	browser row: #additional size: 43.
-	browser row: #editor size: 25.
+	browser row: [ :r|
+		r column: #barcode span: 0.3.
+		r column: #additional span: 0.7 ] size: 43.
+	browser row: [ :r|
+		r column: #amountItem span: 0.1.
+		r column: #accItem1 span: 0.35.
+		r column: #accItem2 span: 0.35.
+		r column: #sumItem span: 0.1.
+		r column: #currencyItem span: 0.1 ] size: 43.
 	browser row: #items.
 ]
 
 { #category : #initialization }
 AInvoiceGlamour >> initializeBrowserActions [
 
+	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
 	
 	browser act: [ :p|
 		Clipboard clipboardText: model items printCSV. self inform: 'Copy to Clipboard' translated ]
@@ -137,6 +205,20 @@ AInvoiceGlamour >> initializeContractor [
 ]
 
 { #category : #initialization }
+AInvoiceGlamour >> initializeCurrencyItem [
+	(browser transmit) to: #currencyItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Currency' translated
+						text: #currencyItem
+						accept: #currencyItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AInvoiceGlamour >> initializeDate [
 	(browser transmit) to: #date;
 		andShow: [ :composite|
@@ -171,7 +253,8 @@ AInvoiceGlamour >> initializeItems [
 			table
 				title: '* ', 'Items' translated;
 				
-				onChangeOfPort: #selection act: [ :p| (p pane port: #selection) value ifNotNil: [ :el| model selectionItem: el asString ] ];
+				onChangeOfPort: #selection act: [ :p|
+					(p pane port: #selection) value ifNotNil: [ :v| model updateEditor: v ] ];
 				
 				act: [ :p| self upSelectionFrom: p. p update; updateToolbar ]
 				icon: GLMUIThemeExtraIcons glamorousUp
@@ -181,8 +264,8 @@ AInvoiceGlamour >> initializeItems [
 				icon: GLMUIThemeExtraIcons glamorousDown
 				entitled: 'Down' translated;
 				
-				act: [ :p| (p pane port: #entity) value addItem. "model addItem"
-								p update ]
+				act: [:p| model updateOrAddSwapItem.
+						p update; updateToolbar ]
 				icon: GLMUIThemeExtraIcons glamorousAdd
 				entitled: 'Add' translated;
 				
@@ -248,6 +331,20 @@ AInvoiceGlamour >> initializeStore [
 ]
 
 { #category : #initialization }
+AInvoiceGlamour >> initializeSumItem [
+	(browser transmit) to: #sumItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: 'Sum' translated
+						text: #sumItem
+						accept: #sumItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 AInvoiceGlamour >> initializeTmp [
 ]
 
@@ -259,8 +356,13 @@ AInvoiceGlamour >> initializeTransmit [
 	self initializeDate.
 	self initializeContractNumber.
 	self initializeStore.
+	self initializeBarcode.
 	self initializeAdditional.
-	self initializeEditor.
+	self initializeAmountItem.
+	self initializeAccItem1.
+	self initializeAccItem2.
+	self initializeSumItem.
+	self initializeCurrencyItem.
 	self initializeItems.
 	
 ]

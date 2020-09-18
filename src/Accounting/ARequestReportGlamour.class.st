@@ -17,7 +17,10 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #ARequestReportGlamour,
 	#superclass : #AGlamour,
-	#category : #'Accounting-GUI'
+	#instVars : [
+		'tableReport'
+	],
+	#category : #'Accounting-GUIReport'
 }
 
 { #category : #initialization }
@@ -60,14 +63,6 @@ ARequestReportGlamour >> initializeBrowserActionsAt: aBrowser [
 				p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousInto
 		entitled: 'Add Account' translated.
-		
-	aBrowser
-		act: [ :p|
-				model makeReport.
-				"model report inspect."
-				p update ]
-		icon: GLMUIThemeExtraIcons glamorousGo
-		entitled: 'Make Report' translated.
 		
 	aBrowser
 		act: [ :b|
@@ -174,14 +169,21 @@ ARequestReportGlamour >> initializeReport [
 		andShow: [ :a|
 			a table
 			
+				act: [ :p|
+					model makeReport.
+					tableReport ifNotNil: [ tableReport update ] ]
+				icon: GLMUIThemeExtraIcons glamorousGo
+				entitled: 'Make Report' translated;
+			
 				onChangeOfPort: #selection act: [ :p|
 						(p pane port: #selection) value ifNotNil: [:el|
 								model selectionItem: el asString  ] ];
 				
-				act: [ :p| (p pane port: #entity) value removeItem. "model removeItem"
-							p update; updateToolbar. ]
-					icon: GLMUIThemeExtraIcons glamorousRemove
-					entitled: 'Remove' translated;
+				act: [ :p|
+						(p pane port: #entity) value removeItem. "model removeItem"
+						p update; updateToolbar. ]
+				icon: GLMUIThemeExtraIcons glamorousRemove
+				entitled: 'Remove' translated;
 					
 				display: [ :m| m report amounts ];
 				column: 'Count' translated evaluated: [ :each| each amount ] width: 100;

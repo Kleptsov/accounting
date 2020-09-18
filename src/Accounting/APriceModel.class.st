@@ -19,12 +19,12 @@ Class {
 	#superclass : #AModel,
 	#instVars : [
 		'organization',
-		'editor',
 		'date',
 		'items',
 		'number',
 		'baseAmount',
-		'selection'
+		'selection',
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -42,18 +42,30 @@ APriceModel class >> nextIndex [
 { #category : #actions }
 APriceModel >> accept [
 	| vs result t |
-	t := Time millisecondsToRun: 
-	[self removeAccounts.
-	vs := AVirtualSwapBuilder new.
-	vs right add: (self priceName, self number).
-	vs left add: (self contraPriceName, self number).
-	vs first add: self organization.
-	vs second add: self configClass emptyAccountName.
-	vs firstAmounts: self items amounts.
-	result := vs build.
-	result do: [ :el| self accounts add: el ] ].
-	self log: self number, ' price document is created. Milliseconds to run: ', t asString, String cr.
-	
+	t := Time
+		millisecondsToRun: [ self removeAccounts.
+			vs := AVirtualSwapBuilder new.
+			vs right add: self priceName , self number.
+			vs left add: self contraPriceName , self number.
+			vs first add: self organization.
+			vs second add: self configClass emptyAccountName.
+			vs firstAmounts: self items amounts.
+			result := vs build.
+			result do: [ :el | self accounts add: el ] ].
+	self
+		trace:
+			self number , ' price document is created. Milliseconds to run: '
+				, t asString , String cr
+]
+
+{ #category : #accessing }
+APriceModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ].
+]
+
+{ #category : #accessing }
+APriceModel >> accountEditor: anAccountEditor [
+	accountEditor := anAccountEditor.
 ]
 
 { #category : #actions }
@@ -66,7 +78,7 @@ APriceModel >> addAccount1: anArray [
 { #category : #actions }
 APriceModel >> addItem [
 	| swap baseSwap mul |
-	swap := AAmountSwapBuilder new string: self editor; build.
+	swap := self accountEditor makeSwap.
 	baseSwap := self baseSwap: (swap swapAmount).
 	mul := swap amount / (swap swapAmount amount / baseSwap amount).
 	swap amount: mul.
@@ -117,17 +129,6 @@ APriceModel >> date [
 APriceModel >> date: anObject [
 	date := anObject.
 	self changed: #date
-]
-
-{ #category : #accessing }
-APriceModel >> editor [
-	^ editor ifNil: [ editor := '' ]
-]
-
-{ #category : #accessing }
-APriceModel >> editor: anObject [
-	editor := anObject asString.
-	self changed: #editor
 ]
 
 { #category : #accessing }
@@ -200,7 +201,9 @@ APriceModel >> removeAccounts [
 
 { #category : #actions }
 APriceModel >> removeItem [
-	self items amounts remove: self selection ifAbsent: [ ].
+	self items amounts
+		remove: self accountEditor makeSwap
+		ifAbsent: [ ].
 ]
 
 { #category : #accessing }

@@ -74,7 +74,11 @@ Class {
 		'nextRecordingOfIndex',
 		'writeOffName',
 		'writeOffs',
-		'nextWriteOffIndex'
+		'nextWriteOffIndex',
+		'nomenclatures',
+		'nomenclature',
+		'nextNomenclatureIndex',
+		'barcodes'
 	],
 	#category : #'Accounting-Config'
 }
@@ -117,6 +121,16 @@ AConfig class >> anyOrganizaion [
 { #category : #accessing }
 AConfig class >> anyOrganization [
 	^ anyOrganization ifNil: [ anyOrganization := 'any_organization' ]
+]
+
+{ #category : #accessing }
+AConfig class >> barcodes [
+	^ barcodes ifNil: [ barcodes := AAccounts new ]
+]
+
+{ #category : #accessing }
+AConfig class >> barcodes: anAccount [
+	barcodes := anAccount
 ]
 
 { #category : #accessing }
@@ -272,6 +286,12 @@ AConfig class >> nextKassaCheckIndex: anIndex [
 ]
 
 { #category : #accessing }
+AConfig class >> nextNomenclatureIndex [
+	nextNomenclatureIndex ifNil: [ nextNomenclatureIndex := 0 ].
+	^ nextNomenclatureIndex := nextNomenclatureIndex + 1.
+]
+
+{ #category : #accessing }
 AConfig class >> nextPaymentIndex2 [
 	nextPaymentIndex2 ifNil: [ nextPaymentIndex2 := 0 ].
 	^ nextPaymentIndex2 := nextPaymentIndex2 + 1.
@@ -358,6 +378,21 @@ AConfig class >> nextWriteOffIndex [
 { #category : #accessing }
 AConfig class >> nextWriteOffIndex: anIndex [
 	nextWriteOffIndex := anIndex
+]
+
+{ #category : #accessing }
+AConfig class >> nomenclature [
+	^ 'nomenclature'
+]
+
+{ #category : #accessing }
+AConfig class >> nomenclatures [
+	^ nomenclatures ifNil: [ nomenclatures := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+AConfig class >> nomenclatures: aNomenclatures [
+	nomenclatures := aNomenclatures.
 ]
 
 { #category : #accessing }

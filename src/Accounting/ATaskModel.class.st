@@ -49,21 +49,26 @@ ATaskModel class >> nextIndex [
 { #category : #actions }
 ATaskModel >> accept [
 	| s swap t |
-	t := Time millisecondsToRun: [
-	self removeAccounts.
-	swap := ASwapBuilder new.
-	swap common add: self taskName.
-	swap common add: self numberPrefix, self number.
-	swap first add: self organization.
-	swap first addAll: (ADateTagsBuilder new date: self date) build.
-	self login = '' ifFalse: [ swap first add: self login ].
-	self account = '' ifFalse: [ swap first add: self account ].
-	swap second add: self emptyAccountName.
-	swap firstAmounts add: self firstAmount.
-	s := swap build.
-	self accounts addAll: s].
-	self log: self number asString, ' task is saved. Milliseconds to run: ', t asString, String cr.
-	^ s.
+	t := Time
+		millisecondsToRun: [ self removeAccounts.
+			swap := ASwapBuilder new.
+			swap common add: self taskName.
+			swap common add: self numberPrefix , self number.
+			swap first add: self organization.
+			swap first addAll: (ADateTagsBuilder new date: self date) build.
+			self login = ''
+				ifFalse: [ swap first add: self login ].
+			self account = ''
+				ifFalse: [ swap first add: self account ].
+			swap second add: self emptyAccountName.
+			swap firstAmounts add: self firstAmount.
+			s := swap build.
+			self accounts addAll: s ].
+	self
+		trace:
+			self number asString , ' task is saved. Milliseconds to run: '
+				, t asString , String cr.
+	^ s
 ]
 
 { #category : #accessing }

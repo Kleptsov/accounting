@@ -19,7 +19,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'isSaved',
-		'additional'
+		'additional',
+		'acceptedAccounts',
+		'barcode'
 	],
 	#category : #'Accounting-Model'
 }
@@ -71,9 +73,58 @@ AModel class >> remove: aDocument [
 	self documents remove: aDocument ifAbsent: [  ].
 ]
 
+{ #category : #accessing }
+AModel >> accItem1 [
+	^ self accountEditor accItem1
+]
+
+{ #category : #accessing }
+AModel >> accItem1: anObject [
+	self accountEditor accItem1: anObject
+]
+
+{ #category : #accessing }
+AModel >> accItem2 [
+	^ self accountEditor accItem2.
+]
+
+{ #category : #accessing }
+AModel >> accItem2: anObject [
+	self accountEditor accItem2: anObject
+]
+
+{ #category : #accessing }
+AModel >> acceptedAccounts [
+	^ acceptedAccounts ifNil: [ acceptedAccounts := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+AModel >> acceptedAccounts: someAcceptedAccounts [
+	acceptedAccounts := someAcceptedAccounts
+]
+
+{ #category : #accessing }
+AModel >> accountEditor [
+	^ self
+]
+
 { #category : #configuration }
 AModel >> accounts [
 	^ self configClass accounts
+]
+
+{ #category : #actions }
+AModel >> addBarcode [
+	| acc am accEditor |
+	acc := AAccount new add: self barcode; yourself.
+	AConfig barcodes delete: acc.
+	am := AAmount new.
+	accEditor := self accountEditor.
+	accEditor accItem1 = '' ifFalse: [ am add: accEditor accItem1 ].
+	accEditor accItem2 = '' ifFalse: [ am add: accEditor accItem2 ].
+	am isEmpty ifTrue: [ ^ self ].
+	acc addAmount: am.
+	AConfig barcodes add: acc
 ]
 
 { #category : #accessing }
@@ -84,6 +135,18 @@ AModel >> additional [
 { #category : #accessing }
 AModel >> additional: anObject [
 	additional := anObject
+]
+
+{ #category : #accessing }
+AModel >> barcode [
+	^ barcode ifNil: [ barcode := '' ]
+]
+
+{ #category : #accessing }
+AModel >> barcode: anObject [
+	barcode := anObject.
+	self updateAccountItems.
+	self changed: #barcode.
 ]
 
 { #category : #configuration }
@@ -196,6 +259,22 @@ AModel >> transferName [
 { #category : #configuration }
 AModel >> transfers [
 	^ self configClass transfers
+]
+
+{ #category : #actions }
+AModel >> updateAccountItems [
+	| tags resultAmount |
+	resultAmount := AConfig barcodes
+		select: (AAccount new add: self barcode; yourself) at: 1.
+	tags := resultAmount asOrderedCollection.
+	tags isEmpty ifFalse: [ self accountEditor accItem1: tags first ].
+	tags size > 1 ifTrue: [ self accountEditor accItem2: tags second ].
+		
+]
+
+{ #category : #actions }
+AModel >> updateEditor: anSwap [
+	self accountEditor updateEditor: anSwap.
 ]
 
 { #category : #configuration }
