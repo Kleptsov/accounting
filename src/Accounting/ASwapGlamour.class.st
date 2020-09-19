@@ -309,9 +309,9 @@ ASwapGlamour >> initializeOrganizationAccount2 [
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
 						on: model
-						label:('Contractor Account' translated, ' 2')
-						text: #contractorAccount2
-						accept: #contractorAccount2:
+						label:('Organization Account' translated, ' 2')
+						text: #organizationAccount2
+						accept: #organizationAccount2:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]

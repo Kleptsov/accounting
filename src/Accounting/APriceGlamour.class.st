@@ -160,6 +160,11 @@ APriceGlamour >> initializeBrowserActions [
 		act: [ :p | (p pane port: #entity) value makeKassa open ]
 		icon: GLMUIThemeExtraIcons glamorousBrowse
 		entitled: 'Open Kassa' translated.
+	
+	browser
+		act: [ :p | browser close. (p pane port: #entity) value clone open ]
+		icon: (Smalltalk ui icons iconNamed: #smallCopy)
+		entitled: 'Copy Prices Document' translated.
 
 	browser
 		act: [ :p | 	model accept. p update; updateToolbar ]

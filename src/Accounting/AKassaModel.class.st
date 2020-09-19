@@ -35,7 +35,6 @@ Class {
 		'date',
 		'selection',
 		'items',
-		'editor',
 		'currency',
 		'clientSum',
 		'accountEditor'
@@ -86,10 +85,11 @@ AKassaModel >> addItem [
 	self items addAmount: a.
 ]
 
-{ #category : #actions }
-AKassaModel >> baseRelation [
-	| prices |
-	prices := AConfig accounts select: (AAccount new add: (AConfig priceName))
+{ #category : #operations }
+AKassaModel >> addNewGoodies [
+	| sw |
+	sw := self accountEditor makeSwap.
+	self items addAmount: sw.
 ]
 
 { #category : #operations }
@@ -209,6 +209,16 @@ AKassaModel >> currency: anObject [
 	self changed: #currency
 ]
 
+{ #category : #operations }
+AKassaModel >> currencyRelation [
+	| a p |
+	a := AAccount new add: self currency; yourself.
+	p := self pricesAccount.
+	(p amounts like: a)
+		ifNil: [ ^ 1 ]
+		ifNotNil: [ :acc| ^ acc amount ].
+]
+
 { #category : #accessing }
 AKassaModel >> date [
 	^ date ifNil: [ date := self today ].
@@ -220,16 +230,13 @@ AKassaModel >> date: anObject [
 	self changed: #date
 ]
 
-{ #category : #accessing }
-AKassaModel >> editor [
-	^ editor ifNil: [ editor := '' ]
-]
-
-{ #category : #accessing }
-AKassaModel >> editor: anObject [
-	editor := anObject.
-	(self tryTranslate: anObject) ifTrue: [ editor := '' ].
-	self changed: #editor.
+{ #category : #operations }
+AKassaModel >> goodsRelation: anAccount [
+	| p |
+	p := self pricesAccount.
+	(p amounts like: anAccount)
+		ifNil: [ ^ nil ]
+		ifNotNil: [ :acc| ^ acc amount ].
 ]
 
 { #category : #accessing }
@@ -331,7 +338,7 @@ AKassaModel >> pricesAccount [
 	| pt |
 	pt := AAccount new
 		add: self organization;
-		add: AConfig priceName, self number;
+		add: self priceAccount;
 		yourself.
 	^ AConfig accounts select: pt.
 ]
@@ -383,31 +390,20 @@ AKassaModel >> sum [
 ]
 
 { #category : #operations }
-AKassaModel >> tryTransform: anObject [
-	"требуется вызов исключительной ситуации"
-	| g key|
-	key := AAmount new add: anObject; yourself.
-	g := self configClass dictionary rangeLike: key.
-	key = g ifTrue: [ ^ nil ] ifFalse: [ ^ g ]
-]
-
-{ #category : #operations }
-AKassaModel >> tryTranslate: anObject [
-	"требуется вызов исключительной ситуации"
-	| g sw |
-	g := self tryTransform: anObject.
-	g ifNotNil: [
-			sw := g asSwapAmount.
-			^ self priceFor: sw ].
-	^ false.
-]
-
-{ #category : #operations }
 AKassaModel >> updateAccountItems [
 	| sw |
 	sw := super updateAccountItems.
 	sw isEmpty ifTrue: [ ^ self ].
-	accountEditor amountItem: 1.
-	
-	
+	sw := sw asSwap.
+	(self goodsRelation: sw) ifNil: [ ^ self ]
+		ifNotNil: [ :s| sw amount: s ].
+	sw swapAmount amount: self currencyRelation.
+	sw swapAmount amount: (sw swapAmount amount / sw amount).
+	sw amount: 1.
+	sw swapAmount add: self currency.
+	self items addAmount: sw.
+	self accountEditor updateEditor: sw.
+	self changed: #sum.
+	barcode := ''. self changed: #barcode.
+	^ sw
 ]

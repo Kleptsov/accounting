@@ -91,6 +91,7 @@ ATDictionary >> c [
 'Contracts' -> { 'ru' -> 'Контракты' } asDictionary.
 'Contractor' -> { 'ru' -> 'Контрагент' } asDictionary.
 'Copy to Clipboard' -> { 'ru' -> 'Скопировать в буфер обмена' } asDictionary.
+'Copy Prices Document' -> { 'ru' -> 'Скопировать документ цен' } asDictionary.
 'Count' -> { 'ru' -> 'Кол-во' } asDictionary.
 'Currency' -> { 'ru' -> 'Валюта' } asDictionary.
 'Currency Name' -> { 'ru' -> 'Название валюты'} asDictionary.

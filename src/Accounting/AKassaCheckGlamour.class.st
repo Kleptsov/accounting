@@ -117,7 +117,7 @@ AKassaCheckGlamour >> initializeBrowser [
 	browser row: [ :r|
 		r column: #sum.
 		r column: #clientSum.
-		r column: #change ] size: 68.
+		r column: #change ] size: 46.
 	browser row: #items.
 ]
 
@@ -192,18 +192,7 @@ AKassaCheckGlamour >> initializeCurrencyItem [
 ]
 
 { #category : #initialization }
-AKassaCheckGlamour >> initializeItems [	
-	"browser transmit to: #items; andShow: [ :composite|
-		composite title: 'List' translated.
-		composite morph morph: [ :morphPresentation| 
-			self itemsFor: morphPresentation
-		] ].
-	browser transmit to: #items; from: #morphEditor; andShow: [ :composite|
-		composite title: 'List' translated.
-		composite morph morph: [ :morphPresentation|
-			self itemsFor: morphPresentation
-		] ]."
-	
+AKassaCheckGlamour >> initializeItems [		
 	(browser transmit) to: #items;
 		andShow: [ :a| self glmItemsfor: a].
 		
@@ -268,13 +257,19 @@ AKassaCheckGlamour >> initializeTransmit [
 { #category : #initialization }
 AKassaCheckGlamour >> itemsActionsIn: aPresentation [
 	aPresentation
+		
+		act: [:p| model addNewGoodies.
+				p update; updateToolbar.]
+		icon: (Smalltalk ui icons iconNamed: #smallCopy)
+		entitled: 'Add' translated;	
+	
 		act: [ :p| self selectFromDictionary.
 			p update; updateToolbar. browser update; updateToolbar.]
 		icon: GLMUIThemeExtraIcons glamorousBrowse
 		entitled: 'Browse' translated;
 		
 		act: [:p| model addItem.
-				p update; updateToolbar. browser update; updateToolbar ]
+				p update; updateToolbar.]
 		icon: GLMUIThemeExtraIcons glamorousAdd
 		entitled: 'Add' translated;
 		
@@ -285,7 +280,11 @@ AKassaCheckGlamour >> itemsActionsIn: aPresentation [
 				
 		act: [ :p| model removeItem. p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousRemove
-		entitled: 'Remove' translated.
+		entitled: 'Remove' translated;
+		
+		onChangeOfPort: #selection act: [ :p|
+					(p pane port: #selection) value 
+						ifNotNil: [ :v| model selection: v ] ].
 ]
 
 { #category : #initialization }
