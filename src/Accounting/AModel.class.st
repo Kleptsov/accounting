@@ -263,12 +263,10 @@ AModel >> transfers [
 
 { #category : #actions }
 AModel >> updateAccountItems [
-	| tags resultAmount |
+	| resultAmount |
 	resultAmount := AConfig barcodes
 		select: (AAccount new add: self barcode; yourself) at: 1.
-	tags := resultAmount asOrderedCollection.
-	tags isEmpty ifFalse: [ self accountEditor accItem1: tags first ].
-	tags size > 1 ifTrue: [ self accountEditor accItem2: tags second ].
+	self accountEditor updateEditor: resultAmount.
 	^ resultAmount
 ]
 

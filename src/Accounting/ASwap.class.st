@@ -47,6 +47,17 @@ ASwap >> asAmount [
 	^ inst
 ]
 
+{ #category : #converting }
+ASwap >> asSwap [
+	| sw |
+	sw := self class new.
+	sw amount: self amount.
+	self do: [ :el| sw add: el ].
+	self swapAmount do: [ :el| sw swapAmount add: el ].
+	sw swapAmount amount: self swapAmount amount.
+	^ sw
+]
+
 { #category : #copying }
 ASwap >> clone [
 	| instance |

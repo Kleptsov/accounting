@@ -86,6 +86,12 @@ AKassaModel >> addItem [
 	self items addAmount: a.
 ]
 
+{ #category : #actions }
+AKassaModel >> baseRelation [
+	| prices |
+	prices := AConfig accounts select: (AAccount new add: (AConfig priceName))
+]
+
 { #category : #operations }
 AKassaModel >> change [
 	| s cs |
@@ -320,6 +326,16 @@ AKassaModel >> priceFor: anObject [
 	
 ]
 
+{ #category : #accessing }
+AKassaModel >> pricesAccount [
+	| pt |
+	pt := AAccount new
+		add: self organization;
+		add: AConfig priceName, self number;
+		yourself.
+	^ AConfig accounts select: pt.
+]
+
 { #category : #actions }
 AKassaModel >> removeAccounts [
 	| acc acc2 |
@@ -389,8 +405,9 @@ AKassaModel >> tryTranslate: anObject [
 { #category : #operations }
 AKassaModel >> updateAccountItems [
 	| sw |
-	super updateAccountItems.
-	sw := self accountEditor makeSwap.
+	sw := super updateAccountItems.
 	sw isEmpty ifTrue: [ ^ self ].
+	accountEditor amountItem: 1.
+	
 	
 ]

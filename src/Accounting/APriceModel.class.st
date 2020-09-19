@@ -44,7 +44,6 @@ APriceModel >> accept [
 	| vs result t |
 	t := Time
 		millisecondsToRun: [ self removeAccounts.
-			vs := AVirtualSwapBuilder new.
 			vs right add: self priceName , self number.
 			vs left add: self contraPriceName , self number.
 			vs first add: self organization.
@@ -108,6 +107,16 @@ APriceModel >> baseConvert: anAmount [
 { #category : #accessing }
 APriceModel >> basePrice [
 	^ (self baseConvert: (AAmount new add: baseAmount; amount: 1)) amount
+]
+
+{ #category : #accessing }
+APriceModel >> baseRelation [
+	| r r2 |
+	r := AAmount new add: self baseAmount; yourself.
+	r2 := self items like: r.
+	r2 ifNil: [ r2 := r. 	r2 amount: 1 ]
+		ifNotNil: [ r2 := r2 clone ].
+	^ r2
 ]
 
 { #category : #copying }
@@ -213,9 +222,13 @@ APriceModel >> selection [
 
 { #category : #accessing }
 APriceModel >> selection: anObject [
-	|sel|
+	|sel b |
 	sel := anObject asSwap clone.
-	sel swapAmount.
-	self accountEditor updateEditor: anObject.
+	b := self baseRelation.
+	sel swapAmount amount: (b amount / sel amount).
+	sel amount: 1.
+	sel swapAmount add: self baseAmount.
+	self accountEditor updateEditor: sel.
+	selection := sel.
 	self changed: #selection
 ]
