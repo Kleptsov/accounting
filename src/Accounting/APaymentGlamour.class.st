@@ -48,6 +48,7 @@ APaymentGlamour >> initializeBrowser [
 	browser title: 'Payment' translated.
 	browser transformation: [ :m| self model: m. m ].
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #organization ] size: 43.
 	browser row: [ :r|
 		r column: #contractor ] size: 43.
@@ -202,6 +203,7 @@ APaymentGlamour >> initializeSum [
 
 { #category : #initialization }
 APaymentGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeContractNumber.
 	self initializeDate.

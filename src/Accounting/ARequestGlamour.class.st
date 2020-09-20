@@ -53,6 +53,7 @@ ARequestGlamour >> initializeBrowser [
 	browser title: [:m| m number, ' ', 'Request' translated].
 	browser row: #tmp size: 0.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #organization ] size: 68.
 	browser row: [ :r|
@@ -207,6 +208,7 @@ ARequestGlamour >> initializeTmp [
 
 { #category : #initialization }
 ARequestGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeOrganization.
 	self initializeLogin.

@@ -126,6 +126,7 @@ AContractGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #additionalNumber.
 		r column: #date.
@@ -328,6 +329,7 @@ AContractGlamour >> initializeSumItem [
 
 { #category : #initialization }
 AContractGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeAdditionalNumber.
 	self initializeOrganization.

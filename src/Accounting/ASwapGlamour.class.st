@@ -112,6 +112,7 @@ ASwapGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #date.
 	] size: 43.
@@ -355,6 +356,7 @@ ASwapGlamour >> initializeSumItem [
 
 { #category : #initialization }
 ASwapGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeDate.
 	self initializeOrganization.

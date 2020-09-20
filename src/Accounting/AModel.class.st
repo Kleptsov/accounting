@@ -18,10 +18,9 @@ Class {
 	#name : #AModel,
 	#superclass : #Object,
 	#instVars : [
-		'isSaved',
 		'additional',
-		'acceptedAccounts',
-		'barcode'
+		'barcode',
+		'accepted'
 	],
 	#category : #'Accounting-Model'
 }
@@ -93,14 +92,21 @@ AModel >> accItem2: anObject [
 	self accountEditor accItem2: anObject
 ]
 
-{ #category : #accessing }
-AModel >> acceptedAccounts [
-	^ acceptedAccounts ifNil: [ acceptedAccounts := OrderedCollection new ]
+{ #category : #actions }
+AModel >> accept [
+	self subclassResponsibility.
 ]
 
-{ #category : #accessing }
-AModel >> acceptedAccounts: someAcceptedAccounts [
-	acceptedAccounts := someAcceptedAccounts
+{ #category : #actions }
+AModel >> accepted [
+	^ accepted ifNil: [ accepted = false ].
+]
+
+{ #category : #actions }
+AModel >> accepted: anObject [
+	accepted := anObject.
+	accepted 	ifTrue: [ self accept ] ifFalse: [ self removeAccounts ].
+	self changed: #accepted.
 ]
 
 { #category : #accessing }
@@ -189,16 +195,6 @@ AModel >> invoicePrefix [
 	^ self configClass invoicePrefix.
 ]
 
-{ #category : #accessing }
-AModel >> isSaved [
-	^ isSaved ifNil: [ isSaved := false ]
-]
-
-{ #category : #accessing }
-AModel >> isSaved: aBoolean [
-	isSaved := aBoolean
-]
-
 { #category : #configuration }
 AModel >> monthPrefix [
 	^ self configClass monthPrefix
@@ -229,16 +225,14 @@ AModel >> recordingOfName [
 	^ self configClass recordingOfName
 ]
 
+{ #category : #actions }
+AModel >> removeAccounts [
+	self subclassResponsibility.
+]
+
 { #category : #configuration }
 AModel >> rootSwaps [
 	^ self configClass rootSwaps.
-]
-
-{ #category : #accessing }
-AModel >> stringIsSaved [
-	^ self isSaved
-			ifTrue: [ ^ '' ]
-			ifFalse: [ ^ 'not saved' ]
 ]
 
 { #category : #configuration }

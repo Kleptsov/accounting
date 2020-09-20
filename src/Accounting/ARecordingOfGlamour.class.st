@@ -153,6 +153,7 @@ ARecordingOfGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #date.
 	] size: 43.
@@ -279,6 +280,7 @@ ARecordingOfGlamour >> initializeOrganization [
 
 { #category : #initialization }
 ARecordingOfGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeAccItem1.
 	self initializeNumber.
 	self initializeDate.

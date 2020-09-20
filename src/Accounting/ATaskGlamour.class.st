@@ -62,6 +62,7 @@ ATaskGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #date ] size: 43.
 	browser row: #a1 size: 5.
@@ -163,6 +164,7 @@ ATaskGlamour >> initializeTask [
 
 { #category : #initialization }
 ATaskGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeOrganization.
 	self initializeDate.

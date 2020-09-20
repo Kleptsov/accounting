@@ -118,6 +118,7 @@ APriceGlamour >> initializeBrowser [
 	self initializeBrowserTitle.
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #date.
 	] size: 43.
@@ -273,6 +274,7 @@ APriceGlamour >> initializeSumItem [
 
 { #category : #initialization }
 APriceGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeOrganization.
 	self initializeDate.

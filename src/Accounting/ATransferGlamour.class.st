@@ -111,6 +111,7 @@ ATransferGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #date. ] size: 43.
 	browser row: [ :r1|
@@ -298,6 +299,7 @@ ATransferGlamour >> initializeSumItem [
 
 { #category : #initialization }
 ATransferGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeDate.
 	self initializeOrganization.

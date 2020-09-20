@@ -112,6 +112,7 @@ AInvoiceGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #contractNumber.
 		r column: #date.
@@ -350,6 +351,7 @@ AInvoiceGlamour >> initializeTmp [
 
 { #category : #initialization }
 AInvoiceGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeOrganization.
 	self initializeContractor.

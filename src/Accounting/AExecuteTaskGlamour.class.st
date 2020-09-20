@@ -62,6 +62,7 @@ AExecuteTaskGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #organization ] size: 43.
 	browser row: #a1 size: 5.
@@ -176,6 +177,7 @@ AExecuteTaskGlamour >> initializeTask [
 
 { #category : #initialization }
 AExecuteTaskGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeOrganization.
 	self initializeLogin.

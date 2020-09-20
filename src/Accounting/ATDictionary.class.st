@@ -55,6 +55,7 @@ ATDictionary >> a [
 'Acquirer' -> { 'ru' -> 'Покупатель' } asDictionary.
 'Acquirer Sum' -> { 'ru' -> 'Сумма покупателя' } asDictionary.
 'Acquirer Account' -> { 'ru' -> 'Счет покупателя' } asDictionary.
+'Accepted Document' -> { 'ru' -> 'Документ проведен' } asDictionary.
 'Add' -> { 'ru' -> 'Добавить' } asDictionary.
 'Additional' -> { 'ru' -> 'Дополнительно' } asDictionary.
 'Additional Number' -> { 'ru' -> 'Номер дополнительного соглашения' } asDictionary.

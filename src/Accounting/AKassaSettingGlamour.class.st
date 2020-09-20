@@ -51,6 +51,7 @@ AKassaSettingGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	browser title: [:m| 'Kassa Settings' translated].
 	browser row: [ :r|
+		r column: #accepted.
 		r column: #number.
 		r column: #date ] size: 43.
 	browser row: [ :r|
@@ -182,6 +183,7 @@ AKassaSettingGlamour >> initializeStore [
 
 { #category : #initialization }
 AKassaSettingGlamour >> initializeTransmit [
+	self initializeAccepted.
 	self initializeNumber.
 	self initializeDate.
 	self initializeOrganization.

@@ -53,6 +53,19 @@ AGlamour >> browser: anObject [
 	browser := anObject
 ]
 
+{ #category : #initialization }
+AGlamour >> initializeAccepted [
+	(browser transmit) to: #accepted;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					(CheckboxMorph
+						on: model
+						selected: #accepted
+						changeSelected: #accepted:) label: 'Accepted Document' translated.
+						"acceptAction: [ :v| morphPresentation selection: v asString ]."
+		] ]
+]
+
 { #category : #accessing }
 AGlamour >> model [
 	^ model
