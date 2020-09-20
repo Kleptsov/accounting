@@ -40,7 +40,7 @@ ASwapGlamour >> initializeAccItem1 [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: ('Account' translated, ' 1')
 						text: #accItem1
 						accept: #accItem1:
@@ -54,7 +54,7 @@ ASwapGlamour >> initializeAccItem2 [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: ('Account' translated, ' 2')
 						text: #accItem2
 						accept: #accItem2:
@@ -82,12 +82,27 @@ ASwapGlamour >> initializeAmountItem [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: 'Amount' translated
 						text: #amountItem
 						accept: #amountItem:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 			] ]
+]
+
+{ #category : #initialization }
+ASwapGlamour >> initializeBarcode [
+	(browser transmit) to: #barcode;
+		andShow:
+		[ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:('Barcode' translated)
+						text: #barcode
+						accept: #barcode:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
 ]
 
 { #category : #initialization }
@@ -109,7 +124,9 @@ ASwapGlamour >> initializeBrowser [
 		r column: #contractor.
 		r column: #contractorAccount.
 		r column: #contractorAccount2 ] size: 43.
-	browser row: #additional size: 43.
+	browser row: [:r|
+		r column: #barcode span: 0.3.
+		r column: #additional span: 0.7 ] size: 43.
 	browser row: [ :r| 
 		r column: #amountItem span: 0.1.
 		r column: #accItem1 span: 0.35.
@@ -121,6 +138,12 @@ ASwapGlamour >> initializeBrowser [
 
 { #category : #initialization }
 ASwapGlamour >> initializeBrowserActions [
+
+	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
 	
 	browser act: [ :p|
 		Clipboard clipboardText: model items printCSV. self inform: 'copy to clipboard' ]
@@ -201,7 +224,7 @@ ASwapGlamour >> initializeCurrencyItem [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: 'Currency' translated
 						text: #currencyItem
 						accept: #currencyItem:
@@ -249,7 +272,7 @@ ASwapGlamour >> initializeItems [
 				entitled: 'Remove' translated;
 				
 				onChangeOfPort: #selection act: [ :p|
-					(p pane port: #selection) value ifNotNil: [ :v| model updateEditor: v ] ];
+					(p pane port: #selection) value ifNotNil: [ :v| model accountEditor updateEditor: v ] ];
 
 				display: [ :m| m items sortByPostTime ];
 				
@@ -322,7 +345,7 @@ ASwapGlamour >> initializeSumItem [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: 'Sum' translated
 						text: #sumItem
 						accept: #sumItem:
@@ -340,6 +363,7 @@ ASwapGlamour >> initializeTransmit [
 	self initializeContractor.
 	self initializeContractorAccount.
 	self initializeContractorAccount2.
+	self initializeBarcode.
 	self initializeAdditional.
 	self initializeItems.
 	self initializeAmountItem.

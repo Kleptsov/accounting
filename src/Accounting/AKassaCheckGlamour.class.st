@@ -107,17 +107,17 @@ AKassaCheckGlamour >> initializeBrowser [
 	browser transformation: [ :m| self model: m. m ].
 	self initializeBrowserActions.
 	browser title: [:m| m number, ' ', 'Check' translated].
-	browser row: #barcode size: 46.
+	browser row: #barcode size: 43.
 	browser row: [ :r|
 		r column: #amountItem span: 0.1.
 		r column: #accItem1 span: 0.35.
 		r column: #accItem2 span: 0.35.
 		r column: #sumItem span: 0.1.
-		r column: #currencyItem span: 0.1 ] size: 46.
+		r column: #currencyItem span: 0.1 ] size: 43.
 	browser row: [ :r|
 		r column: #sum.
 		r column: #clientSum.
-		r column: #change ] size: 46.
+		r column: #change ] size: 43.
 	browser row: #items.
 ]
 

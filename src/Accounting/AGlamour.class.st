@@ -25,6 +25,16 @@ Class {
 }
 
 { #category : #'instance creation' }
+AGlamour class >> openModalOn: aModel [
+	| n w |
+	n := self new.
+	n model: aModel.
+	w := n open.
+	w theme runModal: w.
+	^ n.
+]
+
+{ #category : #'instance creation' }
 AGlamour class >> openOn: aModel [
 	| n |
 	n := self new.
@@ -56,4 +66,11 @@ AGlamour >> model: anObject [
 { #category : #opening }
 AGlamour >> open [
 	browser openOn: model
+]
+
+{ #category : #opening }
+AGlamour >> openOnModal [
+	| w |
+	w := browser open.
+	w theme runModal: w.
 ]

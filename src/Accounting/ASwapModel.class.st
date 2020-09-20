@@ -38,13 +38,9 @@ Class {
 		'contractorAccount2',
 		'date',
 		'editor',
-		'amountItem',
-		'accItem1',
-		'accItem2',
-		'sumItem',
-		'currencyItem',
 		'items',
-		'selectionItem'
+		'selectionItem',
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -59,28 +55,6 @@ ASwapModel class >> nextIndex [
 	^ self configClass nextSwapIndex2 asString
 ]
 
-{ #category : #accessing }
-ASwapModel >> accItem1 [
-	^ accItem1 ifNil: [ accItem1 := '' ]
-]
-
-{ #category : #accessing }
-ASwapModel >> accItem1: anObject [
-	accItem1 := anObject.
-	self changed: #accItem1.
-]
-
-{ #category : #accessing }
-ASwapModel >> accItem2 [
-	^ accItem2 ifNil: [ accItem2 := '' ]
-]
-
-{ #category : #accessing }
-ASwapModel >> accItem2: anObject [
-	accItem2 := anObject.
-	self changed: #accItem2
-]
-
 { #category : #actions }
 ASwapModel >> accept [
 	| swaps t |
@@ -93,6 +67,16 @@ ASwapModel >> accept [
 			self number asString , ' invoice is saved. Milliseconds to run: '
 				, t asString , String cr.
 	^ swaps
+]
+
+{ #category : #accessing }
+ASwapModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new].
+]
+
+{ #category : #accessing }
+ASwapModel >> accountEditor: anAccountEditor [
+	accountEditor := anAccountEditor.
 ]
 
 { #category : #actions }
@@ -129,17 +113,6 @@ ASwapModel >> addAccount2: anArray [
 ASwapModel >> addItem [
 	self items updateOrAddAmount: 
 		(AAmountSwapBuilder new string: self editor; build).
-]
-
-{ #category : #accessing }
-ASwapModel >> amountItem [
-	^ amountItem ifNil: [ amountItem := '' ]
-]
-
-{ #category : #accessing }
-ASwapModel >> amountItem: anObject [
-	amountItem := anObject.
-	self changed: #amountItem.
 ]
 
 { #category : #accessing }
@@ -194,17 +167,6 @@ ASwapModel >> createSwaps [
 	w swaps: self items.
 	w common addAll: (ADateTagsBuilder new date: self date; build).
 	^ w build
-]
-
-{ #category : #accessing }
-ASwapModel >> currencyItem [
-	^ currencyItem ifNil: [ currencyItem := '' ]
-]
-
-{ #category : #accessing }
-ASwapModel >> currencyItem: anObject [
-	currencyItem := anObject.
-	self changed: #currencyItem.
 ]
 
 { #category : #accessing }
@@ -317,17 +279,6 @@ ASwapModel >> selectionItem: anObject [
 	self changed: #selectionItem.
 ]
 
-{ #category : #accessing }
-ASwapModel >> sumItem [
-	^ sumItem ifNil: [ sumItem := '' ]
-]
-
-{ #category : #accessing }
-ASwapModel >> sumItem: anObject [
-	sumItem := anObject.
-	self changed: #sumItem.
-]
-
 { #category : #actions }
 ASwapModel >> upItem: aSwap [
 	self items upAmount: aSwap.
@@ -353,17 +304,6 @@ ASwapModel >> updateEditor: anSwap [
 { #category : #actions }
 ASwapModel >> updateOrAddSwapItem [
 	| sw |
-	(self amountItem = '' or:
-		[ self sumItem = '' or:
-			[ self currencyItem = '' ] ])
-				ifTrue: [ Error signal: 'Empty field amount or sum or currency'. ^ self ].
-	(self accItem1 = '' and: [ self accItem2 = '' ] )
-		ifTrue: [ Error signal: 'Empty unit or properties goods' ].
-	sw := ASwap new.
-	sw amount: (self amountItem asNumber).
-	self accItem1 = '' ifFalse: [ sw add: accItem1 asString ].
-	self accItem2 = '' ifFalse: [ sw add: accItem2 asString ].
-	sw swapAmount amount: (self sumItem asNumber);
-			add: self currencyItem.
+	sw := self accountEditor makeSwap.
 	self items updateOrAddAmount: sw.
 ]
