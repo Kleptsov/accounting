@@ -1,46 +1,28 @@
-"
-Модель цен 
-
-Public API and Key Messages
-
-- message one   
-- message two 
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-
-    Implementation Points
-"
 Class {
-	#name : #APriceModel,
+	#name : #APriceSelectorModel,
 	#superclass : #AModel,
 	#instVars : [
 		'organization',
-		'date',
 		'items',
 		'number',
 		'baseAmount',
-		'selection',
-		'accountEditor'
+		'selection'
 	],
 	#category : #'Accounting-Model'
 }
 
 { #category : #adding }
-APriceModel class >> documents [
+APriceSelectorModel class >> documents [
 	^ self configClass prices
 ]
 
 { #category : #adding }
-APriceModel class >> nextIndex [
+APriceSelectorModel class >> nextIndex [
 	^ self configClass nextPriceIndex
 ]
 
 { #category : #actions }
-APriceModel >> accept [
+APriceSelectorModel >> accept [
 	| vs result t |
 	t := Time
 		millisecondsToRun: [ self removeAccounts.
@@ -58,25 +40,15 @@ APriceModel >> accept [
 				, t asString , String cr
 ]
 
-{ #category : #accessing }
-APriceModel >> accountEditor [
-	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ].
-]
-
-{ #category : #accessing }
-APriceModel >> accountEditor: anAccountEditor [
-	accountEditor := anAccountEditor.
-]
-
 { #category : #actions }
-APriceModel >> addAccount1: anArray [
+APriceSelectorModel >> addAccount1: anArray [
 	anArray ifNil: [ ^ self ].
 	anArray size < 1 ifTrue: [ ^ self ].
 	self organization: (anArray at: 1).
 ]
 
 { #category : #actions }
-APriceModel >> addItem [
+APriceSelectorModel >> addItem [
 	| swap baseConvert mul |
 	swap := self accountEditor makeSwap.
 	baseConvert := self baseConvert: (swap swapAmount).
@@ -86,18 +58,18 @@ APriceModel >> addItem [
 ]
 
 { #category : #accessing }
-APriceModel >> baseAmount [
+APriceSelectorModel >> baseAmount [
 	^ baseAmount ifNil: [ '' ]
 ]
 
 { #category : #accessing }
-APriceModel >> baseAmount: anObject [
+APriceSelectorModel >> baseAmount: anObject [
 	baseAmount := anObject.
 	self changed: #baseAmount.
 ]
 
 { #category : #actions }
-APriceModel >> baseConvert: anAmount [
+APriceSelectorModel >> baseConvert: anAmount [
 	| bs |
 	(self items amounts like: anAmount)
 		ifNil: [ bs := AAmount new amount: 1 ]
@@ -106,12 +78,12 @@ APriceModel >> baseConvert: anAmount [
 ]
 
 { #category : #accessing }
-APriceModel >> basePrice [
+APriceSelectorModel >> basePrice [
 	^ (self baseConvert: (AAmount new add: baseAmount; amount: 1)) amount
 ]
 
 { #category : #accessing }
-APriceModel >> baseRelation [
+APriceSelectorModel >> baseRelation [
 	| r r2 |
 	r := AAmount new add: self baseAmount; yourself.
 	r2 := self items like: r.
@@ -121,7 +93,7 @@ APriceModel >> baseRelation [
 ]
 
 { #category : #copying }
-APriceModel >> clone [
+APriceSelectorModel >> clone [
 	| p |
 	p := self class addNew.
 	p organization: self organization.
@@ -131,28 +103,21 @@ APriceModel >> clone [
 ]
 
 { #category : #accessing }
-APriceModel >> date [
-	^ date ifNil: [ date := self today ]
+APriceSelectorModel >> items [
+	| a |
+	a := AAccount new
+		add: self number; add: self organization; yourself.
+	items := AConfig accounts select: a.
+	^ items
 ]
 
 { #category : #accessing }
-APriceModel >> date: anObject [
-	date := anObject.
-	self changed: #date
-]
-
-{ #category : #accessing }
-APriceModel >> items [
-	^ items ifNil: [ items := AAccount new ]
-]
-
-{ #category : #accessing }
-APriceModel >> items: anObject [
+APriceSelectorModel >> items: anObject [
 	items := anObject
 ]
 
 { #category : #actions }
-APriceModel >> makeKassa [
+APriceSelectorModel >> makeKassa [
 	| kassa |
 	kassa := AKassaModel addNew.
 	kassa priceAccount: self configClass priceName , self number.
@@ -163,34 +128,34 @@ APriceModel >> makeKassa [
 ]
 
 { #category : #accessing }
-APriceModel >> number [
+APriceSelectorModel >> number [
 	^ number ifNil: [ number := '' ]
 ]
 
 { #category : #accessing }
-APriceModel >> number: anObject [
+APriceSelectorModel >> number: anObject [
 	number := anObject.
 	self changed: #number
 ]
 
 { #category : #actions }
-APriceModel >> open [
-	^ APriceGlamour openOn: self
+APriceSelectorModel >> open [
+	^ APriceSelectorGlamour openOn: self
 ]
 
 { #category : #accessing }
-APriceModel >> organization [
+APriceSelectorModel >> organization [
 	^ organization ifNil: [ organization := '' ]
 ]
 
 { #category : #accessing }
-APriceModel >> organization: anObject [
+APriceSelectorModel >> organization: anObject [
 	organization := anObject.
 	self changed: #organization
 ]
 
 { #category : #actions }
-APriceModel >> priceFor: anAmount [
+APriceSelectorModel >> priceFor: anAmount [
 	|sw|
 	sw := anAmount asSwap.
 	sw amount: 1.
@@ -201,7 +166,7 @@ APriceModel >> priceFor: anAmount [
 ]
 
 { #category : #actions }
-APriceModel >> removeAccounts [
+APriceSelectorModel >> removeAccounts [
 	| acc acc2 |
 	acc := AAccount new add: (self priceName, self number); yourself.
 	self accounts remove: acc.
@@ -210,26 +175,32 @@ APriceModel >> removeAccounts [
 ]
 
 { #category : #actions }
-APriceModel >> removeItem [
+APriceSelectorModel >> removeItem [
 	self items amounts
 		remove: self accountEditor makeSwap
 		ifAbsent: [ ].
 ]
 
 { #category : #accessing }
-APriceModel >> selection [
+APriceSelectorModel >> selection [
 	^ selection
 ]
 
 { #category : #accessing }
-APriceModel >> selection: anObject [
+APriceSelectorModel >> selection: anObject [
 	|sel b |
 	sel := anObject asSwap clone.
 	b := self baseRelation.
 	sel swapAmount amount: (b amount / sel amount).
 	sel amount: 1.
 	sel swapAmount add: self baseAmount.
-	self accountEditor updateEditor: sel.
+	"self accountEditor updateEditor: sel."
 	selection := sel.
 	self changed: #selection
+]
+
+{ #category : #accessing }
+APriceSelectorModel >> strongSelection: aSelection [
+	self selection: aSelection.
+	self answer: aSelection.
 ]

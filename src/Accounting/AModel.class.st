@@ -20,7 +20,9 @@ Class {
 	#instVars : [
 		'additional',
 		'barcode',
-		'accepted'
+		'accepted',
+		'answer',
+		'process'
 	],
 	#category : #'Accounting-Model'
 }
@@ -143,6 +145,12 @@ AModel >> additional: anObject [
 	additional := anObject
 ]
 
+{ #category : #view }
+AModel >> answer: anAnswer [
+	answer := anAnswer.
+	process ifNotNil: [ process resume ].
+]
+
 { #category : #accessing }
 AModel >> barcode [
 	^ barcode ifNil: [ barcode := '' ]
@@ -203,6 +211,20 @@ AModel >> monthPrefix [
 { #category : #configuration }
 AModel >> numberPrefix [
 	^ self configClass numberPrefix.
+]
+
+{ #category : #view }
+AModel >> open [
+	self subclassResponsibility
+]
+
+{ #category : #view }
+AModel >> openModal [
+	answer := nil.
+	process := Processor activeProcess.
+	[ self open ] fork.
+	process suspend.
+	^ answer.
 ]
 
 { #category : #configuration }

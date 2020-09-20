@@ -37,7 +37,6 @@ Class {
 		'contractorAccount',
 		'contractorAccount2',
 		'date',
-		'editor',
 		'items',
 		'selectionItem',
 		'accountEditor'
@@ -115,6 +114,12 @@ ASwapModel >> addItem [
 		(AAmountSwapBuilder new string: self editor; build).
 ]
 
+{ #category : #actions }
+ASwapModel >> addItemFromPrice [
+	[APriceSelectorModel new openModal
+		ifNotNil: [ :a| self accountEditor updateEditor: a ]] fork
+]
+
 { #category : #accessing }
 ASwapModel >> contractor [
 	^ contractor ifNil: [ contractor := '' ]
@@ -183,16 +188,6 @@ ASwapModel >> date: anObject [
 { #category : #actions }
 ASwapModel >> downItem: aSwap [
 	self items downAmount: aSwap.
-]
-
-{ #category : #accessing }
-ASwapModel >> editor [
-	^ editor ifNil: [ editor := '' ]
-]
-
-{ #category : #accessing }
-ASwapModel >> editor: anObject [
-	editor := anObject
 ]
 
 { #category : #accessing }
@@ -265,7 +260,8 @@ ASwapModel >> removeAccounts [
 
 { #category : #actions }
 ASwapModel >> removeItem [
-	self  items amounts remove: selectionItem ifAbsent: [  ]
+	self  items amounts
+		remove: (self accountEditor makeSwap) ifAbsent: [  ]
 ]
 
 { #category : #accessing }

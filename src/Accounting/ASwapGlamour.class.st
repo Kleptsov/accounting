@@ -272,6 +272,11 @@ ASwapGlamour >> initializeItems [
 				icon: GLMUIThemeExtraIcons glamorousRemove
 				entitled: 'Remove' translated;
 				
+				act: [ :p| (p pane port: #entity) value addItemFromPrice. "model removeItem"
+								p update ]
+				icon: Smalltalk ui icons glamorousSearch
+				entitled: 'Search' translated;
+				
 				onChangeOfPort: #selection act: [ :p|
 					(p pane port: #selection) value ifNotNil: [ :v| model accountEditor updateEditor: v ] ];
 
