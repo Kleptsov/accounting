@@ -65,6 +65,13 @@ ATags >> add: anObject [
 ]
 
 { #category : #adding }
+ATags >> addAll: anCollection [
+	super addAll: anCollection.
+	self updateHash.
+	^ anCollection
+]
+
+{ #category : #adding }
 ATags >> allTags [
 	^ AllVariantsBuilder new
 			sourceColl: self;

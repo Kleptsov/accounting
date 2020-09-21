@@ -18,51 +18,9 @@ ABarcodeSelectorGlamour >> initializeAccItem1 [
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
 						on: model accountEditor
-						label:(  'Account' translated, ' 1')
+						label:(  'Barcode' translated)
 						text: #accItem1
 						accept: #accItem1:
-						acceptAction: [ :v| morphPresentation selection: v asString ].
-		] ]
-]
-
-{ #category : #initialization }
-ABarcodeSelectorGlamour >> initializeAccItem2 [
-	(browser transmit) to: #accItem2;
-		andShow: [ :composite|
-			composite morph morph: [ :morphPresentation|
-					ALabeledText
-						on: model accountEditor
-						label:(  'Account' translated, ' 2')
-						text: #accItem2
-						accept: #accItem2:
-						acceptAction: [ :v| morphPresentation selection: v asString ].
-		] ]
-]
-
-{ #category : #initialization }
-ABarcodeSelectorGlamour >> initializeAccItem3 [
-	(browser transmit) to: #accItem3;
-		andShow: [ :composite|
-			composite morph morph: [ :morphPresentation|
-					ALabeledText
-						on: model accountEditor
-						label:(  'Account' translated, ' 3')
-						text: #accItem3
-						accept: #accItem3:
-						acceptAction: [ :v| morphPresentation selection: v asString ].
-		] ]
-]
-
-{ #category : #initialization }
-ABarcodeSelectorGlamour >> initializeAccItem4 [
-	(browser transmit) to: #accItem4;
-		andShow: [ :composite|
-			composite morph morph: [ :morphPresentation|
-					ALabeledText
-						on: model accountEditor
-						label:(  'Account' translated, ' 3')
-						text: #accItem4
-						accept: #accItem4:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]
@@ -88,10 +46,10 @@ ABarcodeSelectorGlamour >> initializeBrowser [
 	self initializeBrowserTitle.
 	self initializeBrowserActions.
 	browser row: [ :r|
-		r column: #accItem1.
-		r column: #accItem2.
-		r column: #accItem3.
-		r column: #accItem4 ] size: 43.
+		r column: #accItem1 span: 0.25.
+		r column: #currencyItem span: 0.25.
+		r column: #currencyItem2 span: 0.25.
+		r column: #currencyItem3 span: 0.25 ] size: 43.
 	browser row: #items.
 	
 ]
@@ -137,6 +95,48 @@ ABarcodeSelectorGlamour >> initializeBrowserTitle [
 ]
 
 { #category : #initialization }
+ABarcodeSelectorGlamour >> initializeCurrencyItem [
+	(browser transmit) to: #currencyItem;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:(  'Value' translated)
+						text: #currencyItem
+						accept: #currencyItem:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ABarcodeSelectorGlamour >> initializeCurrencyItem2 [
+	(browser transmit) to: #currencyItem2;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:(  'Value' translated, ' 2')
+						text: #currencyItem2
+						accept: #currencyItem2:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
+ABarcodeSelectorGlamour >> initializeCurrencyItem3 [
+	(browser transmit) to: #currencyItem3;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label:(  'Value' translated, ' 3')
+						text: #currencyItem3
+						accept: #currencyItem3:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 ABarcodeSelectorGlamour >> initializeItems [
 	(browser transmit) to: #items;
 		andShow: [ :a|
@@ -150,22 +150,22 @@ ABarcodeSelectorGlamour >> initializeItems [
 				icon: GLMUIThemeExtraIcons glamorousRemove
 				entitled: 'Remove' translated;
 				
-				onChangeOfPort: #selection act: [ :p| (p pane port: #selection) value ifNotNil: [ :el| model selection: el ] ];
+				onChangeOfPort: #selection act: [ :p| (p pane port: #selection) value ifNotNil: [ :el| model accountEditor updateEditor: el ] ];
 				
 				onChangeOfPort: #strongSelection act: [ :p| (p pane port: #selection) value ifNotNil: [ :el| model strongSelection: el. browser close ] ];
 				
-				display: [ :m| m items sortByPostTime ];
+				display: [ :m| m items ];
 				column: 'Barcode' translated evaluated: [:el| el printTags ] width: 250;
-				column: 'Value' translated evaluated: [ :el| el amounts printString ]
+				column: 'Value' translated evaluated: [ :el| el amounts inject: '' into: [ :el1 :el2| el1, el2 printTags, ' ' ] ]
 		]
 ]
 
 { #category : #initialization }
 ABarcodeSelectorGlamour >> initializeTransmit [
 	self initializeAccItem1.
-	self initializeAccItem2.
-	self initializeAccItem3.
-	self initializeAccItem4.
+	self initializeCurrencyItem.
+	self initializeCurrencyItem2.
+	self initializeCurrencyItem3.
 	self initializeItems.
 ]
 

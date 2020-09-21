@@ -113,7 +113,7 @@ AModel >> accepted: anObject [
 
 { #category : #accessing }
 AModel >> accountEditor [
-	^ self
+	^ self subclassResponsibility
 ]
 
 { #category : #configuration }

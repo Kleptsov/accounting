@@ -87,6 +87,17 @@ AAccount >> asAmounts [
 	^ acc
 ]
 
+{ #category : #converting }
+AAccount >> asSwap [
+	| sw am ams |
+	sw := ASwap new.
+	sw addAll: self.
+	ams := (self amounts asOrderedCollection).
+	ams ifNotEmpty: [ am := ams first.
+		sw swapAmount addAll: am ].
+	^ sw.
+]
+
 { #category : #copying }
 AAccount >> clone [
 	| instance |

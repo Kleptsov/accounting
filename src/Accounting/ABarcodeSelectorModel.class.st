@@ -1,3 +1,23 @@
+"
+Просмотр, добавление, удаление и выбор элементов имеющие штрихкод.
+
+Public API and Key Messages
+
+- message one   
+- message two 
+- (for bonus points) how to create instances.
+
+   One simple example is simply gorgeous.
+ 
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	accountEditor:		<Object>
+	items:		<Object>
+
+
+    Implementation Points
+"
 Class {
 	#name : #ABarcodeSelectorModel,
 	#superclass : #AModel,
@@ -18,16 +38,27 @@ ABarcodeSelectorModel class >> nextIndex [
 	^ self configClass nextPriceIndex
 ]
 
+{ #category : #accessing }
+ABarcodeSelectorModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+ABarcodeSelectorModel >> accountEditor: anObject [
+	accountEditor := anObject
+]
+
 { #category : #actions }
 ABarcodeSelectorModel >> addItem [
-	| swap |
-	swap := self accountEditor makeSwap.
-	self items updateOrAddAmount: swap asAmount.
+	| acc |
+	acc := self accountEditor makeSwap asAccount.
+	self items remove: acc ifAbsent: [ ].
+	self items add: acc.
 ]
 
 { #category : #accessing }
 ABarcodeSelectorModel >> items [
-	^ AConfig barcodes
+	^ AConfig barcodes accIndexes.
 ]
 
 { #category : #accessing }
@@ -41,13 +72,15 @@ ABarcodeSelectorModel >> open [
 
 { #category : #actions }
 ABarcodeSelectorModel >> removeItem [
-	self items amounts
-		remove: self accountEditor makeSwap
+	| acc |
+	acc := self accountEditor makeSwap asAccount.
+	self items
+		remove: acc
 		ifAbsent: [ ].
 ]
 
 { #category : #accessing }
 ABarcodeSelectorModel >> strongSelection: aSelection [
-	self selection: aSelection.
+	self accountEditor updateEditor: aSelection.
 	self answer: aSelection.
 ]

@@ -39,6 +39,15 @@ ASwap >> addAmount: anAmount [
 ]
 
 { #category : #converting }
+ASwap >> asAccount [
+	| acc |
+	acc := AAccount new.
+	acc addAll: self.
+	acc addAmount: self swapAmount.
+	^ acc.
+]
+
+{ #category : #converting }
 ASwap >> asAmount [
 	| inst |
 	inst := AAmount new.

@@ -26,3 +26,21 @@ Class {
 	],
 	#category : #'Accounting-Core'
 }
+
+{ #category : #printing }
+ACacheTags >> printTags [
+	| stream |
+	stream := WriteStream on: ''.
+	self printTagsOn: stream.
+	^ stream contents.
+]
+
+{ #category : #printing }
+ACacheTags >> printTagsOn: aStream [
+	| size |
+	size := self size.
+	self do: [ :t|
+		aStream nextPutAll: t asString.
+		size := size - 1.
+		size = 0 ifFalse: [ aStream nextPut: Character space ] ]
+]
