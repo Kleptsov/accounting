@@ -147,13 +147,9 @@ ARecordingOfModel >> addAccount1: anArray [
 
 { #category : #actions }
 ARecordingOfModel >> addItem [
-	| amount |
-	amount := AAmount new.
-	amount amount: (self amountItem asNumber).
-	self accountItem1 = '' ifFalse: [ amount add: accountItem1 asString ].
-	self accountItem2 = '' ifFalse: [ amount add: accountItem2 asString ].
-	self accountItem3 = '' ifFalse: [ amount add: accountItem3 asString ].
-	self items updateOrAddAmount: amount.
+	| sw |
+	sw := self accountEditor makeSwap.
+	self items updateOrAddAmount: sw.
 ]
 
 { #category : #accessing }
@@ -260,7 +256,8 @@ ARecordingOfModel >> removeAccounts [
 
 { #category : #actions }
 ARecordingOfModel >> removeItem [
-	self  items amounts remove: selectionItem ifAbsent: [  ]
+	self items amounts
+		remove: self accountEditor makeSwap ifAbsent: [  ]
 ]
 
 { #category : #accessing }

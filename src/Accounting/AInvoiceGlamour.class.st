@@ -160,21 +160,10 @@ AInvoiceGlamour >> initializeBrowserActions [
 		icon: GLMUIThemeExtraIcons glamorousInto
 		entitled: 'Add Account 2' translated.
 		
-	browser act: [ :p|
-			model removeAccounts.
-			p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousUndo
-		entitled: 'Unwire' translated.
-		
 	browser
 		act: [ :p| model createTransfer open ]
 		icon: (' ', 'Transfer' translated,' ') asMorph imageForm
 		entitled: 'New Transfer' translated.
-		
-	browser
-		act: [ :p| "(p pane port: #entity) value accept "model accept ]
-		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'Accept' translated.
 ]
 
 { #category : #initialization }

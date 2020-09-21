@@ -78,15 +78,6 @@ APaymentGlamour >> initializeBrowserActions [
 						p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousInto
 		entitled: 'Add Account 2' translated.
-		
-	browser act: [ :p|
-			model removeAccounts.
-			p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousUndo
-		entitled: 'Unwire' translated.
-		
-	browser
-		addAction: (AAction accept: [ model accept]).
 ]
 
 { #category : #initialization }

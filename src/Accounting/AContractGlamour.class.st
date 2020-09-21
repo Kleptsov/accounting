@@ -176,29 +176,10 @@ AContractGlamour >> initializeBrowserActions [
 		icon: GLMUIThemeExtraIcons glamorousInto
 		entitled: 'Add Account 2' translated.
 		
-	browser act: [ :p|
-			model removeAccounts.
-			p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousUndo
-		entitled: 'Unwire' translated.
-		
-	browser
-		act: [ :p| model createInvoice open ]
-		icon: GLMUIThemeExtraIcons glamorousBrowse
-		entitled: 'New Invoice' translated.
-		
 	browser
 		act: [ :p| model createPayment open ]
 		icon: GLMUIThemeExtraIcons glamorousBrowse
 		entitled: 'New Payment' translated.
-		
-	browser
-		act: [ :p| (p pane port: #entity) value accept.
-								self initializeBrowserTitle.
-								browser update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'Accept' translated.
-	
 ]
 
 { #category : #initialization }

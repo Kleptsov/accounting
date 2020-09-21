@@ -66,8 +66,7 @@ AAmount >> asSwap [
 	| sw |
 	sw := ASwap new.
 	sw amount: self amount.
-	self do: [ :el|
-		sw add: el ].
+	sw addAll: self.
 	^ sw
 ]
 

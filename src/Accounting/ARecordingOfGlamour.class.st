@@ -124,7 +124,7 @@ ARecordingOfGlamour >> initializeAmountItem [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: 'Amount' translated
 						text: #amountItem
 						accept: #amountItem:
@@ -193,18 +193,6 @@ ARecordingOfGlamour >> initializeBrowserActions [
 						p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousInto
 		entitled: 'Add Account 1' translated.
-		
-	browser act: [ :p|
-			model removeAccounts.
-			p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousUndo
-		entitled: 'Unwire' translated.
-		
-	browser act: [ :p|
-		model accept.
-		p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'Accept' translated
 ]
 
 { #category : #initialization }
@@ -247,7 +235,7 @@ ARecordingOfGlamour >> initializeItems [
 				entitled: 'Remove' translated;
 				
 				onChangeOfPort: #selection act: [ :p|
-					((p pane port: #selection) value) ifNotNil: [ :m| model selectionItem: m ] ];
+					((p pane port: #selection) value) ifNotNil: [ :m| model accountEditor updateEditor: m ] ];
 
 				display: [ :m| m items sortByPostTime ];
 				

@@ -174,6 +174,7 @@ AAccountEditor >> sumItem: anObject [
 AAccountEditor >> updateEditor: anSwap [
 	| coll sw |
 	anSwap ifNil: [ ^ self ].
+	self clean.
 	sw := anSwap asSwap.
 	self amountItem: sw amount.
 	self sumItem: sw swapAmount amount.

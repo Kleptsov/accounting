@@ -78,10 +78,6 @@ AExecuteTaskGlamour >> initializeBrowser [
 
 { #category : #initialization }
 AExecuteTaskGlamour >> initializeBrowserActions [
-	browser act: [ :p| model removeAccounts. p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousUndo
-		entitled: 'Unwire' translated.
-		
 	browser act: [ :p| self model accept ]
 		icon: GLMUIThemeExtraIcons glamorousAccept
 		entitled: 'Accept'.
