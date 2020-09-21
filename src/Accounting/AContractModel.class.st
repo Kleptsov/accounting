@@ -32,13 +32,9 @@ Class {
 		'contractor',
 		'date',
 		'editor',
-		'amountItem',
-		'accItem1',
-		'accItem2',
-		'sumItem',
-		'currencyItem',
 		'items',
-		'strongSelection'
+		'strongSelection',
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -51,28 +47,6 @@ AContractModel class >> documents [
 { #category : #adding }
 AContractModel class >> nextIndex [
 	^ self configClass nextContractIndex2 asString
-]
-
-{ #category : #accessing }
-AContractModel >> accItem1 [
-	^ accItem1 ifNil: [ accItem1 := '' ]
-]
-
-{ #category : #accessing }
-AContractModel >> accItem1: anObject [
-	accItem1 := anObject.
-	self changed: #accItem1.
-]
-
-{ #category : #accessing }
-AContractModel >> accItem2 [
-	^ accItem2 ifNil: [ accItem2 := '' ]
-]
-
-{ #category : #accessing }
-AContractModel >> accItem2: anObject [
-	accItem2 := anObject.
-	self changed: #accItem2.
 ]
 
 { #category : #actions }
@@ -88,6 +62,16 @@ AContractModel >> accept [
 				, ' contract is saved. Milliseconds to run: ' , t asString
 				, String cr.
 	^ accs
+]
+
+{ #category : #accessing }
+AContractModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+AContractModel >> accountEditor: anAccountEditor [
+	accountEditor := anAccountEditor
 ]
 
 { #category : #actions }
@@ -118,17 +102,6 @@ AContractModel >> additionalNumber: anObject [
 { #category : #accessing }
 AContractModel >> additionalNumberPrefix [
 	^ AConfig additionalNumberPrefix.
-]
-
-{ #category : #accessing }
-AContractModel >> amountItem [
-	^ amountItem ifNil: [ amountItem := '' ]
-]
-
-{ #category : #accessing }
-AContractModel >> amountItem: anObject [
-	amountItem := anObject.
-	self changed: #amountItem.
 ]
 
 { #category : #actions }
@@ -231,17 +204,6 @@ AContractModel >> createSeconds [
 ]
 
 { #category : #accessing }
-AContractModel >> currencyItem [
-	^ currencyItem ifNil: [ currencyItem := '' ]
-]
-
-{ #category : #accessing }
-AContractModel >> currencyItem: anObject [
-	currencyItem := anObject.
-	self changed: #currencyItem.
-]
-
-{ #category : #accessing }
 AContractModel >> date [
 	^ date ifNil: [ date := self today ]
 ]
@@ -275,11 +237,6 @@ AContractModel >> items [
 { #category : #accessing }
 AContractModel >> items: someItems [
 	items := someItems.
-]
-
-{ #category : #'as yet unclassified' }
-AContractModel >> nomenclatureName [
-	^ AConfig nomenclature
 ]
 
 { #category : #accessing }
@@ -337,17 +294,6 @@ AContractModel >> strongSelection: anObject [
 	self changed: #strongSelection
 ]
 
-{ #category : #accessing }
-AContractModel >> sumItem [
-	^ sumItem ifNil: [ sumItem := '' ]
-]
-
-{ #category : #accessing }
-AContractModel >> sumItem: anObject [
-	sumItem := anObject.
-	self changed: #sumItem.
-]
-
 { #category : #actions }
 AContractModel >> swapItems: anSwapAmount [
 	strongSelection ifNil: [ strongSelection := anSwapAmount. ^ self ].
@@ -379,17 +325,7 @@ AContractModel >> updateEditor: anSwap [
 { #category : #actions }
 AContractModel >> updateOrAddSwapItem [
 	| sw |
-	(self amountItem = '' or:
-		[ self sumItem = '' or:
-			[ self currencyItem = '' ] ])
-				ifTrue: [ Error signal: 'Empty field amount or sum or currency'. ^ self ].
-	(self accItem1 = '' and: [ self accItem2 = '' ] )
-		ifTrue: [ Error signal: 'Empty unit or properties goods' ].
-	sw := ASwap new.
-	sw amount: (self amountItem asNumber).
-	self accItem1 = '' ifFalse: [ sw add: accItem1 asString ].
-	self accItem2 = '' ifFalse: [ sw add: accItem2 asString ].
-	sw swapAmount amount: (self sumItem asNumber);
-			add: self currencyItem.
+	sw := self accountEditor makeSwap.
+	sw ifNil: [ ^ self ].
 	self items updateOrAddAmount: sw.
 ]

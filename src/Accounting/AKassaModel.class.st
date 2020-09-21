@@ -77,12 +77,12 @@ AKassaModel >> accountEditor: anAccountEditor [
 { #category : #operations }
 AKassaModel >> addItem [
 	| a div |
-	self selection ifNil: [ ^ self ].
-	a := self selection clone.
+	a := self accountEditor makeSwap.
 	div := a amount.
 	a amount: 1.
 	a swapAmount amount: (a swapAmount amount / div) asFloat.
 	self items addAmount: a.
+	self changeResult.
 ]
 
 { #category : #operations }
@@ -90,6 +90,7 @@ AKassaModel >> addNewGoodies [
 	| sw |
 	sw := self accountEditor makeSwap.
 	self items addAmount: sw.
+	self changed: #sum
 ]
 
 { #category : #operations }
@@ -106,6 +107,13 @@ AKassaModel >> change [
 { #category : #operations }
 AKassaModel >> change: anObject [
 
+]
+
+{ #category : #operations }
+AKassaModel >> changeResult [
+	self changed: #sum;
+		changed: #clientSum;
+		changed: #change.
 ]
 
 { #category : #accessing }
@@ -271,12 +279,12 @@ AKassaModel >> makePrices [
 { #category : #operations }
 AKassaModel >> minusItem [
 	| a div |
-	self selection ifNil: [ ^ self ].
-	a := self selection clone.
+	a := self accountEditor makeSwap.
 	div := a amount.
 	a amount: 1.
 	a swapAmount amount: (a swapAmount amount / div) asFloat.
 	self items difAmount: a.
+	self changeResult.
 ]
 
 { #category : #accessing }
@@ -358,7 +366,8 @@ AKassaModel >> removeAccounts [
 
 { #category : #operations }
 AKassaModel >> removeItem [
-	self items amounts remove: self selection ifAbsent: [  ]
+	self items amounts remove: (self accountEditor makeSwap) ifAbsent: [  ].
+	self changeResult.
 ]
 
 { #category : #accessing }
@@ -369,7 +378,8 @@ AKassaModel >> selection [
 { #category : #accessing }
 AKassaModel >> selection: anObject [
 	selection := anObject.
-	self changed: #selection
+	self changed: #selection.
+	self accountEditor updateEditor: anObject.
 ]
 
 { #category : #accessing }
@@ -387,6 +397,11 @@ AKassaModel >> store: anObject [
 AKassaModel >> sum [
 	^ (self items amounts
 		inject: 0 into: [ :sum :el| sum + el swapAmount amount ]) asString
+]
+
+{ #category : #accessing }
+AKassaModel >> sum: aSum [
+	self changed: #sum
 ]
 
 { #category : #operations }

@@ -40,10 +40,10 @@ ARecordingOfGlamour >> initializeAccItem1 [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: ('Account' translated, ' 1')
-						text: #accountItem1
-						accept: #accountItem1:
+						text: #accItem1
+						accept: #accItem1:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ]
 ]
@@ -54,10 +54,10 @@ ARecordingOfGlamour >> initializeAccItem2 [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: ('Account' translated, ' 2')
-						text: #accountItem2
-						accept: #accountItem2:
+						text: #accItem2
+						accept: #accItem2:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ].
 ]
@@ -68,10 +68,10 @@ ARecordingOfGlamour >> initializeAccItem3 [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: ('Account' translated, ' 3')
-						text: #accountItem3
-						accept: #accountItem3:
+						text: #accItem3
+						accept: #accItem3:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
 		] ].
 ]
@@ -178,6 +178,12 @@ ARecordingOfGlamour >> initializeBrowser [
 ARecordingOfGlamour >> initializeBrowserActions [
 	
 	browser act: [ :p|
+		model addBarcode.
+		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
+		icon: GLMUIThemeExtraIcons glamorousAdd
+		entitled: 'Add Barcode' translated.
+	
+	browser act: [ :p|
 		Clipboard clipboardText: model items printCSV. self inform: 'copy to clipboard' ]
 		icon: GLMUIThemeExtraIcons glamorousSave
 		entitled: 'Copy to Clipboard' translated.
@@ -281,7 +287,6 @@ ARecordingOfGlamour >> initializeOrganization [
 { #category : #initialization }
 ARecordingOfGlamour >> initializeTransmit [
 	self initializeAccepted.
-	self initializeAccItem1.
 	self initializeNumber.
 	self initializeDate.
 	self initializeOrganization.
@@ -290,6 +295,7 @@ ARecordingOfGlamour >> initializeTransmit [
 	self initializeBarcode.
 	self initializeAdditional.
 	self initializeAmountItem.
+	self initializeAccItem1.
 	self initializeAccItem2.
 	self initializeAccItem3.
 	self initializeItems.

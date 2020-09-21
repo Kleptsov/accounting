@@ -39,7 +39,8 @@ Class {
 		'amountItem',
 		'accountItem1',
 		'accountItem2',
-		'accountItem3'
+		'accountItem3',
+		'accountEditor'
 	],
 	#category : #'Accounting-Model'
 }
@@ -88,6 +89,16 @@ ARecordingOfModel >> account3 [
 ARecordingOfModel >> account3: anObject [
 	account3 := anObject.
 	self changed: #account3.
+]
+
+{ #category : #accessing }
+ARecordingOfModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+ARecordingOfModel >> accountEditor: anObject [
+	accountEditor := anObject
 ]
 
 { #category : #accessing }
@@ -165,7 +176,7 @@ ARecordingOfModel >> convertDate [
 ARecordingOfModel >> createAmounts [
 	| sacc |
 	sacc := AAccount new.
-	sacc addAll: {self recordingOfName. (self numberPrefix, self number)}.
+	sacc add: self recordingOfName; add: self numberPrefix, self number.
 	sacc add: self organization.
 	(self account2 = '') ifFalse: [ sacc add: self account2 ].
 	(self account3 = '') ifFalse: [ sacc add: self account3 ].
@@ -259,16 +270,8 @@ ARecordingOfModel >> selectionItem [
 
 { #category : #accessing }
 ARecordingOfModel >> selectionItem: anObject [
-	| coll |
 	selectionItem := anObject.
-	self amountItem: anObject amount asString.
-	coll := anObject asOrderedCollection.
-	coll isEmpty
-		ifFalse: [ self accountItem1: coll first ]
-		ifTrue: [ self accountItem1: ''; accItem2: ''. ^ self ].
-	coll size > 1
-		ifTrue: [ self accountItem2: coll second ]
-		ifFalse: [ self accountItem2: '' ].
+	self accountEditor updateEditor: anObject. 
 ]
 
 { #category : #actions }

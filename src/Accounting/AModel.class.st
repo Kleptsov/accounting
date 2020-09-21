@@ -130,6 +130,7 @@ AModel >> addBarcode [
 	accEditor := self accountEditor.
 	accEditor accItem1 = '' ifFalse: [ am add: accEditor accItem1 ].
 	accEditor accItem2 = '' ifFalse: [ am add: accEditor accItem2 ].
+	accEditor accItem3 = '' ifFalse: [ am add: accEditor accItem3 ].
 	am isEmpty ifTrue: [ ^ self ].
 	acc addAmount: am.
 	AConfig barcodes add: acc

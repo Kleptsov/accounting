@@ -40,7 +40,7 @@ AContractGlamour >> initializeAccItem1 [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: ('Account' translated, ' 1')
 						text: #accItem1
 						accept: #accItem1:
@@ -54,7 +54,7 @@ AContractGlamour >> initializeAccItem2 [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: ('Account' translated, ' 2')
 						text: #accItem2
 						accept: #accItem2:
@@ -97,7 +97,7 @@ AContractGlamour >> initializeAmountItem [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: 'Count' translated
 						text: #amountItem
 						accept: #amountItem:
@@ -226,7 +226,7 @@ AContractGlamour >> initializeCurrencyItem [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: 'Currency' translated
 						text: #currencyItem
 						accept: #currencyItem:
@@ -319,7 +319,7 @@ AContractGlamour >> initializeSumItem [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label: 'Sum' translated
 						text: #sumItem
 						accept: #sumItem:

@@ -5,6 +5,7 @@ Class {
 		'amountItem',
 		'accItem1',
 		'accItem2',
+		'accItem3',
 		'sumItem',
 		'currencyItem',
 		'currentSwap'
@@ -35,6 +36,17 @@ AAccountEditor >> accItem2: anObject [
 ]
 
 { #category : #accessing }
+AAccountEditor >> accItem3 [
+	^ accItem3 ifNil: [ accItem3 := '' ]
+]
+
+{ #category : #accessing }
+AAccountEditor >> accItem3: anObject [
+	accItem3 := anObject.
+	self changed: #accItem3.
+]
+
+{ #category : #accessing }
 AAccountEditor >> amountItem [
 	^ amountItem ifNil: [ amountItem := '' ]
 ]
@@ -50,6 +62,7 @@ AAccountEditor >> clean [
 	self amountItem: ''.
 	self accItem1: ''.
 	self accItem2: ''.
+	self accItem3: ''.
 	self sumItem: ''.
 	self currencyItem: ''.
 	currentSwap := nil.
@@ -83,6 +96,7 @@ AAccountEditor >> makeSwap [
 	[ sw amount: (self amountItem asNumber) ] on: Error do: [ :ex| ].
 	self accItem1 = '' ifFalse: [ sw add: accItem1 asString ].
 	self accItem2 = '' ifFalse: [ sw add: accItem2 asString ].
+	self accItem3 = '' ifFalse: [ sw add: accItem3 asString ].
 	[ sw swapAmount amount: (self sumItem asNumber);
 			add: self currencyItem ] on: Error do: [ :ex| ].
 	^ sw

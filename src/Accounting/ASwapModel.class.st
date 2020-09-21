@@ -281,23 +281,6 @@ ASwapModel >> upItem: aSwap [
 ]
 
 { #category : #actions }
-ASwapModel >> updateEditor: anSwap [
-	| coll |
-	anSwap ifNil: [ ^ self ].
-	self selectionItem: anSwap.
-	self amountItem: anSwap amount asString.
-	coll := anSwap asOrderedCollection.
-	coll isEmpty
-		ifFalse: [ self accItem1: coll first asString ]
-		ifTrue: [self accItem1: ''; accItem2: '' ].
-	coll size > 1
-		ifTrue: [ self accItem2: coll second asString ]
-		ifFalse: [self accItem2: ''].
-	self sumItem: anSwap swapAmount amount asString.
-	self currencyItem: anSwap swapAmount asOrderedCollection first asString.
-]
-
-{ #category : #actions }
 ASwapModel >> updateOrAddSwapItem [
 	| sw |
 	sw := self accountEditor makeSwap.

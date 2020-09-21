@@ -204,18 +204,6 @@ AKassaCheckGlamour >> initializeItems [
 
 { #category : #initialization }
 AKassaCheckGlamour >> initializeSum [
-	"display first"
-	"(browser transmit) to: #sum;
-		andShow: [ :a|
-			a title: 'Sum' translated.
-			a text 
-				display: [ :m| m sum ]
-		].	
-	(browser transmit) to: #sum; from: #morphEditor;
-		andShow: [ :a|
-			a title: 'Sum' translated.
-			a text
-				display: [ :m| model sum ] ]."
 	(browser transmit) to: #sum;
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
@@ -277,7 +265,7 @@ AKassaCheckGlamour >> itemsActionsIn: aPresentation [
 		entitled: 'Add' translated;
 		
 		act: [:p| model minusItem.
-				p update; updateToolbar. browser update; updateToolbar ]
+				p update; updateToolbar. p update; updateToolbar ]
 		icon: (Smalltalk ui iconNamed: #partialCheckedBox)
 		entitled: 'Difference' translated;
 				
