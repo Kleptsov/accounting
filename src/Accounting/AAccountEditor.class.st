@@ -6,6 +6,7 @@ Class {
 		'accItem1',
 		'accItem2',
 		'accItem3',
+		'accItem4',
 		'sumItem',
 		'currencyItem',
 		'currentSwap'
@@ -47,6 +48,17 @@ AAccountEditor >> accItem3: anObject [
 ]
 
 { #category : #accessing }
+AAccountEditor >> accItem4 [
+	^ accItem4 ifNil: [ accItem4 := '' ]
+]
+
+{ #category : #accessing }
+AAccountEditor >> accItem4: anObject [
+	accItem4 := anObject.
+	self changed: accItem4.
+]
+
+{ #category : #accessing }
 AAccountEditor >> amountItem [
 	^ amountItem ifNil: [ amountItem := '' ]
 ]
@@ -63,6 +75,7 @@ AAccountEditor >> clean [
 	self accItem1: ''.
 	self accItem2: ''.
 	self accItem3: ''.
+	self accItem4: ''.
 	self sumItem: ''.
 	self currencyItem: ''.
 	currentSwap := nil.
@@ -93,12 +106,13 @@ AAccountEditor >> currentSwap: aCurrentSwap [
 AAccountEditor >> makeSwap [
 	| sw |
 	sw := ASwap new.
-	[ sw amount: (self amountItem asNumber) ] on: Error do: [ :ex| ].
+	[ sw amount: (self amountItem asNumber) ] on: Error do: [ :ex| ex proceed].
 	self accItem1 = '' ifFalse: [ sw add: accItem1 asString ].
 	self accItem2 = '' ifFalse: [ sw add: accItem2 asString ].
 	self accItem3 = '' ifFalse: [ sw add: accItem3 asString ].
+	self accItem4 = '' ifFalse: [ sw add: accItem4 asString ].
 	[ sw swapAmount amount: (self sumItem asNumber);
-			add: self currencyItem ] on: Error do: [ :ex| ].
+			add: self currencyItem ] on: Error do: [ :ex| ex proceed ].
 	^ sw
 ]
 
@@ -123,6 +137,8 @@ AAccountEditor >> updateEditor: anSwap [
 	coll := sw asOrderedCollection.
 	coll isEmpty ifFalse: [ self accItem1: coll first ].
 	coll size > 1 ifTrue: [ self accItem2: coll second ].
+	coll size > 2 ifTrue: [ self accItem3: (coll at: 3) ].
+	coll size > 3 ifTrue: [ self accItem4: (coll at: 4) ].
 	coll := sw swapAmount asOrderedCollection.
 	coll isEmpty ifFalse: [ self currencyItem: coll first ] 
 ]

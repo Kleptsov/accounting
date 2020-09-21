@@ -136,7 +136,7 @@ AContractModel >> contractor: anObject [
 	self changed: #contractor
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 AContractModel >> convertDate [
 	^ (DateParser readingFrom: (ReadStream on: self date) pattern: 'd.mm.yyyy') parse
 ]
@@ -154,6 +154,15 @@ AContractModel >> createAccounts [
 		builder common addAll: { self additionalNumberPrefix, self additionalNumber } ].
 	builder swaps: self items.
 	^ builder build.
+]
+
+{ #category : #actions }
+AContractModel >> createDatesFor: aAccount [
+	| d |
+	d := self convertDate.
+	d add: (self yearPrefix, d year asString).
+	d add: (self monthPrefix, d monthIndex asString).
+	d add: (self dayPrefix, d dayOfMonth asString).
 ]
 
 { #category : #actions }
@@ -177,6 +186,18 @@ AContractModel >> createInvoice [
 	inv contractNumber: self number.
 	inv items addAccount: self items.
 	^ inv
+]
+
+{ #category : #actions }
+AContractModel >> createOrganizationAccount [
+	| a d |
+	a := AAccount new.
+	a add: self organization.
+	self additionalNumber = '' ifTrue: [ '0' ] ifFalse: [ self additionalNumber ].
+	d := self convertDate.
+	a add: (self yearPrefix, d year asString).
+	a add: (self monthPrefix, d monthIndex asString).
+	a add: (self dayPrefix, d dayOfMonth asString).
 ]
 
 { #category : #actions }

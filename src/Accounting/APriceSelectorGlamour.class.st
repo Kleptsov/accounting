@@ -152,7 +152,7 @@ APriceSelectorGlamour >> initializeBrowserActions [
 
 { #category : #initialization }
 APriceSelectorGlamour >> initializeBrowserTitle [
-	browser title: [:m| m number, ' ', 'Price Document Viewer' translated].
+	browser title: [:m| 'Barcode Selector' translated].
 ]
 
 { #category : #initialization }
