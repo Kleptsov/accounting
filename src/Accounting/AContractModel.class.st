@@ -143,7 +143,11 @@ AContractModel >> convertDate [
 
 { #category : #actions }
 AContractModel >> createAccounts [
-	| builder |
+	| org contr |
+	org := self createOrganizationAccount.
+	contr := self createContractorAccount.
+	^ { org. contr }.
+"	| builder |
 	builder := AVirtualSwapBuilder new.
 	builder first addAll: self createFirsts.
 	builder second addAll: self createSeconds.
@@ -153,7 +157,23 @@ AContractModel >> createAccounts [
 	(self additionalNumber = '') ifFalse: [ 
 		builder common addAll: { self additionalNumberPrefix, self additionalNumber } ].
 	builder swaps: self items.
-	^ builder build.
+	^ builder build."
+]
+
+{ #category : #actions }
+AContractModel >> createContractorAccount [
+	| a d addNumber |
+	a := AAccount new.
+	a add: self numberPrefix, self number.
+	a add: self contractor.
+	addNumber := self additionalNumber = '' ifTrue: [ '0' ] ifFalse: [ self additionalNumber ].
+	a add: AConfig additionalNumberPrefix, addNumber.
+	d := self convertDate.
+	a add: (self yearPrefix, d year asString).
+	a add: (self monthPrefix, d monthIndex asString).
+	a add: (self dayPrefix, d dayOfMonth asString).
+	self items amounts do: [ :el| a addAmount: (el swapAmount clone invert) ].
+	^ a.
 ]
 
 { #category : #actions }
@@ -190,14 +210,17 @@ AContractModel >> createInvoice [
 
 { #category : #actions }
 AContractModel >> createOrganizationAccount [
-	| a d |
+	| a d addNumber |
 	a := AAccount new.
 	a add: self organization.
-	self additionalNumber = '' ifTrue: [ '0' ] ifFalse: [ self additionalNumber ].
+	addNumber := self additionalNumber = '' ifTrue: [ '0' ] ifFalse: [ self additionalNumber ].
+	a add: AConfig additionalNumberPrefix, addNumber.
 	d := self convertDate.
 	a add: (self yearPrefix, d year asString).
 	a add: (self monthPrefix, d monthIndex asString).
 	a add: (self dayPrefix, d dayOfMonth asString).
+	self items amounts do: [ :el| a addAmount: el asAmount clone invert ].
+	^ a.
 ]
 
 { #category : #actions }
@@ -329,18 +352,8 @@ AContractModel >> upItem: aSwap [
 
 { #category : #actions }
 AContractModel >> updateEditor: anSwap [
-	| coll |
 	anSwap ifNil: [ ^ self ].
-	self amountItem: anSwap amount asString.
-	coll := anSwap asOrderedCollection.
-	coll isEmpty
-		ifFalse: [ self accItem1: coll first asString ]
-		ifTrue: [self accItem1: ''; accItem2: '' ].
-	coll size > 1
-		ifTrue: [ self accItem2: coll second asString ]
-		ifFalse: [self accItem2: ''].
-	self sumItem: anSwap swapAmount amount asString.
-	self currencyItem: anSwap swapAmount asOrderedCollection first asString.
+	self accountEditor updateEditor: anSwap
 ]
 
 { #category : #actions }
