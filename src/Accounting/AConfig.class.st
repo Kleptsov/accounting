@@ -85,7 +85,7 @@ Class {
 
 { #category : #accessing }
 AConfig class >> accounts [
-	^ accounts ifNil: [ accounts := AAccounts new ]
+	^ accounts ifNil: [ accounts := AAccountsStore new ]
 ]
 
 { #category : #accessing }
@@ -125,7 +125,7 @@ AConfig class >> anyOrganization [
 
 { #category : #accessing }
 AConfig class >> barcodes [
-	^ barcodes ifNil: [ barcodes := AAccounts new ]
+	^ barcodes ifNil: [ barcodes := AAccountsStore new ]
 ]
 
 { #category : #accessing }

@@ -101,11 +101,6 @@ ALauncherSpec >> subContractMenu [
 
 { #category : #initialization }
 ALauncherSpec >> subOrganizerMenu [
-	^ MenuModel new
-		addGroup: [ :group|
-			group addItem: [ :item|
-				item name: 'Accounts List' translated; action: [ AAccountsModel new open] ].
-		]
 ]
 
 { #category : #initialization }

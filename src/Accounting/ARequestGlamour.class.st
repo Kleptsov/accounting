@@ -90,11 +90,6 @@ ARequestGlamour >> initializeBrowserActions [
 		act: [ :p| model createContract open ]
 		icon: GLMUIThemeExtraIcons glamorousBrowse
 		entitled: 'New Contract' translated.
-		
-	browser
-		act: [ :p| (p pane port: #entity) value accept]
-		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'Accept' translated.
 ]
 
 { #category : #initialization }

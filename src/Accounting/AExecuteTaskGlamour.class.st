@@ -78,9 +78,6 @@ AExecuteTaskGlamour >> initializeBrowser [
 
 { #category : #initialization }
 AExecuteTaskGlamour >> initializeBrowserActions [
-	browser act: [ :p| self model accept ]
-		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'Accept'.
 ]
 
 { #category : #initialization }

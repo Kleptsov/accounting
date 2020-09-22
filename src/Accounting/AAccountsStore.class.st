@@ -15,55 +15,32 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #AAccounts,
+	#name : #AAccountsStore,
 	#superclass : #Object,
 	#instVars : [
-		'accIndexes',
-		'actIndexes'
+		'accIndexes'
 	],
 	#category : #'Accounting-Core'
 }
 
 { #category : #accessing }
-AAccounts >> accIndexes [
+AAccountsStore >> accIndexes [
 	^ accIndexes
 ]
 
 { #category : #accessing }
-AAccounts >> accIndexes: anObject [
+AAccountsStore >> accIndexes: anObject [
 	accIndexes := anObject
 ]
 
-{ #category : #accessing }
-AAccounts >> actIndexes [
-	^ actIndexes
-]
-
-{ #category : #accessing }
-AAccounts >> actIndexes: anObject [
-	actIndexes := anObject
-]
-
 { #category : #'adding/removing' }
-AAccounts >> add: anAccount [
+AAccountsStore >> add: anAccount [
 	"добавить счет вместе со значением"
 	self addAccIndexes: anAccount.
-	self addActIndexes: anAccount.
 ]
 
 { #category : #'adding/removing' }
-AAccounts >> add: anAccount keyAccount: anKeyAccount [
-	"добавить счет вместе со значением"
-	
-	self addAccIndexes: anAccount.
-	(actIndexes like: anKeyAccount)
-			ifNil: [ actIndexes
-							add: (anKeyAccount clone add: (anAccount clone); 	yourself) ]
-			ifNotNil: [ :acc| acc amounts add: anAccount clone ]
-]
-
-{ #category : #'adding/removing' }
-AAccounts >> addAccIndexes: anAccount [
+AAccountsStore >> addAccIndexes: anAccount [
 	| accounts |
 	accounts := anAccount indexes.
 	accounts do: [ :a|
@@ -74,32 +51,18 @@ AAccounts >> addAccIndexes: anAccount [
 ]
 
 { #category : #'adding/removing' }
-AAccounts >> addActIndexes: anAccount [
-	| accounts acc|
-	accounts := anAccount allAccounts.
-	accounts do: [ :a|
-		(actIndexes like: a)
-			ifNil: [ 	acc := a. actIndexes add: acc. ]
-			ifNotNil: [ :account| acc := account ].
-		acc amounts add: anAccount.	
-	]
-]
-
-{ #category : #'adding/removing' }
-AAccounts >> addAll: anAccounts [
+AAccountsStore >> addAll: anAccounts [
 	"добавить счет вместе со значением"
-	"TimeProfiler onBlock:["
-	anAccounts do: [ :acc| self add: acc ]."]"
+	anAccounts do: [ :acc| self add: acc ].
 ]
 
 { #category : #'adding/removing' }
-AAccounts >> delete: anAccount [
-	self actIndexes remove: anAccount ifAbsent: [ nil ].
+AAccountsStore >> delete: anAccount [
 	^ self accIndexes remove: anAccount ifAbsent: [ nil ].
 ]
 
 { #category : #'adding/removing' }
-AAccounts >> difAccIndexes: anAccount [
+AAccountsStore >> difAccIndexes: anAccount [
 	| accounts |
 	accounts := anAccount indexes.
 	accounts do: [ :a|
@@ -109,24 +72,32 @@ AAccounts >> difAccIndexes: anAccount [
 	]
 ]
 
+{ #category : #'adding/removing' }
+AAccountsStore >> diffAll: anAccounts [
+	"добавить счет вместе со значением"
+	^ anAccounts collect: [ :acc| self difference: acc ].
+]
+
+{ #category : #'adding/removing' }
+AAccountsStore >> difference: anAccount [
+	| account accounts |
+	account := (self select: anAccount) clone invert.
+	accounts := account indexes.
+	accounts do: [ :a|
+		(accIndexes like: a)
+			ifNil: [ accIndexes add: a clone ]
+			ifNotNil: [ :acc| acc addAccount: a  ]	].
+	^ account
+]
+
 { #category : #initialization }
-AAccounts >> initialize [
+AAccountsStore >> initialize [
 	super initialize.
 	accIndexes := Set new.
-	actIndexes := Set new.
 ]
 
 { #category : #'adding/removing' }
-AAccounts >> remove: anAccount [
-	(actIndexes like: anAccount) ifNotNil: [ :acc| 
-		acc amounts do: [ :account|
-			self difAccIndexes: account ].
-		actIndexes remove: acc.
-	]
-]
-
-{ #category : #'adding/removing' }
-AAccounts >> removeEmptyAmounts [
+AAccountsStore >> removeEmptyAmounts [
 	| rem |
 	accIndexes do: [ :acc|
 		rem := acc amounts select: [ :am| am amount = 0 or: [ am amount < 0.00001 and: [ am amount > -0.00001 ] ] ].
@@ -134,7 +105,7 @@ AAccounts >> removeEmptyAmounts [
 ]
 
 { #category : #enumerating }
-AAccounts >> select: aTags [
+AAccountsStore >> select: aTags [
 	| acc |
 	acc := AAccount new addAll: aTags; yourself.
 	^ (accIndexes like: acc)
@@ -143,7 +114,7 @@ AAccounts >> select: aTags [
 ]
 
 { #category : #enumerating }
-AAccounts >> select: anAccount at: anIndex [
+AAccountsStore >> select: anAccount at: anIndex [
 	| account amounts|
 	account := self select: anAccount.
 	amounts := account amounts asOrderedCollection.

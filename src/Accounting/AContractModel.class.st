@@ -53,9 +53,10 @@ AContractModel class >> nextIndex [
 AContractModel >> accept [
 	| accs t |
 	t := Time
-		millisecondsToRun: [ self removeAccounts.
+		millisecondsToRun: [ self cancelAccepted.
 			accs := self createAccounts.
-			self accounts addAll: accs ].
+			self accounts addAll: accs.
+			self savedAccounts: accs ].
 	self
 		trace:
 			self number asString , '-' , self additionalNumber
@@ -172,7 +173,7 @@ AContractModel >> createContractorAccount [
 	a add: (self yearPrefix, d year asString).
 	a add: (self monthPrefix, d monthIndex asString).
 	a add: (self dayPrefix, d dayOfMonth asString).
-	self items amounts do: [ :el| a addAmount: (el swapAmount clone invert) ].
+	self items amounts do: [ :el| a addAmount: (el swapAmount clone) ].
 	^ a.
 ]
 
@@ -219,7 +220,7 @@ AContractModel >> createOrganizationAccount [
 	a add: (self yearPrefix, d year asString).
 	a add: (self monthPrefix, d monthIndex asString).
 	a add: (self dayPrefix, d dayOfMonth asString).
-	self items amounts do: [ :el| a addAmount: el asAmount clone invert ].
+	self items amounts do: [ :el| a addAmount: el asAmount clone].
 	^ a.
 ]
 
@@ -312,19 +313,25 @@ AContractModel >> organization: anObject [
 
 { #category : #actions }
 AContractModel >> removeAccounts [
-	| acc acc2 |
-	acc := AAccount new.
+	| "acc" "acc2" |
+	
+	AConfig accounts diffAll: self savedAccounts.
+	self savedAccounts removeAll.
+	
+	"acc := AAccount new.
 	acc add: self numberPrefix, self number.
 	acc add: self contractName.
-	(self additionalNumber = '')
-		ifFalse: [ acc add: self additionalNumberPrefix, self additionalNumber ].
-	self accounts remove: acc.
-	acc2 := AAccount new.
+	(self additionalNumber = '') ifTrue: [ self additionalNumber: '0' ].
+	acc add: self additionalNumberPrefix, self additionalNumber.
+	self accounts remove: acc."
+	
+	
+	"acc2 := AAccount new.
 	acc2 add: self numberPrefix, self number.
 	acc2 add: self contractObligationName.
 	(self additionalNumber = '')
 		ifFalse: [ acc2 add: self additionalNumberPrefix, self additionalNumber ].
-	self accounts remove: acc2.
+	self accounts remove: acc2."
 ]
 
 { #category : #accessing }

@@ -166,11 +166,11 @@ APriceGlamour >> initializeBrowserActions [
 		act: [ :p | browser close. (p pane port: #entity) value clone open ]
 		icon: (Smalltalk ui icons iconNamed: #smallCopy)
 		entitled: 'Copy Prices Document' translated.
-
+		
 	browser
-		act: [ :p | 	model accept. p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'Accept' translated.
+		act: [ :p | (p pane port: #entity) value searchItem ]
+		icon: (Smalltalk ui icons iconNamed: #glamorousSearch)
+		entitled: 'Search' translated.
 ]
 
 { #category : #initialization }

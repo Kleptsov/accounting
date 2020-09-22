@@ -42,12 +42,16 @@ ARequestModel class >> nextIndex [
 { #category : #actions }
 ARequestModel >> accept [
 	| swaps t |
-	t := Time millisecondsToRun: 
-	[self removeAccounts.
-	swaps := self createSwaps.
-	self accounts addAll: swaps].
-	self log: self number asString, ' request is saved. Milliseconds to run: ', t asString, String cr.
-	^ swaps.
+	t := Time
+		millisecondsToRun: [ self cancelAccepted.
+			swaps := self createSwaps.
+			self accounts addAll: swaps.
+			self savedAccounts: swaps ].
+	self
+		trace:
+			self number asString , ' request is saved. Milliseconds to run: '
+				, t asString , String cr.
+	^ swaps
 ]
 
 { #category : #actions }

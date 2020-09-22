@@ -23,21 +23,7 @@ APriceSelectorModel class >> nextIndex [
 
 { #category : #actions }
 APriceSelectorModel >> accept [
-	| vs result t |
-	t := Time
-		millisecondsToRun: [ self removeAccounts.
-			vs := AVirtualSwapBuilder new.
-			vs right add: self priceName , self number.
-			vs left add: self contraPriceName , self number.
-			vs first add: self organization.
-			vs second add: self configClass emptyAccountName.
-			vs firstAmounts: self items amounts.
-			result := vs build.
-			result do: [ :el | self accounts add: el ] ].
-	self
-		trace:
-			self number , ' price document is created. Milliseconds to run: '
-				, t asString , String cr
+	^ {  }
 ]
 
 { #category : #actions }

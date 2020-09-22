@@ -61,6 +61,9 @@ AKassaModel >> accept [
 	sw firstAmounts add: (AAmount new amount: self sum asNumber; add: self currency; yourself).
 	sw secondAmounts: self items amounts.
 	res := sw build.
+	self cancelAccepted.
+	self accounts addAll: res.
+	self savedAccounts: res.
 	^ res.
 ]
 
@@ -368,6 +371,14 @@ AKassaModel >> removeAccounts [
 AKassaModel >> removeItem [
 	self items amounts remove: (self accountEditor makeSwap) ifAbsent: [  ].
 	self changeResult.
+]
+
+{ #category : #actions }
+AKassaModel >> searchItem [
+	| p |
+	[p := APriceSelectorModel new openModal.
+	p ifNil: [ ^ self ].
+	self accountEditor updateEditor: p] fork
 ]
 
 { #category : #accessing }

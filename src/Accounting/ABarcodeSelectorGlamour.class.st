@@ -57,12 +57,6 @@ ABarcodeSelectorGlamour >> initializeBrowser [
 { #category : #initialization }
 ABarcodeSelectorGlamour >> initializeBrowserActions [
 
-	"browser act: [ :p|
-		model addBarcode.
-		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
-		icon: GLMUIThemeExtraIcons glamorousAdd
-		entitled: 'Add Barcode' translated."
-
 	browser act: [ :p| p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousRefresh
 		entitled: 'Update' translated.
@@ -72,19 +66,9 @@ ABarcodeSelectorGlamour >> initializeBrowserActions [
 						p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousInto
 		entitled: 'Add Account 1' translated.
-	
-"	browser
-		act: [ :p | (p pane port: #entity) value makeKassa open ]
-		icon: GLMUIThemeExtraIcons glamorousBrowse
-		entitled: 'Open Kassa' translated."
-	
-"	browser
-		act: [ :p | browser close. (p pane port: #entity) value clone open ]
-		icon: (Smalltalk ui icons iconNamed: #smallCopy)
-		entitled: 'Copy Prices Document' translated."
 
 	browser
-		act: [ :p | 	model answer: model selection. browser close ]
+		act: [ :p | 	model return. browser close ]
 		icon: Smalltalk ui icons glamorousUp
 		entitled: 'Return' translated.
 ]

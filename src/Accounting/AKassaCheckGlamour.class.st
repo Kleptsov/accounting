@@ -148,7 +148,12 @@ AKassaCheckGlamour >> initializeBrowserActions [
 				browser close.
 				m open]
 		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'accept'
+		entitled: 'accept'.
+		
+	browser
+		act: [ :p| model searchItem ]
+		icon: GLMUIThemeExtraIcons glamorousSearch
+		entitled: 'search'
 ]
 
 { #category : #initialization }

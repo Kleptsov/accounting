@@ -156,12 +156,6 @@ ATransferGlamour >> initializeBrowserActions [
 			p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousUndo
 		entitled: 'Unwire' translated.
-		
-	browser act: [ :p|
-		model accept.
-		p update; updateToolbar ]
-		icon: GLMUIThemeExtraIcons glamorousAccept
-		entitled: 'Accept' translated
 ]
 
 { #category : #initialization }

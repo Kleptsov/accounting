@@ -57,12 +57,13 @@ ATransferModel class >> nextIndex [
 ATransferModel >> accept [
 	| sourceAmounts destAmounts accs t |
 	t := Time
-		millisecondsToRun: [ self removeAccounts.
+		millisecondsToRun: [ self cancelAccepted.
 			sourceAmounts := self createSourceAmounts.
 			destAmounts := self createDestAmounts.
 			accs := {sourceAmounts.
 			destAmounts}.
-			self accounts addAll: accs ].
+			self accounts addAll: accs.
+			self savedAccounts: accs ].
 	self
 		trace:
 			self number asString , ' transfer saved. Milliseconds to run: '

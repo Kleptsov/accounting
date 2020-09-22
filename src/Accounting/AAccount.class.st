@@ -168,6 +168,12 @@ AAccount >> initialize: n [
 	self initialize.
 ]
 
+{ #category : #operations }
+AAccount >> invert [
+	self amounts do: [ :el|
+		el invert ]
+]
+
 { #category : #copying }
 AAccount >> invertAmounts [
 	^ amounts collect: [ :a| a clone invert ]

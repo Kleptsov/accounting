@@ -54,9 +54,10 @@ APaymentModel class >> nextIndex [
 APaymentModel >> accept [
 	| s t |
 	t := Time millisecondsToRun: 
-	[self removeAccounts.
+	[self cancelAccepted.
 	s := self buildSwap.
-	self accounts addAll: s].
+	self accounts addAll: s.
+	self savedAccounts: s].
 	self log: self number asString, ' payment is saved. Milliseconds to run: ', t asString, String cr.
 	^ s.
 ]

@@ -34,9 +34,10 @@ AWriteOffModel class >> nextIndex [
 AWriteOffModel >> accept [
 	| amounts t |
 	t := Time
-		millisecondsToRun: [ self removeAccounts.
+		millisecondsToRun: [ self cancelAccepted.
 			amounts := self createAmounts.
-			self accounts add: amounts ].
+			self accounts add: amounts.
+			self savedAccounts: { amounts } ].
 	self
 		trace:
 			self number asString , ' write-off saved. Milliseconds to run: '

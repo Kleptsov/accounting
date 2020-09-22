@@ -50,7 +50,7 @@ ATaskModel class >> nextIndex [
 ATaskModel >> accept [
 	| s swap t |
 	t := Time
-		millisecondsToRun: [ self removeAccounts.
+		millisecondsToRun: [ self cancelAccepted.
 			swap := ASwapBuilder new.
 			swap common add: self taskName.
 			swap common add: self numberPrefix , self number.
@@ -63,7 +63,8 @@ ATaskModel >> accept [
 			swap second add: self emptyAccountName.
 			swap firstAmounts add: self firstAmount.
 			s := swap build.
-			self accounts addAll: s ].
+			self accounts addAll: s.
+			self savedAccounts: s ].
 	self
 		trace:
 			self number asString , ' task is saved. Milliseconds to run: '

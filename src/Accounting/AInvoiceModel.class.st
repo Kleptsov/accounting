@@ -57,9 +57,10 @@ AInvoiceModel class >> nextIndex [
 AInvoiceModel >> accept [
 	| swaps t |
 	t := Time millisecondsToRun:
-	[self removeAccounts.
+	[self cancelAccepted.
 	swaps := self buildSwaps.
-	self accounts addAll: swaps].
+	self accounts addAll: swaps.
+	self savedAccounts: swaps].
 	self log: self number asString, ' invoice is saved. Milliseconds to run: ', t asString, String cr.
 	^ swaps.
 ]

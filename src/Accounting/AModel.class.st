@@ -22,7 +22,8 @@ Class {
 		'barcode',
 		'accepted',
 		'answer',
-		'process'
+		'process',
+		'savedAccounts'
 	],
 	#category : #'Accounting-Model'
 }
@@ -107,7 +108,7 @@ AModel >> accepted [
 { #category : #actions }
 AModel >> accepted: anObject [
 	accepted := anObject.
-	accepted 	ifTrue: [ self accept ] ifFalse: [ self removeAccounts ].
+	accepted 	ifTrue: [ self accept ] ifFalse: [ self cancelAccepted ].
 	self changed: #accepted.
 ]
 
@@ -162,6 +163,14 @@ AModel >> barcode: anObject [
 	barcode := anObject.
 	self updateAccountItems.
 	self changed: #barcode.
+]
+
+{ #category : #actions }
+AModel >> cancelAccepted [
+	| res |
+	res := AConfig accounts diffAll: self savedAccounts.
+	self savedAccounts: {} asOrderedCollection.
+	^ res.
 ]
 
 { #category : #configuration }
@@ -256,6 +265,16 @@ AModel >> removeAccounts [
 { #category : #configuration }
 AModel >> rootSwaps [
 	^ self configClass rootSwaps.
+]
+
+{ #category : #accessing }
+AModel >> savedAccounts [
+	^ savedAccounts ifNil: [ savedAccounts := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+AModel >> savedAccounts: aSavedAccounts [
+	savedAccounts := aSavedAccounts
 ]
 
 { #category : #configuration }

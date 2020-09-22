@@ -43,7 +43,7 @@ APriceModel class >> nextIndex [
 APriceModel >> accept [
 	| vs result t |
 	t := Time
-		millisecondsToRun: [ self removeAccounts.
+		millisecondsToRun: [ self cancelAccepted.
 			vs := AVirtualSwapBuilder new.
 			vs right add: self priceName , self number.
 			vs left add: self contraPriceName , self number.
@@ -51,6 +51,8 @@ APriceModel >> accept [
 			vs second add: self configClass emptyAccountName.
 			vs firstAmounts: self items amounts.
 			result := vs build.
+			self accounts addAll: result.
+			self savedAccounts: result.
 			result do: [ :el | self accounts add: el ] ].
 	self
 		trace:
@@ -214,6 +216,13 @@ APriceModel >> removeItem [
 	self items amounts
 		remove: self accountEditor makeSwap
 		ifAbsent: [ ].
+]
+
+{ #category : #actions }
+APriceModel >> searchItem [
+	| el |
+	[el := ABarcodeSelectorModel new openModal.
+	el ifNotNil: [ self updateEditor: el ]] fork.
 ]
 
 { #category : #accessing }

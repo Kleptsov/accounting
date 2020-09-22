@@ -90,8 +90,7 @@ ATaskGlamour >> initializeBrowserActions [
 			p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousUndo
 		entitled: 'Unwire' translated.
-				
-	browser addAction: (AAction accept: [ model accept]).
+
 	browser addAction: (AAction newExecuteTask: [ model createExecuteTask open ] ).
 ]
 

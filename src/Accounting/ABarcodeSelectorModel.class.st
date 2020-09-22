@@ -80,7 +80,12 @@ ABarcodeSelectorModel >> removeItem [
 ]
 
 { #category : #accessing }
+ABarcodeSelectorModel >> return [
+	^ self answer: self accountEditor makeSwap swapAmount
+]
+
+{ #category : #accessing }
 ABarcodeSelectorModel >> strongSelection: aSelection [
 	self accountEditor updateEditor: aSelection.
-	self answer: aSelection.
+	^ self return
 ]

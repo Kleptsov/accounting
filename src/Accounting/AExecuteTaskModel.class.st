@@ -51,7 +51,8 @@ AExecuteTaskModel class >> nextIndex [
 AExecuteTaskModel >> accept [
 	| s swap t |
 	t := Time
-		millisecondsToRun: [ self removeAccounts.
+		millisecondsToRun: [
+			self cancelAccepted.
 			swap := ASwapBuilder new.
 			swap common add: self executeTaskName.
 			swap common add: self numberPrefix , self number.
@@ -64,7 +65,8 @@ AExecuteTaskModel >> accept [
 			swap second add: self emptyAccountName.
 			swap firstAmounts add: self firstAmount.
 			s := swap build.
-			self accounts addAll: s ].
+			self accounts addAll: s.
+			self savedAccounts: s ].
 	self
 		trace:
 			self number asString , ' execute task is saved. Milliseconds to run: '
@@ -171,15 +173,6 @@ AExecuteTaskModel >> percent [
 AExecuteTaskModel >> percent: anObject [
 	percent := anObject.
 	self changed: #percent.
-]
-
-{ #category : #actions }
-AExecuteTaskModel >> removeAccounts [
-	| rAccount |
-	rAccount := AAccount new
-		addAll: { self numberPrefix, self number asString. self executeTaskName };
-		yourself.
-	self accounts remove: rAccount
 ]
 
 { #category : #accessing }

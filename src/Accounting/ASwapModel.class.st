@@ -58,9 +58,10 @@ ASwapModel class >> nextIndex [
 ASwapModel >> accept [
 	| swaps t |
 	t := Time
-		millisecondsToRun: [ self removeAccounts.
+		millisecondsToRun: [ self cancelAccepted.
 			swaps := self createSwaps.
-			self accounts addAll: swaps ].
+			self accounts addAll: swaps.
+			self savedAccounts: swaps ].
 	self
 		trace:
 			self number asString , ' invoice is saved. Milliseconds to run: '
