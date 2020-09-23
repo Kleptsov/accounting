@@ -97,7 +97,7 @@ ATransferModel >> addAccount2: anArray [
 { #category : #actions }
 ATransferModel >> addItem [
 	self items updateOrAddAmount: 
-		(AAmountBuilder new string: self editor; build).
+		self accountEditor makeSwap.
 ]
 
 { #category : #accessing }

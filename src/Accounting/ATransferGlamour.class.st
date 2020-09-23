@@ -63,6 +63,20 @@ ATransferGlamour >> initializeAccItem2 [
 ]
 
 { #category : #initialization }
+ATransferGlamour >> initializeAccItem3 [
+	(browser transmit) to: #accItem3;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model accountEditor
+						label: ('Account' translated, ' 3')
+						text: #accItem3
+						accept: #accItem3:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 ATransferGlamour >> initializeAdditional [			
 	(browser transmit) to: #additional;
 		andShow: [ :composite|
@@ -92,7 +106,7 @@ ATransferGlamour >> initializeAmountItem [
 
 { #category : #initialization }
 ATransferGlamour >> initializeBarcode [
-	(browser transmit) to: #barcode2;
+	(browser transmit) to: #barcode;
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
@@ -120,14 +134,13 @@ ATransferGlamour >> initializeBrowser [
 		r1 column: #destAccount.
 	] size: 43.
 	browser row: [:r2|
-		r2 column: #barcode2 span: 0.3.
+		r2 column: #barcode span: 0.3.
 		r2 column: #additional span: 0.7. ] size: 43.
 	browser row: [:r3|
 		r3 column: #amountItem span: 0.1.
-		r3 column: #accItem1 span: 0.35.
-		r3 column: #accItem2 span: 0.35.
-		r3 column: #sumItem span: 0.1.
-		r3 column: #currencyItem span: 0.1 ] size: 43.
+		r3 column: #accItem1 span: 0.3.
+		r3 column: #accItem2 span: 0.3.
+		r3 column: #accItem3 span: 0.3. ] size: 43.
 	browser row: #items.
 ]
 
@@ -135,7 +148,7 @@ ATransferGlamour >> initializeBrowser [
 ATransferGlamour >> initializeBrowserActions [
 
 	browser act: [ :p|
-		model addBarcode.
+		model accountEditor addBarcode.
 		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
 		icon: GLMUIThemeExtraIcons glamorousAdd
 		entitled: 'Add Barcode' translated.
@@ -156,20 +169,6 @@ ATransferGlamour >> initializeBrowserActions [
 			p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousUndo
 		entitled: 'Unwire' translated.
-]
-
-{ #category : #initialization }
-ATransferGlamour >> initializeCurrencyItem [
-	(browser transmit) to: #currencyItem;
-		andShow: [ :composite|
-			composite morph morph: [ :morphPresentation|
-					ALabeledText
-						on: model accountEditor
-						label: 'Currency' translated
-						text: #currencyItem
-						accept: #currencyItem:
-						acceptAction: [ :v| morphPresentation selection: v asString ].
-		] ]
 ]
 
 { #category : #initialization }
@@ -215,7 +214,7 @@ ATransferGlamour >> initializeItems [
 				icon: GLMUIThemeExtraIcons glamorousDown
 				entitled: 'Down' translated;
 				
-				act: [:p| model updateOrAddSwapItem.
+				act: [:p| model addItem.
 						p update; updateToolbar ]
 				icon: GLMUIThemeExtraIcons glamorousAdd
 				entitled: 'Add' translated;
@@ -278,20 +277,6 @@ ATransferGlamour >> initializeSourceAccount [
 ]
 
 { #category : #initialization }
-ATransferGlamour >> initializeSumItem [
-	(browser transmit) to: #sumItem;
-		andShow: [ :composite|
-			composite morph morph: [ :morphPresentation|
-					ALabeledText
-						on: model accountEditor
-						label: 'Sum' translated
-						text: #sumItem
-						accept: #sumItem:
-						acceptAction: [ :v| morphPresentation selection: v asString ].
-		] ]
-]
-
-{ #category : #initialization }
 ATransferGlamour >> initializeTransmit [
 	self initializeAccepted.
 	self initializeNumber.
@@ -304,8 +289,7 @@ ATransferGlamour >> initializeTransmit [
 	self initializeAmountItem.
 	self initializeAccItem1.
 	self initializeAccItem2.
-	self initializeSumItem.
-	self initializeCurrencyItem.
+	self initializeAccItem3.
 	self initializeItems.
 	
 ]

@@ -41,19 +41,13 @@ APriceModel class >> nextIndex [
 
 { #category : #actions }
 APriceModel >> accept [
-	| vs result t |
+	| t a a2 |
 	t := Time
 		millisecondsToRun: [ self cancelAccepted.
-			vs := AVirtualSwapBuilder new.
-			vs right add: self priceName , self number.
-			vs left add: self contraPriceName , self number.
-			vs first add: self organization.
-			vs second add: self configClass emptyAccountName.
-			vs firstAmounts: self items amounts.
-			result := vs build.
-			self accounts addAll: result.
-			self savedAccounts: result.
-			result do: [ :el | self accounts add: el ] ].
+			a := self createRight.
+			a2:= self createContra. 
+			self accounts addAll: { a. a2 }.
+			self savedAccounts: { a. a2 } ].
 	self
 		trace:
 			self number , ' price document is created. Milliseconds to run: '
@@ -130,6 +124,52 @@ APriceModel >> clone [
 	p baseAmount: self baseAmount.
 	p items addAccount: self items.
 	^ p
+]
+
+{ #category : #actions }
+APriceModel >> createContra [
+	| a |
+	a := self items clone invert.
+	a add: self contraPriceName, self number.
+	a add: self configClass emptyAccountName.
+	^ a.
+			"vs := AVirtualSwapBuilder new.
+			vs right add: self priceName , self number.
+			vs left add: self contraPriceName , self number.
+			vs first add: self organization.
+			vs second add: self configClass emptyAccountName.
+			vs firstAmounts: self items amounts.
+			result := vs build.
+			self accounts addAll: result.
+			self savedAccounts: result.
+			result do: [ :el | self accounts add: el ] ].
+	self
+		trace:
+			self number , ' price document is created. Milliseconds to run: '
+				, t asString , String cr"
+]
+
+{ #category : #actions }
+APriceModel >> createRight [
+	| a |
+	a := self items clone.
+	a add: self priceName, self number.
+	a add: self organization.
+	^ a.
+			"vs := AVirtualSwapBuilder new.
+			vs right add: self priceName , self number.
+			vs left add: self contraPriceName , self number.
+			vs first add: self organization.
+			vs second add: self configClass emptyAccountName.
+			vs firstAmounts: self items amounts.
+			result := vs build.
+			self accounts addAll: result.
+			self savedAccounts: result.
+			result do: [ :el | self accounts add: el ] ].
+	self
+		trace:
+			self number , ' price document is created. Milliseconds to run: '
+				, t asString , String cr"
 ]
 
 { #category : #accessing }

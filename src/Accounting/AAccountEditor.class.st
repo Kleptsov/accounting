@@ -12,7 +12,8 @@ Class {
 		'currencyItem2',
 		'currencyItem3',
 		'currentSwap',
-		'currencyItem4'
+		'currencyItem4',
+		'barcode'
 	],
 	#category : #'Accounting-Model'
 }
@@ -61,6 +62,21 @@ AAccountEditor >> accItem4: anObject [
 	self changed: accItem4.
 ]
 
+{ #category : #actions }
+AAccountEditor >> addBarcode [
+	| acc am |
+	acc := AAccount new add: self barcode; yourself.
+	AConfig barcodes delete: acc.
+	am := AAmount new.
+	self accItem1 = '' ifFalse: [ am add: self accItem1 ].
+	self accItem2 = '' ifFalse: [ am add: self accItem2 ].
+	self accItem3 = '' ifFalse: [ am add: self accItem3 ].
+	am isEmpty ifTrue: [ ^ self ].
+	acc addAmount: am.
+	AConfig barcodes add: acc.
+	^ acc
+]
+
 { #category : #accessing }
 AAccountEditor >> amountItem [
 	^ amountItem ifNil: [ amountItem := '' ]
@@ -70,6 +86,18 @@ AAccountEditor >> amountItem [
 AAccountEditor >> amountItem: anObject [
 	amountItem := anObject.
 	self changed: #amountItem
+]
+
+{ #category : #accessing }
+AAccountEditor >> barcode [
+	^ barcode ifNil: [ barcode := '' ]
+]
+
+{ #category : #accessing }
+AAccountEditor >> barcode: aBarcode [
+	barcode := aBarcode.
+	self updateAccountItems.
+	self changed: #barcode.
 ]
 
 { #category : #actions }
@@ -142,6 +170,36 @@ AAccountEditor >> currentSwap: aCurrentSwap [
 ]
 
 { #category : #actions }
+AAccountEditor >> makeAccount [
+	| a |
+	a := AAmount new.
+	self accItem1 = '' ifFalse: [ a add: self accItem1 ].
+	self accItem2 = '' ifFalse: [ a add: self accItem2 ].
+	self accItem3 = '' ifFalse: [ a add: self accItem3 ].
+	self accItem4 = '' ifFalse: [ a add: self accItem4 ].
+	self currencyItem = '' ifFalse: [ a add: self currencyItem ].
+	self currencyItem2 = '' ifFalse: [ a add: self currencyItem2 ].
+	self currencyItem3 = '' ifFalse: [ a add: self currencyItem3 ].
+	self currencyItem4 = '' ifFalse: [ a add: self currencyItem4 ].
+	^ a
+]
+
+{ #category : #actions }
+AAccountEditor >> makeAmount [
+	|am |
+	am := AAmount new.
+	self accItem1 = '' ifFalse: [ am add: self accItem1 ].
+	self accItem2 = '' ifFalse: [ am add: self accItem2 ].
+	self accItem3 = '' ifFalse: [ am add: self accItem3 ].
+	self accItem4 = '' ifFalse: [ am add: self accItem4 ].
+	self currencyItem = '' ifFalse: [ am add: self currencyItem ].
+	self currencyItem2 = '' ifFalse: [ am add: self currencyItem2 ].
+	self currencyItem3 = '' ifFalse: [ am add: self currencyItem3 ].
+	self currencyItem4 = '' ifFalse: [ am add: self currencyItem4 ].
+	^ am
+]
+
+{ #category : #actions }
 AAccountEditor >> makeSwap [
 	| sw sa |
 	sw := ASwap new.
@@ -171,6 +229,15 @@ AAccountEditor >> sumItem: anObject [
 ]
 
 { #category : #actions }
+AAccountEditor >> updateAccountItems [
+	| resultAmount |
+	resultAmount := AConfig barcodes
+		select: (AAccount new add: self barcode; yourself) at: 1.
+	self updateEditor: resultAmount.
+	^ resultAmount
+]
+
+{ #category : #actions }
 AAccountEditor >> updateEditor: anSwap [
 	| coll sw |
 	anSwap ifNil: [ ^ self ].
@@ -188,4 +255,19 @@ AAccountEditor >> updateEditor: anSwap [
 	coll size > 1 ifTrue: [ self currencyItem2: coll second ].
 	coll size > 2 ifTrue: [ self currencyItem3: coll third ].
 	coll size > 3 ifTrue: [ self currencyItem4: (coll at: 4) ]
+]
+
+{ #category : #actions }
+AAccountEditor >> updateEditorFromAccount: anAccount [
+	| coll |
+	self clean.
+	coll := anAccount asOrderedCollection.
+	coll isEmpty ifFalse: [ self accItem1: coll first ].
+	coll size > 1 ifTrue: [ self accItem2: coll second ].
+	coll size > 2 ifTrue: [ self accItem3: (coll at: 3) ].
+	coll size > 3 ifTrue: [ self accItem4: (coll at: 4) ].
+	coll size > 4 ifTrue: [ self currencyItem: (coll at: 5) ].
+	coll size > 5 ifTrue: [ self currencyItem2: (coll at: 6) ].
+	coll size > 6 ifTrue: [ self currencyItem3: (coll at: 7) ].
+	coll size > 7 ifTrue: [ self currencyItem4: (coll at: 8) ].
 ]

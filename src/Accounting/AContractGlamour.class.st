@@ -111,7 +111,7 @@ AContractGlamour >> initializeBarcode [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
+						on: model accountEditor
 						label:(  'Barcode' translated)
 						text: #barcode
 						accept: #barcode:
@@ -154,7 +154,7 @@ AContractGlamour >> initializeBrowser [
 AContractGlamour >> initializeBrowserActions [
 
 	browser act: [ :p|
-		model addBarcode.
+		model accountEditor addBarcode.
 		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
 		icon: GLMUIThemeExtraIcons glamorousAdd
 		entitled: 'Add Barcode' translated.

@@ -101,6 +101,15 @@ ALauncherSpec >> subContractMenu [
 
 { #category : #initialization }
 ALauncherSpec >> subOrganizerMenu [
+	^ MenuModel new
+		addGroup: [ :group|
+			group addItem: [ :item|
+				item
+					name: 'Account Explorer' translated; action: [ AAccountExplorerModel new open ] ].
+			group addItem: [ :item|
+				item name: 'Price Selector' translated; action: [ APriceSelectorModel new open ] ].
+			group addItem: [ :item|
+				item name: 'Barcode Selector' translated; action: [ ABarcodeSelectorModel new open ] ] ] 
 ]
 
 { #category : #initialization }

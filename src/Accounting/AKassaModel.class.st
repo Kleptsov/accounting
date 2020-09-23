@@ -37,7 +37,8 @@ Class {
 		'items',
 		'currency',
 		'clientSum',
-		'accountEditor'
+		'accountEditor',
+		'barcode'
 	],
 	#category : #'Accounting-Model'
 }
@@ -94,6 +95,18 @@ AKassaModel >> addNewGoodies [
 	sw := self accountEditor makeSwap.
 	self items addAmount: sw.
 	self changed: #sum
+]
+
+{ #category : #operations }
+AKassaModel >> barcode [
+	^ barcode ifNil: [ barcode := '' ]
+]
+
+{ #category : #operations }
+AKassaModel >> barcode: anObject [
+	barcode := anObject.
+	self updateAccountItems.
+	self changed: #barcode.
 ]
 
 { #category : #operations }

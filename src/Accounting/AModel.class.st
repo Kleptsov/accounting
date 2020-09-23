@@ -19,7 +19,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'additional',
-		'barcode',
 		'accepted',
 		'answer',
 		'process',
@@ -151,18 +150,6 @@ AModel >> additional: anObject [
 AModel >> answer: anAnswer [
 	answer := anAnswer.
 	process ifNotNil: [ process resume ].
-]
-
-{ #category : #accessing }
-AModel >> barcode [
-	^ barcode ifNil: [ barcode := '' ]
-]
-
-{ #category : #accessing }
-AModel >> barcode: anObject [
-	barcode := anObject.
-	self updateAccountItems.
-	self changed: #barcode.
 ]
 
 { #category : #actions }

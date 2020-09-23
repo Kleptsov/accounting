@@ -147,7 +147,7 @@ APriceSelectorModel >> priceFor: anAmount [
 	sw amount: 1.
 	sw swapAmount:
 		(AAmount new add: self baseAmount;
-		amount: (self basePrice / anAmount amount) asFloat).
+		amount: (self basePrice / ((anAmount amount = 0) ifTrue: [1] ifFalse: [anAmount amount])) asFloat).
 	^ sw
 ]
 
@@ -177,7 +177,7 @@ APriceSelectorModel >> selection: anObject [
 	|sel b |
 	sel := anObject asSwap clone.
 	b := self baseRelation.
-	sel swapAmount amount: (b amount / sel amount).
+	sel swapAmount amount: (b amount / ((sel amount = 0) ifTrue: [1] ifFalse: [sel amount])).
 	sel amount: 1.
 	sel swapAmount add: self baseAmount.
 	"self accountEditor updateEditor: sel."

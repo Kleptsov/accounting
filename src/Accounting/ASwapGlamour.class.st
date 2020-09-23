@@ -141,7 +141,7 @@ ASwapGlamour >> initializeBrowser [
 ASwapGlamour >> initializeBrowserActions [
 
 	browser act: [ :p|
-		model addBarcode.
+		model accountEditor addBarcode.
 		self inform: ('Barcode' translated, ' ', model barcode, ' ', 'Added as' translated, ' ', model accItem1, ' ', model accItem2) ]
 		icon: GLMUIThemeExtraIcons glamorousAdd
 		entitled: 'Add Barcode' translated.
