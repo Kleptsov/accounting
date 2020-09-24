@@ -40,6 +40,7 @@ Class {
 		'third',
 		'fourth',
 		'report',
+		'selectedItems',
 		'selected'
 	],
 	#category : #'Accounting-Report'
@@ -114,7 +115,7 @@ ACommonReportModel >> addAccount1: anArray [
 ACommonReportModel >> createRecordingOf [
 	| w |
 	w := ARecordingOfModel addNew.
-	w items addAccount: self report.
+	w items addAccount: self selectedItems.
 	w organization: self acc1.
 	w account2: self acc2.
 	w account3: self acc3.
@@ -125,7 +126,7 @@ ACommonReportModel >> createRecordingOf [
 ACommonReportModel >> createTransfer [
 	| w |
 	w := ATransferModel addNew.
-	w items addAccount: self report.
+	w items addAccount: self selectedItems.
 	w organization: self acc1.
 	w sourceAccount: self acc2.
 	^ w
@@ -135,7 +136,7 @@ ACommonReportModel >> createTransfer [
 ACommonReportModel >> createWriteOff [
 	| w |
 	w := AWriteOffModel addNew.
-	w items addAccount: self report.
+	w items addAccount: self selectedItems.
 	w organization: self acc1.
 	w account2: self acc2.
 	w account3: self acc3.
@@ -161,7 +162,7 @@ ACommonReportModel >> makeReport [
 			self inform: q asString.
 			report := self accounts select: q.
 			report
-				amounts: (report amounts select: [ :am | (am amount = 0) not ]) ].
+				amounts: (report amounts select: [ :am | am amount ~= 0 ]) ].
 	self
 		trace:
 			'Common report is created. Milliseconds to run: ' , t asString
@@ -209,6 +210,12 @@ ACommonReportModel >> report: anObject [
 	report := anObject
 ]
 
+{ #category : #actions }
+ACommonReportModel >> selectItem: anAmount [
+	self selectedItems addAmount: anAmount.
+	self report removeAmount: anAmount.
+]
+
 { #category : #accessing }
 ACommonReportModel >> selected [
 	^ selected ifNil: [ selected := '' ]
@@ -218,6 +225,22 @@ ACommonReportModel >> selected [
 ACommonReportModel >> selected: anObject [
 	selected := anObject.
 	self changed: #selected
+]
+
+{ #category : #accessing }
+ACommonReportModel >> selectedItems [
+	^ selectedItems ifNil: [ selectedItems := AAccount new  ]
+]
+
+{ #category : #accessing }
+ACommonReportModel >> selectedItems: anObject [
+	selectedItems := anObject
+]
+
+{ #category : #actions }
+ACommonReportModel >> unselectItem: anAmount [
+	self selectedItems removeAmount: anAmount.
+	self report addAmount: anAmount.
 ]
 
 { #category : #accessing }

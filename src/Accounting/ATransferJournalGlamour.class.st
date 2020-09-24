@@ -96,6 +96,6 @@ ATransferJournalGlamour >> open [
 ATransferJournalGlamour >> removeSelectionFrom: aPresentation [
 	| sw |
 	sw := (aPresentation pane port: #rawSelection) value.
-	sw removeAccounts.
+	sw cancelAccepted.
 	sw class documents remove: sw ifAbsent: [  ]
 ]

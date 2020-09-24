@@ -60,8 +60,7 @@ ATransferModel >> accept [
 		millisecondsToRun: [ self cancelAccepted.
 			sourceAmounts := self createSourceAmounts.
 			destAmounts := self createDestAmounts.
-			accs := {sourceAmounts.
-			destAmounts}.
+			accs := {sourceAmounts. destAmounts}.
 			self accounts addAll: accs.
 			self savedAccounts: accs ].
 	self
@@ -200,7 +199,7 @@ ATransferModel >> removeAccounts [
 
 { #category : #actions }
 ATransferModel >> removeItem [
-	self  items amounts remove: selectionItem ifAbsent: [  ]
+	self  items amounts remove: self accountEditor makeAmount ifAbsent: [  ]
 ]
 
 { #category : #accessing }
