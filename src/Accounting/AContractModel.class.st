@@ -115,18 +115,6 @@ AContractModel >> asCSV [
 ]
 
 { #category : #accessing }
-AContractModel >> barcode [
-	^ barcode ifNil: [ barcode := '' ]
-]
-
-{ #category : #accessing }
-AContractModel >> barcode: anObject [
-	barcode := anObject.
-	self updateAccountItems.
-	self changed: #barcode.
-]
-
-{ #category : #accessing }
 AContractModel >> contractor [
 	^ contractor ifNil: [ contractor := '' ]
 ]
@@ -148,17 +136,6 @@ AContractModel >> createAccounts [
 	org := self createOrganizationAccount.
 	contr := self createContractorAccount.
 	^ { org. contr }.
-"	| builder |
-	builder := AVirtualSwapBuilder new.
-	builder first addAll: self createFirsts.
-	builder second addAll: self createSeconds.
-	builder right add: self contractName.
-	builder left add: self contractObligationName.
-	builder common addAll: { self numberPrefix, number.}.
-	(self additionalNumber = '') ifFalse: [ 
-		builder common addAll: { self additionalNumberPrefix, self additionalNumber } ].
-	builder swaps: self items.
-	^ builder build."
 ]
 
 { #category : #actions }
@@ -213,6 +190,7 @@ AContractModel >> createInvoice [
 AContractModel >> createOrganizationAccount [
 	| a d addNumber |
 	a := AAccount new.
+	a add: self numberPrefix, self number.
 	a add: self organization.
 	addNumber := self additionalNumber = '' ifTrue: [ '0' ] ifFalse: [ self additionalNumber ].
 	a add: AConfig additionalNumberPrefix, addNumber.
