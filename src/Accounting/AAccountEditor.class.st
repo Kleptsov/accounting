@@ -204,7 +204,7 @@ AAccountEditor >> makeSwap [
 	| sw sa |
 	sw := ASwap new.
 	sa := sw swapAmount.
-	[ sw amount: (self amountItem asNumber) ] on: Error do: [ :ex| ex proceed].
+	[ sw amount: (self amountItem asNumber) ] on: Error do: [ :ex| ].
 	self accItem1 = '' ifFalse: [ sw add: self accItem1 ].
 	self accItem2 = '' ifFalse: [ sw add: self accItem2 ].
 	self accItem3 = '' ifFalse: [ sw add: self accItem3 ].
@@ -213,7 +213,7 @@ AAccountEditor >> makeSwap [
 	self currencyItem2 = '' ifFalse: [ sa add: self currencyItem2 ].
 	self currencyItem3 = '' ifFalse: [ sa add: self currencyItem3 ].
 	self currencyItem4 = '' ifFalse: [ sa add: self currencyItem4 ].
-	[ sw swapAmount amount: (self sumItem asNumber) ] on: Error do: [ :ex| ex proceed ].
+	[ sw swapAmount amount: (self sumItem asNumber) ] on: Error do: [ :ex|  ].
 	^ sw
 ]
 
