@@ -158,6 +158,31 @@ ATaskModel >> login: anObject [
 	self changed: #login
 ]
 
+{ #category : #rendering }
+ATaskModel >> morphController [
+	^ FDirectController new.
+]
+
+{ #category : #rendering }
+ATaskModel >> morphRenderer [
+	^ ATaskMorphRenderer new
+]
+
+{ #category : #rendering }
+ATaskModel >> morphView [
+	^ self morphController updateModel: self.
+]
+
+{ #category : #rendering }
+ATaskModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
+]
+
 { #category : #accessing }
 ATaskModel >> number [
 	^ number ifNil: [ number := '' ]
