@@ -99,6 +99,11 @@ ATaskModel >> anyOrganization [
 	^ self class anyOrganization
 ]
 
+{ #category : #accessing }
+ATaskModel >> completeTaskButtonName [
+	^ 'Complete Task'
+]
+
 { #category : #actions }
 ATaskModel >> createExecuteTask [
 	| exeT |

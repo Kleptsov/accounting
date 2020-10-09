@@ -1,14 +1,30 @@
 Class {
 	#name : #ATaskMorphRenderer,
 	#superclass : #FMorphRenderer,
+	#instVars : [
+		'commandMorph'
+	],
 	#category : #'Accounting-GUI'
 }
+
+{ #category : #accessing }
+ATaskMorphRenderer >> commandMorph [
+	^ commandMorph 	ifNil: [
+			commandMorph := Morph new
+				layoutPolicy: (FAbsoluteRelativeLayout new direction: #leftDown) ;
+				color: Smalltalk ui theme baseColor;
+				extent: 10@20;
+				hResizing: #spaceFill.
+			self owner addMorphBack: commandMorph.
+			commandMorph ]
+]
 
 { #category : #rendering }
 ATaskMorphRenderer >> render: aModel selector: aSelector [
 	self model: aModel.
+	self commandMorph.
 	self renderAccepted.
-	self renderExecuteTask.
+	self renderCompleteTaskButton.
 	self renderNumber.
 	self renderDate.
 	self renderOrganization.
@@ -27,9 +43,8 @@ ATaskMorphRenderer >> renderAccepted [
 				selected: #accepted
 				changeSelected: #accepted:.
 	m label: 'Accept' translated.
-	m extent: 300@20.
-	m hResizing: #spaceFill.
-	self owner addMorphBack: m.
+	m extent: 100@20.
+	self commandMorph addMorphBack: m.
 ]
 
 { #category : #rendering }
@@ -55,6 +70,17 @@ ATaskMorphRenderer >> renderAdditional [
 ]
 
 { #category : #rendering }
+ATaskMorphRenderer >> renderCompleteTaskButton [
+	| m |
+	m := PluggableButtonMorph
+				on: model
+				getState: nil 
+				action: #createExecuteTask
+				label: #completeTaskButtonName.
+	self commandMorph addMorphBack: m.
+]
+
+{ #category : #rendering }
 ATaskMorphRenderer >> renderDate [
 	| m |
 	m := FLabeledText
@@ -63,10 +89,6 @@ ATaskMorphRenderer >> renderDate [
 			selector: #date.
 	m height: 40.
 	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-ATaskMorphRenderer >> renderExecuteTask [
 ]
 
 { #category : #rendering }

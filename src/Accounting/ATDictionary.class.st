@@ -89,14 +89,15 @@ ATDictionary >> c [
 'Contract Number' -> { 'ru' -> 'Номер договора'} asDictionary.
 'Contract Report' -> { 'ru' -> 'Отчет по контрактам' } asDictionary.
 'Common Report' -> { 'ru' -> 'Общий отчет' } asDictionary.
+'Complete Task' -> { 'ru' -> 'Завершить задачу' } asDictionary.
 'Contracts' -> { 'ru' -> 'Контракты' } asDictionary.
 'Contractor' -> { 'ru' -> 'Контрагент' } asDictionary.
+'Contractor Account' -> { 'ru' -> 'Счет поставщика' } asDictionary.
 'Copy to Clipboard' -> { 'ru' -> 'Скопировать в буфер обмена' } asDictionary.
 'Copy Prices Document' -> { 'ru' -> 'Скопировать документ цен' } asDictionary.
 'Count' -> { 'ru' -> 'Кол-во' } asDictionary.
 'Currency' -> { 'ru' -> 'Валюта' } asDictionary.
 'Currency Name' -> { 'ru' -> 'Название валюты'} asDictionary.
-'Contractor Account' -> { 'ru' -> 'Счет поставщика' } asDictionary.
 'Create Write-off Document' -> { 'ru' -> 'Создать документ списания' } asDictionary.
 'Create Transfer Document' -> { 'ru' -> 'Создать документ перемещения' } asDictionary.
 'Create Recoring of Document' -> { 'ru' -> 'Создать документ оприходывания' } asDictionary.
