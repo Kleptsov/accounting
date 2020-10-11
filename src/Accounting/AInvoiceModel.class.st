@@ -214,15 +214,6 @@ AInvoiceModel >> organization: anObject [
 ]
 
 { #category : #actions }
-AInvoiceModel >> removeAccounts [
-	| accountQuery |
-	accountQuery := AAccount new.
-	accountQuery add: self invoicePrefix, self number.
-	accountQuery add: self invoiceName.
-	self accounts remove: accountQuery.
-]
-
-{ #category : #actions }
 AInvoiceModel >> removeItem [
 	self items amounts
 		remove: (self accountEditor currentSwap) ifAbsent: [ ]

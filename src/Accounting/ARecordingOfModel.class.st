@@ -247,15 +247,6 @@ ARecordingOfModel >> organization: anObject [
 ]
 
 { #category : #actions }
-ARecordingOfModel >> removeAccounts [
-	| acc |
-	acc := AAccount new.
-	acc add: self numberPrefix, self number.
-	acc add: self recordingOfName.
-	self accounts remove: acc.
-]
-
-{ #category : #actions }
 ARecordingOfModel >> removeItem [
 	self items amounts
 		remove: self accountEditor makeSwap ifAbsent: [  ]

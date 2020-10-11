@@ -96,6 +96,6 @@ APaymentJournalGlamour >> open [
 APaymentJournalGlamour >> removeSelectionFrom: aPresentation [
 	| p |
 	p := (aPresentation pane port: #rawSelection) value.
-	p removeAccounts.
+	p cancelAccepted.
 	p class documents remove: p ifAbsent: [  ]
 ]

@@ -152,15 +152,6 @@ APriceSelectorModel >> priceFor: anAmount [
 ]
 
 { #category : #actions }
-APriceSelectorModel >> removeAccounts [
-	| acc acc2 |
-	acc := AAccount new add: (self priceName, self number); yourself.
-	self accounts remove: acc.
-	acc2 := AAccount new add: (self contraPriceName, self number); yourself.
-	self accounts remove: acc2.
-]
-
-{ #category : #actions }
 APriceSelectorModel >> removeItem [
 	self items amounts
 		remove: self accountEditor makeSwap

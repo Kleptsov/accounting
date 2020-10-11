@@ -100,6 +100,6 @@ APriceJournalGlamour >> open [
 APriceJournalGlamour >> removeSelectionFrom: aPresentation [
 	| prc |
 	prc := (aPresentation pane port: #rawSelection) value.
-	prc removeAccounts.
+	prc cancelAccepted.
 	prc class documents remove: prc ifAbsent: [  ] .
 ]

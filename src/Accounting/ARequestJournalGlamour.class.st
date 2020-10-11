@@ -130,6 +130,6 @@ ARequestJournalGlamour >> open [
 ARequestJournalGlamour >> removeSelectionFrom: aPresentation [
 	| req |
 	req := (aPresentation pane port: #rawSelection) value.
-	req removeAccounts.
+	req cancelAccepted.
 	req class documents remove: req ifAbsent: [  ] .
 ]

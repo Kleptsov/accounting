@@ -289,29 +289,6 @@ AContractModel >> organization: anObject [
 	self changed: #organization.
 ]
 
-{ #category : #actions }
-AContractModel >> removeAccounts [
-	| "acc" "acc2" |
-	
-	AConfig accounts diffAll: self savedAccounts.
-	self savedAccounts removeAll.
-	
-	"acc := AAccount new.
-	acc add: self numberPrefix, self number.
-	acc add: self contractName.
-	(self additionalNumber = '') ifTrue: [ self additionalNumber: '0' ].
-	acc add: self additionalNumberPrefix, self additionalNumber.
-	self accounts remove: acc."
-	
-	
-	"acc2 := AAccount new.
-	acc2 add: self numberPrefix, self number.
-	acc2 add: self contractObligationName.
-	(self additionalNumber = '')
-		ifFalse: [ acc2 add: self additionalNumberPrefix, self additionalNumber ].
-	self accounts remove: acc2."
-]
-
 { #category : #accessing }
 AContractModel >> strongSelection [
 	^ strongSelection

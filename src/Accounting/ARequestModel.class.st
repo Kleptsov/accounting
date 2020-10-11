@@ -217,13 +217,6 @@ ARequestModel >> organization: anObject [
 ]
 
 { #category : #actions }
-ARequestModel >> removeAccounts [
-	self keyAccounts do: [ :el| 
-		self accounts remove: el.	
-	].
-]
-
-{ #category : #actions }
 ARequestModel >> removeRequest [
 	self requests removeAmount: self selectionRequest
 ]

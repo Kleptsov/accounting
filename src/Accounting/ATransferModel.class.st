@@ -189,15 +189,6 @@ ATransferModel >> organization: anObject [
 ]
 
 { #category : #actions }
-ATransferModel >> removeAccounts [
-	| acc |
-	acc := AAccount new.
-	acc add: self numberPrefix, self number.
-	acc add: self transferName.
-	self accounts remove: acc.
-]
-
-{ #category : #actions }
 ATransferModel >> removeItem [
 	self  items amounts remove: self accountEditor makeAmount ifAbsent: [  ]
 ]

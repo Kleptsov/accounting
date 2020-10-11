@@ -165,7 +165,7 @@ ATransferGlamour >> initializeBrowserActions [
 		entitled: 'Add Account 1' translated.
 		
 	browser act: [ :p|
-			model removeAccounts.
+			model cancelAccepted.
 			p update; updateToolbar ]
 		icon: GLMUIThemeExtraIcons glamorousUndo
 		entitled: 'Unwire' translated.

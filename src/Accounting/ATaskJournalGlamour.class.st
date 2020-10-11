@@ -96,6 +96,6 @@ ATaskJournalGlamour >> open [
 ATaskJournalGlamour >> removeSelectionFrom: aPresentation [
 	| tsk|
 	tsk := (aPresentation pane port: #rawSelection) value.
-	tsk removeAccounts.
+	tsk cancelAccepted.
 	tsk class documents remove: tsk ifAbsent: [  ] .
 ]

@@ -183,15 +183,6 @@ APaymentModel >> receiptName: anObject [
 ]
 
 { #category : #actions }
-APaymentModel >> removeAccounts [
-	| acc |
-	acc := AAccount new.
-	acc add: self paymentPrefix, self number.
-	acc add: self paymentName.
-	self accounts remove: acc.
-]
-
-{ #category : #actions }
 APaymentModel >> secondAmount [
 	^ AAmount new
 			amount: sum asNumber;

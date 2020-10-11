@@ -129,6 +129,6 @@ AKassaCheckJournalGlamour >> open [
 AKassaCheckJournalGlamour >> removeSelectionFrom: aPresentation [
 	| cnt |
 	cnt := (aPresentation pane port: #rawSelection) value.
-	cnt removeAccounts.
+	cnt cancelAccepted.
 	cnt class documents remove: cnt ifAbsent: [  ].
 ]

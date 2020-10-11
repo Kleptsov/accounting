@@ -105,6 +105,11 @@ ATaskModel >> completeTaskButtonName [
 ]
 
 { #category : #actions }
+ATaskModel >> createAndOpenExecuteTask [
+	^ self createExecuteTask open.
+]
+
+{ #category : #actions }
 ATaskModel >> createExecuteTask [
 	| exeT |
 	exeT := AExecuteTaskModel new.
@@ -183,6 +188,7 @@ ATaskModel >> morphViewInWindow [
 	| m w |
 	m := self morphView.
 	w := StandardWindow new.
+	w title: (self number, ' ', 'Task' translated).
 	w addMorph: m frame: LayoutFrame new.
 	w open.
 	^ m
@@ -218,13 +224,6 @@ ATaskModel >> organization [
 ATaskModel >> organization: anObject [
 	organization := anObject.
 	self changed: #organization
-]
-
-{ #category : #actions }
-ATaskModel >> removeAccounts [
-	|ra|
-	ra := AAccount new addAll: { self numberPrefix, self number. self taskName }; yourself.
-	self accounts remove: ra.
 ]
 
 { #category : #accessing }

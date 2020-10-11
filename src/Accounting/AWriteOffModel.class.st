@@ -62,12 +62,3 @@ AWriteOffModel >> createAmounts [
 AWriteOffModel >> open [
 	^ AWriteOffGlamour openOn: self
 ]
-
-{ #category : #actions }
-AWriteOffModel >> removeAccounts [
-	| acc |
-	acc := AAccount new.
-	acc add: self numberPrefix, self number.
-	acc add: self writeOffName.
-	self accounts remove: acc.
-]

@@ -93,6 +93,6 @@ AExecuteTaskJournalGlamour >> open [
 AExecuteTaskJournalGlamour >> removeSelectionFrom: aPresentation [
 	| extask |
 	extask := (aPresentation pane port: #rawSelection) value.
-	extask removeAccounts.
+	extask cancelAccepted.
 	extask class documents remove: extask ifAbsent: [  ].
 ]

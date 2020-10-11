@@ -201,7 +201,7 @@ ALauncherSpec >> subTaskMenu [
 		addGroup: [ :group|
 			group addItem: [ :item|
 				item
-					name: 'New' translated; action: [ ATaskModel openNew. ] ].
+					name: 'New' translated; action: [ ATaskModel morphViewInWindow. ] ].
 			group addItem: [ :item|
 				item name: 'Task Journal' translated; action: [ ATaskJournalGlamour openOn: AConfig taskJournal ] ].
 			group addItem: [ :item| 

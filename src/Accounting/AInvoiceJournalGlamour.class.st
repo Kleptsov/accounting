@@ -96,6 +96,6 @@ AInvoiceJournalGlamour >> open [
 AInvoiceJournalGlamour >> removeSelectionFrom: aPresentation [
 	| inv |
 	inv := (aPresentation pane port: #rawSelection) value.
-	inv removeAccounts.
+	inv cancelAccepted.
 	inv class documents remove: inv ifAbsent: [  ]
 ]

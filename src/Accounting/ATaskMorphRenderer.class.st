@@ -50,7 +50,7 @@ ATaskMorphRenderer >> renderAccepted [
 { #category : #rendering }
 ATaskMorphRenderer >> renderAccount [
 	| m |
-	m := FLabeledText
+	m := FText
 			on: model
 			label: 'Account' translated
 			selector: #account.
@@ -61,7 +61,7 @@ ATaskMorphRenderer >> renderAccount [
 { #category : #rendering }
 ATaskMorphRenderer >> renderAdditional [
 		| m |
-	m := FLabeledText
+	m := FText
 			on: model
 			label: 'Additional' translated
 			selector: #additional.
@@ -75,7 +75,7 @@ ATaskMorphRenderer >> renderCompleteTaskButton [
 	m := PluggableButtonMorph
 				on: model
 				getState: nil 
-				action: #createExecuteTask
+				action: #createAndOpenExecuteTask
 				label: #completeTaskButtonName.
 	self commandMorph addMorphBack: m.
 ]
@@ -83,7 +83,7 @@ ATaskMorphRenderer >> renderCompleteTaskButton [
 { #category : #rendering }
 ATaskMorphRenderer >> renderDate [
 	| m |
-	m := FLabeledText
+	m := FText
 			on: model
 			label: 'Date' translated
 			selector: #date.
@@ -94,7 +94,7 @@ ATaskMorphRenderer >> renderDate [
 { #category : #rendering }
 ATaskMorphRenderer >> renderLogin [
 	| m |
-	m := FLabeledText
+	m := FText
 			on: model
 			label: 'Login' translated
 			selector: #login.
@@ -105,7 +105,7 @@ ATaskMorphRenderer >> renderLogin [
 { #category : #rendering }
 ATaskMorphRenderer >> renderNumber [
 	| m |
-	m := FLabeledText
+	m := FText
 			on: model
 			label: 'Number' translated
 			selector: #number.
@@ -116,7 +116,7 @@ ATaskMorphRenderer >> renderNumber [
 { #category : #rendering }
 ATaskMorphRenderer >> renderOrganization [
 	| m |
-	m := FLabeledText
+	m := FText
 			on: model
 			label: 'Organization' translated
 			selector: #organization.
@@ -127,7 +127,7 @@ ATaskMorphRenderer >> renderOrganization [
 { #category : #rendering }
 ATaskMorphRenderer >> renderTask [
 	| m |
-	m := FLabeledText
+	m := FText
 			on: model
 			label: 'Task' translated
 			selector: #task.

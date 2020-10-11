@@ -251,15 +251,6 @@ ASwapModel >> organizationAccount: anObject [
 ]
 
 { #category : #actions }
-ASwapModel >> removeAccounts [
-	| acc |
-	acc := AAccount new.
-	acc add: self numberPrefix, self number.
-	acc add: self swapName.
-	self accounts remove: acc.
-]
-
-{ #category : #actions }
 ASwapModel >> removeItem [
 	self  items amounts
 		remove: (self accountEditor makeSwap) ifAbsent: [  ]

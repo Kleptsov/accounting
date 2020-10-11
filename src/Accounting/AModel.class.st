@@ -28,6 +28,11 @@ Class {
 }
 
 { #category : #adding }
+AModel class >> MorphViewInWindow [
+	^ self addNew morphViewInWindow
+]
+
+{ #category : #adding }
 AModel class >> addNew [
 	| n |
 	n := self new.
@@ -54,6 +59,11 @@ AModel class >> current [
 { #category : #adding }
 AModel class >> documents [
 	self subclassResponsibility.
+]
+
+{ #category : #adding }
+AModel class >> morphViewInWindow [
+	^ self addNew morphViewInWindow
 ]
 
 { #category : #adding }
@@ -109,11 +119,6 @@ AModel >> accepted: anObject [
 	accepted := anObject.
 	accepted 	ifTrue: [ self accept ] ifFalse: [ self cancelAccepted ].
 	self changed: #accepted.
-]
-
-{ #category : #accessing }
-AModel >> accountEditor [
-	^ self subclassResponsibility
 ]
 
 { #category : #configuration }
@@ -242,11 +247,6 @@ AModel >> priceName [
 { #category : #configuration }
 AModel >> recordingOfName [
 	^ self configClass recordingOfName
-]
-
-{ #category : #actions }
-AModel >> removeAccounts [
-	self subclassResponsibility.
 ]
 
 { #category : #configuration }
