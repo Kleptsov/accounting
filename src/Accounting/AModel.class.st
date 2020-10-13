@@ -190,6 +190,11 @@ AModel >> dayPrefix [
 	^ self configClass dayPrefix
 ]
 
+{ #category : #accessing }
+AModel >> description [
+	^ 'Description'
+]
+
 { #category : #information }
 AModel >> inform: aStringMsg [
 	super inform: aStringMsg
@@ -247,6 +252,11 @@ AModel >> priceName [
 { #category : #configuration }
 AModel >> recordingOfName [
 	^ self configClass recordingOfName
+]
+
+{ #category : #accessing }
+AModel >> rootNodeClassFromItem: anItem [
+	^ ADocumentNodeModel
 ]
 
 { #category : #configuration }
