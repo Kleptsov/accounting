@@ -23,12 +23,12 @@ ADocumentTreeModel >> morphController [
 
 { #category : #rendering }
 ADocumentTreeModel >> morphRenderer [
-	^ FExample1Renderer new selector: #yourself.
+	^ ADocumentTreeRenderer new.
 ]
 
 { #category : #rendering }
 ADocumentTreeModel >> morphView [
-	^ self morphController updateModel: self.
+	^ self morphController listen: #yourself from: self.
 ]
 
 { #category : #rendering }
@@ -70,8 +70,8 @@ ADocumentTreeModel >> treeMorph [
 		withHLines: true;
 		allowColumnDrop;
 		useSquareCorners;
-		hResizing: #spaceFill;
-		vResizing: #spaceFill;
+		"hResizing: #spaceFill;"
+		"vResizing: #spaceFill;"
 		rowInset: 5;
 		columnInset: 5;
 		resizerWidth: 4.

@@ -9,7 +9,7 @@ ADocumentNodeModel >> description [
 	^ ( self theme
 			newTextIn: self currentWorld
 			text: self item description)
-					unlock; wrapFlag: true; yourself
+					"unlock; wrapFlag: true;" yourself
 ]
 
 { #category : #morphs }

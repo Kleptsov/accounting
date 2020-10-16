@@ -10,22 +10,24 @@ Class {
 
 { #category : #accessing }
 ADocumentJournalModel >> document [
-	^ document
+	^ document ifNil: [FTextModel new val: 'Select a Document' translated]
 ]
 
 { #category : #accessing }
 ADocumentJournalModel >> document: anObject [
-	document := anObject
+	document := anObject.
+	self changed: #document with: anObject.
 ]
 
 { #category : #accessing }
 ADocumentJournalModel >> documents [
-	^ documents
+	^ documents ifNil: [ documents := ADocumentTreeModel new ]
 ]
 
 { #category : #accessing }
 ADocumentJournalModel >> documents: anObject [
-	documents := anObject
+	documents := anObject.
+	self changed: #documents with: anObject.
 ]
 
 { #category : #rendering }
@@ -35,12 +37,12 @@ ADocumentJournalModel >> morphController [
 
 { #category : #rendering }
 ADocumentJournalModel >> morphRenderer [
-	^ FExample1Renderer new.
+	^ ADocumentJournalRenderer new.
 ]
 
 { #category : #rendering }
 ADocumentJournalModel >> morphView [
-	^ self morphController updateModel: self.
+	^ self morphController listen: #yourself from: self.
 ]
 
 { #category : #rendering }
