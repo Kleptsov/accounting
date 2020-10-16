@@ -180,7 +180,7 @@ ATaskModel >> morphRenderer [
 
 { #category : #rendering }
 ATaskModel >> morphView [
-	^ self morphController updateModel: self.
+	^ self morphController listen: #yourself from: self.
 ]
 
 { #category : #rendering }

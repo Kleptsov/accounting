@@ -20,8 +20,7 @@ ATaskMorphRenderer >> commandMorph [
 ]
 
 { #category : #rendering }
-ATaskMorphRenderer >> render: aModel selector: aSelector [
-	self model: aModel.
+ATaskMorphRenderer >> render [
 	self commandMorph.
 	self renderAccepted.
 	self renderCompleteTaskButton.

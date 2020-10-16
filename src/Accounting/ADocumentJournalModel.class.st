@@ -15,8 +15,9 @@ ADocumentJournalModel >> document [
 
 { #category : #accessing }
 ADocumentJournalModel >> document: anObject [
+	anObject ifNil: [ ^ self ].
 	document := anObject.
-	self changed: #document with: anObject.
+	self changed: #document with: self.
 ]
 
 { #category : #accessing }
@@ -28,6 +29,14 @@ ADocumentJournalModel >> documents [
 ADocumentJournalModel >> documents: anObject [
 	documents := anObject.
 	self changed: #documents with: anObject.
+]
+
+{ #category : #initialization }
+ADocumentJournalModel >> initialize [
+	super initialize.
+	self documents announcer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n| self document: n item ] ]
 ]
 
 { #category : #rendering }
