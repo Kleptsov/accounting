@@ -22,7 +22,8 @@ Class {
 		'accepted',
 		'answer',
 		'process',
-		'savedAccounts'
+		'savedAccounts',
+		'title'
 	],
 	#category : #'Accounting-Model'
 }
@@ -190,6 +191,12 @@ AModel >> dayPrefix [
 	^ self configClass dayPrefix
 ]
 
+{ #category : #actions }
+AModel >> delete [
+	self cancelAccepted.
+	self class documents remove: self ifAbsent: [  ].
+]
+
 { #category : #accessing }
 AModel >> description [
 	^ 'Description'
@@ -277,6 +284,16 @@ AModel >> savedAccounts: aSavedAccounts [
 { #category : #configuration }
 AModel >> swapName [
 	^ self configClass swapName
+]
+
+{ #category : #accessing }
+AModel >> title [
+	^ title ifNil: [ title := 'Document' ]
+]
+
+{ #category : #accessing }
+AModel >> title: anObject [
+	title := anObject
 ]
 
 { #category : #configuration }

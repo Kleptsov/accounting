@@ -46,6 +46,11 @@ ATaskModel class >> nextIndex [
 	^ self configClass nextTaskIndex2 asString
 ]
 
+{ #category : #adding }
+ATaskModel class >> title [
+	^ 'Tasks' translated
+]
+
 { #category : #actions }
 ATaskModel >> accept [
 	| s swap t |
@@ -245,4 +250,9 @@ ATaskModel >> taskName [
 { #category : #configuration }
 ATaskModel >> taskPrefix [
 	^ self configClass emptyAccountName
+]
+
+{ #category : #accessing }
+ATaskModel >> title [
+	^ self number, ' ', 'Task' translated
 ]

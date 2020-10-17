@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'commandMorph'
 	],
-	#category : #'Accounting-GUI'
+	#category : #'Accounting-GUI-Facing'
 }
 
 { #category : #accessing }
@@ -53,7 +53,7 @@ ATaskMorphRenderer >> renderAccount [
 			on: model
 			label: 'Account' translated
 			selector: #account.
-	m height: 40.
+	m extent: 150@40.
 	self owner addMorphBack: m.
 ]
 
@@ -64,7 +64,7 @@ ATaskMorphRenderer >> renderAdditional [
 			on: model
 			label: 'Additional' translated
 			selector: #additional.
-	m height: 40.
+	m extent: 150@40.
 	self owner addMorphBack: m.
 ]
 
@@ -86,7 +86,7 @@ ATaskMorphRenderer >> renderDate [
 			on: model
 			label: 'Date' translated
 			selector: #date.
-	m height: 40.
+	m extent: 150@40.
 	self owner addMorphBack: m.
 ]
 
@@ -97,7 +97,7 @@ ATaskMorphRenderer >> renderLogin [
 			on: model
 			label: 'Login' translated
 			selector: #login.
-	m height: 40.
+	m extent: 150@40.
 	self owner addMorphBack: m.
 ]
 
@@ -108,7 +108,7 @@ ATaskMorphRenderer >> renderNumber [
 			on: model
 			label: 'Number' translated
 			selector: #number.
-	m height: 40.
+	m extent: 150@40.
 	self owner addMorphBack: m.
 ]
 
@@ -119,7 +119,7 @@ ATaskMorphRenderer >> renderOrganization [
 			on: model
 			label: 'Organization' translated
 			selector: #organization.
-	m height: 40.
+	m extent: 150@40.
 	self owner addMorphBack: m.
 ]
 

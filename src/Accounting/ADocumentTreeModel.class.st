@@ -8,12 +8,7 @@ Class {
 ADocumentTreeModel >> descriptionColumn [
 	^ (MorphTreeColumn new
 				rowMorphGetSelector: #description;
-				headerButtonLabel: 'Description' translated
-					font: nil
-					icon: (self iconNamed: #smallOpenIcon)
-					target: nil
-					actionSelector: nil
-					arguments: #()).
+				headerButtonLabel: 'Description' translated font: nil).
 ]
 
 { #category : #rendering }
@@ -46,12 +41,7 @@ ADocumentTreeModel >> numberColumn [
 	^ (MorphTreeColumn new
 				startWidth: 30;
 				rowMorphGetSelector: #number;
-				headerButtonLabel: 'Number' translated
-					font: nil
-					icon: (self iconNamed: #smallOpenIcon)
-					target: nil
-					actionSelector: nil
-					arguments: #()).
+				headerButtonLabel: '№' translated font: nil).
 ]
 
 { #category : #'user interface' }

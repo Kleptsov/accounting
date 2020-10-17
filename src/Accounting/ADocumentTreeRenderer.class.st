@@ -1,7 +1,7 @@
 Class {
 	#name : #ADocumentTreeRenderer,
 	#superclass : #FMorphRenderer,
-	#category : #'Accounting-GUI'
+	#category : #'Accounting-GUI-Facing'
 }
 
 { #category : #rendering }
