@@ -13,7 +13,8 @@ ADocumentJournalRenderer >> render [
 	self renderAddButton.
 	self renderRemoveButton.
 	self render: #documents
-		with: [ :m| m setProperty: #relativeExtent toValue: 0.2@1.0 ].
+		with: [ :m| m setProperty: #relativeExtent toValue: 0.2@1.0. ]
+		finalize: [ :m| m model ifNotNil: [m model announcer unsubscribe: m]. ].
 	self owner addMorphBack: (Morph new extent: 4@1; color: Color transparent).
 	self render: #document
 		with: [ :m| m hResizing: #spaceFill; vResizing: #spaceFill ].

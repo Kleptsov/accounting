@@ -1,6 +1,6 @@
 Class {
 	#name : #ADocumentTreeModel,
-	#superclass : #MorphTreeModel,
+	#superclass : #FMorphTreeModel,
 	#category : #'Accounting-Model'
 }
 
@@ -9,6 +9,21 @@ ADocumentTreeModel >> descriptionColumn [
 	^ (MorphTreeColumn new
 				rowMorphGetSelector: #description;
 				headerButtonLabel: 'Description' translated font: nil).
+]
+
+{ #category : #'user interface' }
+ADocumentTreeModel >> firstColumn [
+	^ (MorphTreeColumn new
+				startWidth: 30;
+				rowMorphGetSelector: #firstName;
+				headerButtonLabel: '№' translated font: nil).
+]
+
+{ #category : #initialization }
+ADocumentTreeModel >> initialize [
+	super initialize.
+	self  columnLabel: '#' selector: #firstName  morph: [ :v :c| c startWidth: 30. v asString asMorph  ]. 
+	self columnLabel: '' selector: #secondName.
 ]
 
 { #category : #rendering }
@@ -45,25 +60,8 @@ ADocumentTreeModel >> numberColumn [
 ]
 
 { #category : #'user interface' }
-ADocumentTreeModel >> rootNodeClassFromItem: anItem [
-	^ ADocumentNodeModel
-]
-
-{ #category : #'user interface' }
-ADocumentTreeModel >> treeMorph [
-	| treeMorph |
-	treeMorph := self treeMorphClass new.
-	treeMorph
-		model: self;
-		columns: { self numberColumn. self descriptionColumn };
-		makeLastColumnUnbounded;
-		withHLines: true;
-		allowColumnDrop;
-		useSquareCorners;
-		"hResizing: #spaceFill;"
-		"vResizing: #spaceFill;"
-		rowInset: 5;
-		columnInset: 5;
-		resizerWidth: 4.
-	^ treeMorph buildContents
+ADocumentTreeModel >> secondColumn [
+	^ (MorphTreeColumn new
+				rowMorphGetSelector: #secondName;
+				headerButtonLabel: '' translated font: nil).
 ]

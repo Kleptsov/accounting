@@ -202,6 +202,11 @@ AModel >> description [
 	^ 'Description'
 ]
 
+{ #category : #accessing }
+AModel >> firstName [
+	^ ''
+]
+
 { #category : #information }
 AModel >> inform: aStringMsg [
 	super inform: aStringMsg
@@ -279,6 +284,11 @@ AModel >> savedAccounts [
 { #category : #accessing }
 AModel >> savedAccounts: aSavedAccounts [
 	savedAccounts := aSavedAccounts
+]
+
+{ #category : #accessing }
+AModel >> secondName [
+	^ ''
 ]
 
 { #category : #configuration }

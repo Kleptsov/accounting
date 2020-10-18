@@ -156,6 +156,11 @@ ATaskModel >> firstAmount [
 	
 ]
 
+{ #category : #accessing }
+ATaskModel >> firstName [
+	^ self number asString.
+]
+
 { #category : #initialization }
 ATaskModel >> initialize [
 	super initialize.
@@ -229,6 +234,13 @@ ATaskModel >> organization [
 ATaskModel >> organization: anObject [
 	organization := anObject.
 	self changed: #organization
+]
+
+{ #category : #accessing }
+ATaskModel >> secondName [
+	^ self organization, 
+		(self login = '' ifFalse: [' - ', self login] ifTrue: [ '' ]),
+		(self account = '' ifFalse: [ ' - ', self account ] ifTrue: [ '' ] )
 ]
 
 { #category : #accessing }

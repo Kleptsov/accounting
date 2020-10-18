@@ -13,9 +13,19 @@ ADocumentNodeModel >> description [
 ]
 
 { #category : #morphs }
+ADocumentNodeModel >> firstName [
+	^ self item firstName asMorph
+]
+
+{ #category : #morphs }
 ADocumentNodeModel >> number [
 	^ ( self theme
 			newTextIn: self currentWorld
 			text: self item number)
 					unlock; wrapFlag: true; yourself
+]
+
+{ #category : #morphs }
+ADocumentNodeModel >> secondName [
+	^ self item secondName asMorph
 ]

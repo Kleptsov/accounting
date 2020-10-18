@@ -203,9 +203,9 @@ ALauncherSpec >> subTaskMenu [
 				item
 					name: 'New' translated; action: [ ATaskModel morphViewInWindow. ] ].
 			group addItem: [ :item|
-				item name: 'Task Journal' translated; action: [ ATaskJournalGlamour openOn: AConfig taskJournal ] ].
+				item name: 'Task Journal' translated; action: [ (ADocumentJournalModel on: AConfig taskJournal) morphViewInWindow ] ].
 			group addItem: [ :item| 
-				item name: 'Execute Task Journal' translated; action: [ AExecuteTaskJournalGlamour openOn: AConfig executeTasks2 ] ].
+				item name: 'Execute Task Journal' translated; action: [ (ADocumentJournalModel on: AConfig executeTasks2) morphViewInWindow ] ].
 			group addItem: [ :item|
 				item name: 'Report' translated; action: [ ATaskReportGlamour openOn: ATaskReportModel new ] ].
 		 ]

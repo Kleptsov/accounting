@@ -114,6 +114,7 @@ ATDictionary >> d [
 'Dictionary' -> { 'ru' -> 'Словарь' } asDictionary.
 'Date' -> { 'ru' -> 'Дата' } asDictionary.
 'Down' -> { 'ru' -> 'Вниз' } asDictionary.
+'Document Journal' -> { 'ru' -> 'Журнал документов' } asDictionary.
 'dd:mm:yyyy' -> { 'ru' -> 'дд:мм:гггг' } asDictionary.
 'Day' -> { 'ru' -> 'День'} asDictionary.
 'Destination' -> { 'ru' -> 'Место назначение' } asDictionary.
@@ -280,6 +281,7 @@ ATDictionary >> r [
 ATDictionary >> s [
 	^ { 
 'Select' -> { 'ru' -> 'Выбрать' } asDictionary.
+'Select a Document from the List' -> { 'ru' -> 'Выберите документ из списка' } asDictionary. 
 'Select a Task' -> { 'ru' -> 'Выберите задачу' } asDictionary.
 'Select a Invoice' -> { 'ru' -> 'Выберите платежку' } asDictionary.
 'Sum' -> { 'ru' -> 'Сумма' } asDictionary.
@@ -311,6 +313,7 @@ ATDictionary >> s [
 ATDictionary >> t [
 	^ { 
 'Task' -> { 'ru' -> 'Задача' } asDictionary.
+'task' -> { 'ru' -> 'задача' } asDictionary.
 'Task Journal' -> { 'ru' -> 'Журнал задач' } asDictionary.
 'Task Report' -> { 'ru' -> 'Отчет по задачам' } asDictionary.
 'Transfer Journal' -> { 'ru' -> 'Журнал перемещений' } asDictionary.

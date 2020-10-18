@@ -217,6 +217,33 @@ AAccountEditor >> makeSwap [
 	^ sw
 ]
 
+{ #category : #rendering }
+AAccountEditor >> morphController [
+	^ FDirectController new
+]
+
+{ #category : #rendering }
+AAccountEditor >> morphRenderer [
+	^ AAccountEditorMorphRenderer new.
+]
+
+{ #category : #rendering }
+AAccountEditor >> morphView [
+	^ self morphController
+			listen: #yourself from: self
+]
+
+{ #category : #rendering }
+AAccountEditor >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: 'Account Editor' translated.
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
+]
+
 { #category : #accessing }
 AAccountEditor >> sumItem [
 	^ sumItem ifNil: [ sumItem := '' ]

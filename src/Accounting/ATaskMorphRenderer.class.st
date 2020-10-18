@@ -11,7 +11,7 @@ Class {
 ATaskMorphRenderer >> commandMorph [
 	^ commandMorph 	ifNil: [
 			commandMorph := Morph new
-				layoutPolicy: (FAbsoluteRelativeLayout new direction: #leftDown) ;
+				layoutPolicy: (FAbsoluteRelativeLayout new direction: #rightDown) ;
 				color: Smalltalk ui theme baseColor;
 				extent: 10@20;
 				hResizing: #spaceFill.
@@ -109,7 +109,7 @@ ATaskMorphRenderer >> renderNumber [
 			label: 'Number' translated
 			selector: #number.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self owner addMorphBack: m.	
 ]
 
 { #category : #rendering }

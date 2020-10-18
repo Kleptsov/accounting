@@ -8,6 +8,14 @@ Class {
 	#category : #'Accounting-Model'
 }
 
+{ #category : #'instance creation' }
+ADocumentJournalModel class >> on: aDocumentList [
+	| journal |
+	journal := self new.
+	journal documents rootItems: aDocumentList.
+	^ journal.
+]
+
 { #category : #accessing }
 ADocumentJournalModel >> addNewButtonName [
 	^ 'Add' translated
@@ -15,13 +23,15 @@ ADocumentJournalModel >> addNewButtonName [
 
 { #category : #actions }
 ADocumentJournalModel >> addNewSelected [
+	(self document class respondsTo: #addNew)
+			ifFalse: [ ^ self ].
 	self document: self document class addNew.
 	self changed: #documents with: self.
 ]
 
 { #category : #accessing }
 ADocumentJournalModel >> document [
-	^ document ifNil: [FTextModel new val: 'Select a Document' translated]
+	^ document ifNil: [FTextModel new val: 'Select a Document from the List' translated]
 ]
 
 { #category : #accessing }
@@ -69,7 +79,7 @@ ADocumentJournalModel >> morphViewInWindow [
 	| m w |
 	m := self morphView.
 	w := StandardWindow new.
-	w title: 'Documents' translated.
+	w title: 'Document Journal' translated.
 	w addMorph: m frame: LayoutFrame new.
 	w open.
 	^ m
@@ -85,5 +95,6 @@ ADocumentJournalModel >> removeSelected [
 	(self document respondsTo: #delete)
 		ifFalse: [ ^ self ].
 	self document delete.
-	self document: nil
+	self changed: #documents with: self.
+	self document: nil.
 ]

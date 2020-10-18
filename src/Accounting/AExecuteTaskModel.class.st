@@ -122,6 +122,11 @@ AExecuteTaskModel >> firstAmount [
 ]
 
 { #category : #accessing }
+AExecuteTaskModel >> firstName [
+	^ self number
+]
+
+{ #category : #accessing }
 AExecuteTaskModel >> login [
 	^ login ifNil: [ login := '' ]
 ]
@@ -130,6 +135,33 @@ AExecuteTaskModel >> login [
 AExecuteTaskModel >> login: anObject [
 	login := anObject.
 	self changed: #login.
+]
+
+{ #category : #rendering }
+AExecuteTaskModel >> morphController [
+	^ FDirectController new.
+]
+
+{ #category : #rendering }
+AExecuteTaskModel >> morphRenderer [
+	^ ACompletedTaskRenderer new
+]
+
+{ #category : #rendering }
+AExecuteTaskModel >> morphView [
+	^ self morphController
+			listen: #yourself from: self.
+]
+
+{ #category : #rendering }
+AExecuteTaskModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: (self number, ' ', 'Completed Task' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
 ]
 
 { #category : #accessing }
@@ -173,6 +205,13 @@ AExecuteTaskModel >> percent [
 AExecuteTaskModel >> percent: anObject [
 	percent := anObject.
 	self changed: #percent.
+]
+
+{ #category : #accessing }
+AExecuteTaskModel >> secondName [
+	^ self organization, 
+		(self login = '' ifFalse: [' - ', self login] ifTrue: [ '' ]),
+		(self account = '' ifFalse: [ ' - ', self account ] ifTrue: [ '' ] )
 ]
 
 { #category : #accessing }

@@ -262,6 +262,33 @@ AContractModel >> items: someItems [
 	items := someItems.
 ]
 
+{ #category : #rendering }
+AContractModel >> morphController [
+	^ FDirectController new
+]
+
+{ #category : #rendering }
+AContractModel >> morphRenderer [
+	^ AContractMorphRenderer new.
+]
+
+{ #category : #rendering }
+AContractModel >> morphView [
+	^ self morphController
+			listen: #yourself from: self.
+]
+
+{ #category : #rendering }
+AContractModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: (self number, '-', self additionalNumber, ' ', 'Contract' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
+]
+
 { #category : #accessing }
 AContractModel >> number [
 	^ number ifNil: [ number := '' ]
