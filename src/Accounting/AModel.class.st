@@ -127,21 +127,6 @@ AModel >> accounts [
 	^ self configClass accounts
 ]
 
-{ #category : #actions }
-AModel >> addBarcode [
-	| acc am accEditor |
-	acc := AAccount new add: self barcode; yourself.
-	AConfig barcodes delete: acc.
-	am := AAmount new.
-	accEditor := self accountEditor.
-	accEditor accItem1 = '' ifFalse: [ am add: accEditor accItem1 ].
-	accEditor accItem2 = '' ifFalse: [ am add: accEditor accItem2 ].
-	accEditor accItem3 = '' ifFalse: [ am add: accEditor accItem3 ].
-	am isEmpty ifTrue: [ ^ self ].
-	acc addAmount: am.
-	AConfig barcodes add: acc
-]
-
 { #category : #accessing }
 AModel >> additional [
 	^ additional ifNil: [ additional := '' ]
@@ -150,12 +135,6 @@ AModel >> additional [
 { #category : #accessing }
 AModel >> additional: anObject [
 	additional := anObject
-]
-
-{ #category : #view }
-AModel >> answer: anAnswer [
-	answer := anAnswer.
-	process ifNotNil: [ process resume ].
 ]
 
 { #category : #actions }
@@ -232,20 +211,6 @@ AModel >> numberPrefix [
 	^ self configClass numberPrefix.
 ]
 
-{ #category : #view }
-AModel >> open [
-	self subclassResponsibility
-]
-
-{ #category : #view }
-AModel >> openModal [
-	answer := nil.
-	process := Processor activeProcess.
-	[ self open ] fork.
-	process suspend.
-	^ answer.
-]
-
 { #category : #configuration }
 AModel >> paymentName [
 	^ self configClass paymentName.
@@ -319,20 +284,6 @@ AModel >> transferName [
 { #category : #configuration }
 AModel >> transfers [
 	^ self configClass transfers
-]
-
-{ #category : #actions }
-AModel >> updateAccountItems [
-	| resultAmount |
-	resultAmount := AConfig barcodes
-		select: (AAccount new add: self barcode; yourself) at: 1.
-	self accountEditor updateEditor: resultAmount.
-	^ resultAmount
-]
-
-{ #category : #actions }
-AModel >> updateEditor: anSwap [
-	self accountEditor updateEditor: anSwap.
 ]
 
 { #category : #configuration }

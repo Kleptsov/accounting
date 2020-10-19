@@ -32,6 +32,8 @@ AContractMorphRenderer >> render [
 	self renderBarcode.
 	self renderNextLine.
 	self render: #accountEditor with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
+	self renderNextLine.
+	self render: #itemsList with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
 	^ self owner.
 ]
 

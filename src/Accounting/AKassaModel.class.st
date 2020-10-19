@@ -98,18 +98,6 @@ AKassaModel >> addNewGoodies [
 ]
 
 { #category : #operations }
-AKassaModel >> barcode [
-	^ barcode ifNil: [ barcode := '' ]
-]
-
-{ #category : #operations }
-AKassaModel >> barcode: anObject [
-	barcode := anObject.
-	self updateAccountItems.
-	self changed: #barcode.
-]
-
-{ #category : #operations }
 AKassaModel >> change [
 	| s cs |
 	s := self sum.

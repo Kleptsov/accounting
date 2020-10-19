@@ -69,16 +69,6 @@ ASwapModel >> accept [
 	^ swaps
 ]
 
-{ #category : #accessing }
-ASwapModel >> accountEditor [
-	^ accountEditor ifNil: [ accountEditor := AAccountEditor new].
-]
-
-{ #category : #accessing }
-ASwapModel >> accountEditor: anAccountEditor [
-	accountEditor := anAccountEditor.
-]
-
 { #category : #actions }
 ASwapModel >> addAccount1: anArray [
 	anArray ifNil: [ ^ self ].
@@ -113,12 +103,6 @@ ASwapModel >> addAccount2: anArray [
 ASwapModel >> addItem [
 	self items updateOrAddAmount: 
 		(AAmountSwapBuilder new string: self editor; build).
-]
-
-{ #category : #actions }
-ASwapModel >> addItemFromPrice [
-	[APriceSelectorModel new openModal
-		ifNotNil: [ :a| self accountEditor updateEditor: a ]] fork
 ]
 
 { #category : #accessing }

@@ -39,32 +39,12 @@ ASwap >> addAmount: anAmount [
 ]
 
 { #category : #converting }
-ASwap >> asAccount [
-	| acc |
-	acc := AAccount new.
-	acc addAll: self.
-	acc addAmount: self swapAmount.
-	^ acc.
-]
-
-{ #category : #converting }
 ASwap >> asAmount [
 	| inst |
 	inst := AAmount new.
 	inst addAll: self.
 	inst amount: self amount.
 	^ inst
-]
-
-{ #category : #converting }
-ASwap >> asSwap [
-	| sw |
-	sw := self class new.
-	sw amount: self amount.
-	self do: [ :el| sw add: el ].
-	self swapAmount do: [ :el| sw swapAmount add: el ].
-	sw swapAmount amount: self swapAmount amount.
-	^ sw
 ]
 
 { #category : #copying }
@@ -91,12 +71,6 @@ ASwap >> difAmount: anAmount [
 						ifNil: [ swapAmount := anAmount swapAmount clone invert ]
 						ifNotNil: [ anAmount swapAmount
 											ifNotNil: [ swapAmount amount: swapAmount amount - anAmount swapAmount amount ] ] ]"
-]
-
-{ #category : #'value operations' }
-ASwap >> initializeVal [
-	super initializeVal.
-	self swapAmount initializeVal.
 ]
 
 { #category : #printing }

@@ -262,6 +262,59 @@ AContractModel >> items: someItems [
 	items := someItems.
 ]
 
+{ #category : #accessing }
+AContractModel >> itemsList [
+	| itemsList |
+	itemsList := FMorphTreeModel new.
+	
+	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
+		c startWidth: 100.
+		v asString asMorph ].
+	
+	itemsList
+		columnLabel: 'Goodies Name' translated
+		selector: #yourself
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 200.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col first asString ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList
+		columnLabel: '' translated
+		selector: #yourself
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 200.
+			col := v asOrderedCollection.
+			(col size > 1
+				ifTrue: [ col second asString ]
+				ifFalse: [ '' ]) asMorph ].
+			
+	itemsList
+		columnLabel: 'Price' translated
+		selector: #swapAmount
+		morph: [ :v :c | 
+			c startWidth: 100.
+			v amount asString asMorph ].
+		
+	itemsList
+		columnLabel: 'Currency'
+		selector: #swapAmount
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 50.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col first asString ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList rootItems: self items amounts.
+		^ itemsList
+]
+
 { #category : #rendering }
 AContractModel >> morphController [
 	^ FDirectController new

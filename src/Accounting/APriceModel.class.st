@@ -54,16 +54,6 @@ APriceModel >> accept [
 				, t asString , String cr
 ]
 
-{ #category : #accessing }
-APriceModel >> accountEditor [
-	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ].
-]
-
-{ #category : #accessing }
-APriceModel >> accountEditor: anAccountEditor [
-	accountEditor := anAccountEditor.
-]
-
 { #category : #actions }
 APriceModel >> addAccount1: anArray [
 	anArray ifNil: [ ^ self ].
@@ -92,28 +82,9 @@ APriceModel >> baseAmount: anObject [
 	self changed: #baseAmount.
 ]
 
-{ #category : #actions }
-APriceModel >> baseConvert: anAmount [
-	| bs |
-	(self items amounts like: anAmount)
-		ifNil: [ bs := AAmount new amount: 1 ]
-		ifNotNil: [ :a| bs := a asAmount ].
-	^ bs.
-]
-
 { #category : #accessing }
 APriceModel >> basePrice [
 	^ (self baseConvert: (AAmount new add: baseAmount; amount: 1)) amount
-]
-
-{ #category : #accessing }
-APriceModel >> baseRelation [
-	| r r2 |
-	r := AAmount new add: self baseAmount; yourself.
-	r2 := self items like: r.
-	r2 ifNil: [ r2 := r. 	r2 amount: 1 ]
-		ifNotNil: [ r2 := r2 clone ].
-	^ r2
 ]
 
 { #category : #copying }
