@@ -42,7 +42,7 @@ ADocumentJournalModel >> document: anObject [
 
 { #category : #accessing }
 ADocumentJournalModel >> documents [
-	^ documents ifNil: [ documents := ADocumentTreeModel new ]
+	^ documents ifNil: [ self initializeDocuments. documents ]
 ]
 
 { #category : #accessing }
@@ -57,6 +57,13 @@ ADocumentJournalModel >> initialize [
 	self documents announcer
 		when: MorphTreeSelectionChanged
 		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n| self document: n item ] ]
+]
+
+{ #category : #initialization }
+ADocumentJournalModel >> initializeDocuments [
+	documents := FMorphTreeModel new.
+	(documents columnLabel: '#' selector: #firstName) startWidth: 50.
+	documents columnLabel: '' selector: #secondName.
 ]
 
 { #category : #rendering }

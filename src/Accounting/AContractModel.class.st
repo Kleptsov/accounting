@@ -34,7 +34,8 @@ Class {
 		'editor',
 		'items',
 		'strongSelection',
-		'accountEditor'
+		'accountEditor',
+		'itemsList'
 	],
 	#category : #'Accounting-Model'
 }
@@ -252,6 +253,22 @@ AContractModel >> editor: anObject [
 	editor := anObject.
 ]
 
+{ #category : #initialization }
+AContractModel >> initialize [
+	super initialize.
+	self itemsList announcer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n| self accountEditor updateEditor: n item ] ]
+]
+
+{ #category : #accessing }
+AContractModel >> initializeSelection: anAnnouncer [
+	anAnnouncer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n|
+								self accountEditor updateEditor: n item ] ].
+]
+
 { #category : #accessing }
 AContractModel >> items [
 	^ items ifNil: [ items := AAccount new ]
@@ -264,8 +281,9 @@ AContractModel >> items: someItems [
 
 { #category : #accessing }
 AContractModel >> itemsList [
-	| itemsList |
 	itemsList := FMorphTreeModel new.
+	
+	self initializeSelection: itemsList announcer. 
 	
 	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
 		c startWidth: 100.
@@ -312,7 +330,13 @@ AContractModel >> itemsList [
 				ifTrue: [ '' ]) asMorph ].
 			
 	itemsList rootItems: self items amounts.
-		^ itemsList
+	^ itemsList
+]
+
+{ #category : #accessing }
+AContractModel >> itemsList: anItemsList [
+	itemsList := anItemsList.
+	self update: #itemsList with: self.
 ]
 
 { #category : #rendering }
