@@ -12,8 +12,8 @@ AContractMorphRenderer >> commandPanel [
 	^ commandPanel 	ifNil: [
 			commandPanel := Morph new
 				layoutPolicy: (FAbsoluteRelativeLayout new direction: #rightDown) ;
-				color: Smalltalk ui theme baseColor;
-				extent: 10@20;
+				color: Color transparent;
+				extent: 10@30;
 				hResizing: #spaceFill.
 			self owner addMorphBack: commandPanel.
 			commandPanel ]
@@ -23,6 +23,7 @@ AContractMorphRenderer >> commandPanel [
 AContractMorphRenderer >> render [
 	self commandPanel.
 	self renderAccepted.
+	self renderCommandButtons.
 	self renderNumber.
 	self renderAdditionalNumber.
 	self renderDate.
@@ -33,6 +34,7 @@ AContractMorphRenderer >> render [
 	self renderNextLine.
 	self render: #accountEditor with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
 	self renderNextLine.
+	self renderItemsButtons. self renderNextLine.
 	self render: #itemsList with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
 	^ self owner.
 ]
@@ -83,6 +85,16 @@ AContractMorphRenderer >> renderBarcode [
 ]
 
 { #category : #rendering }
+AContractMorphRenderer >> renderCommandButtons [
+	self commandPanel addMorphBack:
+			(FButton model: model accountEditor label: 'Add Barcode' translated action: #addBarcode).
+	commandPanel addMorphBack:
+			(FButton model: model items label: 'Copy to Clipboard' translated action: #copyToClipboard).
+	commandPanel addMorphBack:
+			(FButton model: model label: 'New Payment' translated action: #createAndOpenPayment).
+]
+
+{ #category : #rendering }
 AContractMorphRenderer >> renderContractor [
 	| m |
 	m := FText
@@ -102,6 +114,18 @@ AContractMorphRenderer >> renderDate [
 			selector: #date.
 	m extent: 150@40.
 	self owner addMorphBack: m.
+]
+
+{ #category : #rendering }
+AContractMorphRenderer >> renderItemsButtons [
+	self owner addMorphBack:
+			(FButton model: model label: 'Down' translated action: #downItem).
+	self owner addMorphBack:
+			(FButton model: model label: 'Up' translated action: #upItem).
+	self owner addMorphBack:
+			(FButton model: model label: 'Add' translated action: #updateOrAddSwapItem).
+	self owner addMorphBack:
+			(FButton model: model label: 'Remove' translated action: #removeSwapItem)
 ]
 
 { #category : #rendering }

@@ -83,13 +83,13 @@ ALauncherSpec >> subContractMenu [
 	^ MenuModel new
 		addGroup: [ :group|
 			group addItem: [ :item|
-				item name: 'New Contract' translated; action: [ AContractModel openNew. ] ].
+				item name: 'New Contract' translated; action: [ AContractModel morphViewInWindow. ] ].
 			group addItem: [ :item|
 				item name: 'New Invoice' translated; action: [ AInvoiceModel openNew ] ].
 			group addItem: [ :item| 
 				item name: 'New Payment' translated; action: [ APaymentModel openNew ] ].
 			group addItem: [ :item|
-				item name: 'Contract Journal' translated; action: [ AContractJournalGlamour openOn: AConfig contracts2 ] ].
+				item name: 'Contract Journal' translated; action: [ (ADocumentJournalModel on: AConfig contracts2) morphViewInWindow ] ].
 			group addItem: [ :item|
 				item name: 'Invoice Journal' translated; action: [ AInvoiceJournalGlamour openOn: AConfig invoices2 ] ].
 			group addItem: [ :item|

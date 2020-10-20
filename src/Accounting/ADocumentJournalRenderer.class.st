@@ -30,7 +30,6 @@ ADocumentJournalRenderer >> renderAddButton [
 				action: #addNewSelected
 				label: #addNewButtonName.
 	panel addMorphBack: m.
-	
 ]
 
 { #category : #rendering }

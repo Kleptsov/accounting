@@ -114,6 +114,11 @@ AAccount >> cloneAmounts: someAmounts [
 	amounts addAll: ( someAmounts collect: [ :el| el clone ] ).
 ]
 
+{ #category : #copying }
+AAccount >> copyToClipboard [
+	Clipboard clipboardText: self printCSV
+]
+
 { #category : #operations }
 AAccount >> difAccount: anAccount [
 	anAccount amounts do: [ :am|

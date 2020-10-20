@@ -140,6 +140,13 @@ AContractModel >> createAccounts [
 ]
 
 { #category : #actions }
+AContractModel >> createAndOpenPayment [
+	| p |
+	p := self createPayment.
+	p open
+]
+
+{ #category : #actions }
 AContractModel >> createContractorAccount [
 	| a d addNumber |
 	a := AAccount new.
@@ -239,6 +246,12 @@ AContractModel >> date: anObject [
 ]
 
 { #category : #actions }
+AContractModel >> downItem [
+	self items downAmount: (self accountEditor makeSwap).
+	self changed: #itemsList with: self.
+]
+
+{ #category : #actions }
 AContractModel >> downItem: aSwap [
 	self items downAmount: aSwap.
 ]
@@ -251,6 +264,11 @@ AContractModel >> editor [
 { #category : #accessing }
 AContractModel >> editor: anObject [
 	editor := anObject.
+]
+
+{ #category : #accessing }
+AContractModel >> firstName [
+	^ self number, ' - ', self additionalNumber
 ]
 
 { #category : #initialization }
@@ -290,7 +308,7 @@ AContractModel >> itemsList [
 		v asString asMorph ].
 	
 	itemsList
-		columnLabel: 'Goodies Name' translated
+		columnLabel: 'Account' translated, ' 1'
 		selector: #yourself
 		morph: [ :v :c | 
 			| col |
@@ -301,7 +319,7 @@ AContractModel >> itemsList [
 				ifTrue: [ '' ]) asMorph ].
 			
 	itemsList
-		columnLabel: '' translated
+		columnLabel: 'Account' translated, ' 2'
 		selector: #yourself
 		morph: [ :v :c | 
 			| col |
@@ -319,7 +337,7 @@ AContractModel >> itemsList [
 			v amount asString asMorph ].
 		
 	itemsList
-		columnLabel: 'Currency'
+		columnLabel: 'Currency' translated
 		selector: #swapAmount
 		morph: [ :v :c | 
 			| col |
@@ -393,6 +411,18 @@ AContractModel >> organization: anObject [
 	self changed: #organization.
 ]
 
+{ #category : #actions }
+AContractModel >> removeSwapItem [
+	self items amounts
+			remove: (self accountEditor makeSwap) ifAbsent: [ nil ].
+	self changed: #itemsList with: self.
+]
+
+{ #category : #accessing }
+AContractModel >> secondName [
+	^ self contractor, ' - ', self organization.
+]
+
 { #category : #accessing }
 AContractModel >> strongSelection [
 	^ strongSelection
@@ -412,6 +442,12 @@ AContractModel >> swapItems: anSwapAmount [
 ]
 
 { #category : #actions }
+AContractModel >> upItem [
+	self items upAmount: (self accountEditor makeSwap).
+	self changed: #itemsList with: self.
+]
+
+{ #category : #actions }
 AContractModel >> upItem: aSwap [
 	self items upAmount: aSwap.
 ]
@@ -428,4 +464,5 @@ AContractModel >> updateOrAddSwapItem [
 	sw := self accountEditor makeSwap.
 	sw ifNil: [ ^ self ].
 	self items updateOrAddAmount: sw.
+	self changed: #itemsList with: self.
 ]
