@@ -69,6 +69,11 @@ ASwapModel >> accept [
 	^ swaps
 ]
 
+{ #category : #accessing }
+ASwapModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
 { #category : #actions }
 ASwapModel >> addAccount1: anArray [
 	anArray ifNil: [ ^ self ].

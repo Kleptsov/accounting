@@ -54,6 +54,11 @@ APriceModel >> accept [
 				, t asString , String cr
 ]
 
+{ #category : #accessing }
+APriceModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
 { #category : #actions }
 APriceModel >> addAccount1: anArray [
 	anArray ifNil: [ ^ self ].
@@ -80,6 +85,15 @@ APriceModel >> baseAmount [
 APriceModel >> baseAmount: anObject [
 	baseAmount := anObject.
 	self changed: #baseAmount.
+]
+
+{ #category : #accessing }
+APriceModel >> baseConvert: anAmount [
+	| bs |
+	(self items amounts like: anAmount)
+		ifNil: [ bs := AAmount new amount: 1 ]
+		ifNotNil: [ :a| bs := a asAmount ].
+	^ bs.
 ]
 
 { #category : #accessing }
