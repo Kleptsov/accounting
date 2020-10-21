@@ -187,9 +187,9 @@ ALauncherSpec >> subSwapMenu [
 	^ MenuModel new
 		addGroup: [ :group|
 			group addItem: [ :item|
-				item name: 'New' translated; action: [  ASwapModel openNew ] ].
+				item name: 'New' translated; action: [  ASwapModel morphViewInWindow] ].
 			group addItem: [ :item|
-				item name: 'Journal' translated; action: [ ASwapJournalGlamour openOn: AConfig swaps2 ] ].
+				item name: 'Journal' translated; action: [ (ADocumentJournalModel on: AConfig swaps2) morphViewInWindow ] ].
 			group addItem: [ :item|
 				item name: 'Report' translated; action: [ ACommonSwapReportGlamour openOn: 1 ] ].
 		]

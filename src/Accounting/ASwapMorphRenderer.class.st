@@ -1,5 +1,5 @@
 Class {
-	#name : #AContractMorphRenderer,
+	#name : #ASwapMorphRenderer,
 	#superclass : #FMorphRenderer,
 	#instVars : [
 		'commandPanel'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #rendering }
-AContractMorphRenderer >> commandPanel [
+ASwapMorphRenderer >> commandPanel [
 	^ commandPanel 	ifNil: [
 			commandPanel := Morph new
 				layoutPolicy: (FAbsoluteRelativeLayout new direction: #rightDown) ;
@@ -20,11 +20,10 @@ AContractMorphRenderer >> commandPanel [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> render [
+ASwapMorphRenderer >> render [
 	self commandPanel.
 	self renderCommandButtons.
 	self renderNumber.
-	self renderAdditionalNumber.
 	self renderDate.
 	self renderOrganization.
 	self renderContractor.
@@ -39,7 +38,7 @@ AContractMorphRenderer >> render [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderAccepted [
+ASwapMorphRenderer >> renderAccepted [
 	| m |
 	m := CheckboxMorph
 				on: model
@@ -51,7 +50,7 @@ AContractMorphRenderer >> renderAccepted [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderAddBarcodeButton [
+ASwapMorphRenderer >> renderAddBarcodeButton [
 	self commandPanel addMorphBack:
 			(FButton
 				model: model accountEditor
@@ -62,7 +61,7 @@ AContractMorphRenderer >> renderAddBarcodeButton [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderAdditional [
+ASwapMorphRenderer >> renderAdditional [
 	| m |
 	m := FText
 			on: model
@@ -73,18 +72,7 @@ AContractMorphRenderer >> renderAdditional [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderAdditionalNumber [
-	| m |
-	m := FText
-			on: model
-			label: 'Additional Number' translated
-			selector: #additionalNumber.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderBarcode [
+ASwapMorphRenderer >> renderBarcode [
 	| m |
 	m := FText
 			on: model accountEditor
@@ -95,15 +83,14 @@ AContractMorphRenderer >> renderBarcode [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderCommandButtons [
+ASwapMorphRenderer >> renderCommandButtons [
 	self renderAccepted.
 	self renderAddBarcodeButton.
 	self renderCopyToClipboard.
-	self renderNewPaymentButton.
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderContractor [
+ASwapMorphRenderer >> renderContractor [
 	| m |
 	m := FText
 			on: model
@@ -114,7 +101,7 @@ AContractMorphRenderer >> renderContractor [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderCopyToClipboard [
+ASwapMorphRenderer >> renderCopyToClipboard [
 	self commandPanel addMorphBack:
 			(FButton
 				model: model items
@@ -124,7 +111,7 @@ AContractMorphRenderer >> renderCopyToClipboard [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderDate [
+ASwapMorphRenderer >> renderDate [
 	| m |
 	m := FText
 			on: model
@@ -135,36 +122,26 @@ AContractMorphRenderer >> renderDate [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderItemsButtons [
+ASwapMorphRenderer >> renderItemsButtons [
 	self owner addMorphBack:
 			(FButton model: model label: (self iconNamed: #down) asMorph action: #downItem help: 'Down' translated).
 	self owner addMorphBack:
 			(FButton model: model label: (self iconNamed: #up) asMorph action: #upItem help: 'Up' translated).
 	self owner addMorphBack:
-			(FButton model: model label: (self iconNamed: #smallAdd) asMorph action: #updateOrAddSwapItem help: 'Add' translated).
+			(FButton model: model label: (self iconNamed: #smallAdd) asMorph action: #addItem help: 'Add' translated).
 	self owner addMorphBack:
-			(FButton model: model label: (self iconNamed: #delete) asMorph action: #removeSwapItem help: 'Remove' translated)
+			(FButton model: model label: (self iconNamed: #delete) asMorph action: #removeItem help: 'Remove' translated)
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderNewPaymentButton [
-	self commandPanel addMorphBack:
-		(FButton
-			model: model
-			label: (self iconNamed: #recentMessages) asMorph
-			action: #createAndOpenPayment
-			help: 'New Payment' translated).
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderNextLine [
+ASwapMorphRenderer >> renderNextLine [
 	| m |
 	m := Morph new extent: 0@0; setProperty: #cr toValue: true.
 	self owner addMorphBack: m
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderNumber [
+ASwapMorphRenderer >> renderNumber [
 	| m |
 	m := FText
 			on: model
@@ -175,7 +152,7 @@ AContractMorphRenderer >> renderNumber [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderOrganization [
+ASwapMorphRenderer >> renderOrganization [
 	| m |
 	m := FText
 			on: model

@@ -107,7 +107,8 @@ ASwapModel >> addAccount2: anArray [
 { #category : #actions }
 ASwapModel >> addItem [
 	self items updateOrAddAmount: 
-		(AAmountSwapBuilder new string: self editor; build).
+		self accountEditor makeSwap.
+	self changed: #itemsList with: self.
 ]
 
 { #category : #accessing }
@@ -176,8 +177,27 @@ ASwapModel >> date: anObject [
 ]
 
 { #category : #actions }
+ASwapModel >> downItem [
+	self items downAmount: (self accountEditor makeSwap).
+	self changed: #itemsList with: self.
+]
+
+{ #category : #actions }
 ASwapModel >> downItem: aSwap [
 	self items downAmount: aSwap.
+]
+
+{ #category : #accessing }
+ASwapModel >> firstName [
+	^ self number
+]
+
+{ #category : #initialization }
+ASwapModel >> initializeSelection: anAnnouncer [
+	anAnnouncer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n|
+								self accountEditor updateEditor: n item ] ].
 ]
 
 { #category : #accessing }
@@ -188,6 +208,77 @@ ASwapModel >> items [
 { #category : #accessing }
 ASwapModel >> items: someItems [
 	items := someItems.
+]
+
+{ #category : #accessing }
+ASwapModel >> itemsList [
+	| itemsList |
+	itemsList := FMorphTreeModel new.
+	
+	self initializeSelection: itemsList announcer. 
+	
+	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
+		c startWidth: 50.
+		v asString asMorph ].
+	
+	itemsList
+		columnLabel: 'Goodies' translated
+		selector: #yourself
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 300.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col inject: '' into: [ :sum :el| sum, el asString, ' ' ]  ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList
+		columnLabel: 'Sum' translated
+		selector: #swapAmount
+		morph: [ :v :c| 
+			c startWidth: 50.
+			v amount asString].
+		
+	itemsList
+		columnLabel: 'Goodies' translated, ' 2'
+		selector: #swapAmount
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 50.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col first asString ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList rootItems: self items amounts.
+	^ itemsList
+]
+
+{ #category : #rendering }
+ASwapModel >> morphController [
+	^ FDirectController new
+]
+
+{ #category : #rendering }
+ASwapModel >> morphRenderer [
+	^ ASwapMorphRenderer new
+]
+
+{ #category : #rendering }
+ASwapModel >> morphView [
+	^ self morphController
+			listen: #yourself from: self.
+]
+
+{ #category : #rendering }
+ASwapModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: (self number, '-', self organization, ' - ', self contractor, ' ', 'Swap' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
 ]
 
 { #category : #accessing }
@@ -242,7 +333,13 @@ ASwapModel >> organizationAccount: anObject [
 { #category : #actions }
 ASwapModel >> removeItem [
 	self  items amounts
-		remove: (self accountEditor makeSwap) ifAbsent: [  ]
+		remove: (self accountEditor makeSwap) ifAbsent: [  ].
+	self changed: #itemsList with: self.
+]
+
+{ #category : #accessing }
+ASwapModel >> secondName [
+	^ self contractor, ' - ', self organization
 ]
 
 { #category : #accessing }
@@ -254,6 +351,12 @@ ASwapModel >> selectionItem [
 ASwapModel >> selectionItem: anObject [
 	selectionItem := anObject.
 	self changed: #selectionItem.
+]
+
+{ #category : #actions }
+ASwapModel >> upItem [
+	self items upAmount: (self accountEditor makeSwap).
+	self changed: #itemsList with: self.
 ]
 
 { #category : #actions }

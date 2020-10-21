@@ -279,7 +279,7 @@ AContractModel >> initialize [
 		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n| self accountEditor updateEditor: n item ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 AContractModel >> initializeSelection: anAnnouncer [
 	anAnnouncer
 		when: MorphTreeSelectionChanged

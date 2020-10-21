@@ -47,6 +47,18 @@ ASwap >> asAmount [
 	^ inst
 ]
 
+{ #category : #printing }
+ASwap >> asSwap [
+	| sw |
+	sw := ASwap new.
+	sw amount: self amount.
+	sw addAll: self.
+	sw swapAmount
+		amount: (self swapAmount amount);
+		addAll: self swapAmount.
+	^ sw
+]
+
 { #category : #copying }
 ASwap >> clone [
 	| instance |

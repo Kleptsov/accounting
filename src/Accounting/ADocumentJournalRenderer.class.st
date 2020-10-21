@@ -24,11 +24,11 @@ ADocumentJournalRenderer >> render [
 { #category : #rendering }
 ADocumentJournalRenderer >> renderAddButton [
 	| m |
-	m := PluggableButtonMorph
-				on: model
-				getState: nil 
+	m := FButton
+				model: model
+				label: (self iconNamed: #smallAdd) asMorph
 				action: #addNewSelected
-				label: #addNewButtonName.
+				help: 'Add Document' translated.
 	panel addMorphBack: m.
 ]
 
@@ -45,11 +45,11 @@ ADocumentJournalRenderer >> renderCommandPanel [
 { #category : #rendering }
 ADocumentJournalRenderer >> renderRemoveButton [
 	| m |
-	m := PluggableButtonMorph
-				on: model
-				getState: nil 
+	m := FButton
+				model: model
+				label: (self iconNamed: #delete) asMorph
 				action: #removeSelected
-				label: #removeButtonName.
+				help: 'Remove Document' translated.
 	panel addMorphBack: m.
 	
 ]
