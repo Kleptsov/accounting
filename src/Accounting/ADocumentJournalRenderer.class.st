@@ -12,6 +12,8 @@ ADocumentJournalRenderer >> render [
 	self renderCommandPanel.
 	self renderAddButton.
 	self renderRemoveButton.
+	self renderUpButton.
+	self renderDownButton.
 	self render: #documents
 		with: [ :m| m setProperty: #relativeExtent toValue: 0.2@1.0. ]
 		finalize: [ :m| m model ifNotNil: [m model announcer unsubscribe: m]. ].
@@ -43,6 +45,17 @@ ADocumentJournalRenderer >> renderCommandPanel [
 ]
 
 { #category : #rendering }
+ADocumentJournalRenderer >> renderDownButton [
+	| m |
+	m := FButton
+				model: model
+				label: (self iconNamed: #down) asMorph
+				action: #downItem
+				help: 'Down Item' translated.
+	panel addMorphBack: m.
+]
+
+{ #category : #rendering }
 ADocumentJournalRenderer >> renderRemoveButton [
 	| m |
 	m := FButton
@@ -52,4 +65,15 @@ ADocumentJournalRenderer >> renderRemoveButton [
 				help: 'Remove Document' translated.
 	panel addMorphBack: m.
 	
+]
+
+{ #category : #rendering }
+ADocumentJournalRenderer >> renderUpButton [
+	| m |
+	m := FButton
+				model: model
+				label: (self iconNamed: #up) asMorph
+				action: #upItem
+				help: 'Up Item' translated.
+	panel addMorphBack: m.
 ]

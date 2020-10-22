@@ -51,6 +51,18 @@ ADocumentJournalModel >> documents: anObject [
 	self changed: #documents with: self.
 ]
 
+{ #category : #actions }
+ADocumentJournalModel >> downItem [
+	| index items |
+	items := self documents rootItems.
+	index := items indexOf: self document.
+	(index = items size or: [ index = 0 ])
+		ifTrue: [ ^ self ].
+	items at: index put: (items at: index + 1).
+	items at: index + 1 put: self document.
+	self changed: #documents with: self.
+]
+
 { #category : #initialization }
 ADocumentJournalModel >> initialize [
 	super initialize.
@@ -104,4 +116,16 @@ ADocumentJournalModel >> removeSelected [
 	self document delete.
 	self changed: #documents with: self.
 	self document: nil.
+]
+
+{ #category : #actions }
+ADocumentJournalModel >> upItem [
+	| index items |
+	items := self documents rootItems.
+	index := items indexOf: self document.
+	(index < 2)
+		ifTrue: [ ^ self ].
+	items at: index put: (items at: index - 1).
+	items at: index - 1 put: self document.
+	self changed: #documents with: self.
 ]
