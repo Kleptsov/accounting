@@ -101,6 +101,16 @@ APriceModel >> basePrice [
 	^ (self baseConvert: (AAmount new add: baseAmount; amount: 1)) amount
 ]
 
+{ #category : #accessing }
+APriceModel >> baseRelation [
+	| r r2 |
+	r := AAmount new add: self baseAmount; yourself.
+	r2 := self items like: r.
+	r2 ifNil: [ r2 := r. 	r2 amount: 1 ]
+		ifNotNil: [ r2 := r2 clone ].
+	^ r2
+]
+
 { #category : #copying }
 APriceModel >> clone [
 	| p |

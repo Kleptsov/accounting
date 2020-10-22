@@ -26,7 +26,11 @@ ASwapMorphRenderer >> render [
 	self renderNumber.
 	self renderDate.
 	self renderOrganization.
+	self renderOrganizationAccount.
+	self renderOrganizationAccount2.
 	self renderContractor.
+	self renderContractorAccount.
+	self renderContractorAccount2.
 	self renderAdditional.
 	self renderBarcode.
 	self renderNextLine.
@@ -101,6 +105,28 @@ ASwapMorphRenderer >> renderContractor [
 ]
 
 { #category : #rendering }
+ASwapMorphRenderer >> renderContractorAccount [
+	| m |
+	m := FText
+			on: model
+			label: 'Contractor Account' translated, ' 1'
+			selector: #contractorAccount.
+	m extent: 150@40.
+	self owner addMorphBack: m.
+]
+
+{ #category : #rendering }
+ASwapMorphRenderer >> renderContractorAccount2 [
+	| m |
+	m := FText
+			on: model
+			label: 'Contractor Account' translated, ' 2'
+			selector: #contractorAccount2.
+	m extent: 150@40.
+	self owner addMorphBack: m.
+]
+
+{ #category : #rendering }
 ASwapMorphRenderer >> renderCopyToClipboard [
 	self commandPanel addMorphBack:
 			(FButton
@@ -158,6 +184,28 @@ ASwapMorphRenderer >> renderOrganization [
 			on: model
 			label: 'Organization' translated
 			selector: #organization.
+	m extent: 150@40.
+	self owner addMorphBack: m.
+]
+
+{ #category : #rendering }
+ASwapMorphRenderer >> renderOrganizationAccount [
+	| m |
+	m := FText
+			on: model
+			label: 'Organization Account' translated, ' 1'
+			selector: #organizationAccount.
+	m extent: 150@40.
+	self owner addMorphBack: m.
+]
+
+{ #category : #rendering }
+ASwapMorphRenderer >> renderOrganizationAccount2 [
+	| m |
+	m := FText
+			on: model
+			label: 'Organization Account' translated, ' 2'
+			selector: #organizationAccount2.
 	m extent: 150@40.
 	self owner addMorphBack: m.
 ]

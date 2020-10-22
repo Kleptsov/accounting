@@ -93,8 +93,8 @@ AKassaCheckGlamour >> initializeBarcode [
 		andShow: [ :composite|
 			composite morph morph: [ :morphPresentation|
 					ALabeledText
-						on: model
-						label:(  'Selector' translated)
+						on: model accountEditor
+						label:('Selector' translated)
 						text: #barcode
 						accept: #barcode:
 						acceptAction: [ :v| morphPresentation selection: v asString ].
