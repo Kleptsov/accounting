@@ -1,5 +1,5 @@
 Class {
-	#name : #AContractMorphRenderer,
+	#name : #AInvoiceMorphRenderer,
 	#superclass : #FMorphRenderer,
 	#instVars : [
 		'commandPanel'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #rendering }
-AContractMorphRenderer >> commandPanel [
+AInvoiceMorphRenderer >> commandPanel [
 	^ commandPanel 	ifNil: [
 			commandPanel := Morph new
 				layoutPolicy: (FAbsoluteRelativeLayout new direction: #rightDown) ;
@@ -20,30 +20,29 @@ AContractMorphRenderer >> commandPanel [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> render [
+AInvoiceMorphRenderer >> render [
 	self commandPanel.
-	self renderCommandButtons.
+	self renderAccepted.
 	self renderNumber.
-	self renderAdditionalNumber.
+	self renderContractNumber.
 	self renderDate.
 	self renderNextLine.
 	self renderOrganization.
 	self renderContractor.
 	self renderNextLine.
+	self renderStore.
 	self renderReceiptName.
 	self renderCurrencyName.
-	self renderAdditional.
-	self renderBarcode.
 	self renderNextLine.
 	self render: #accountEditor with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
 	self renderNextLine.
 	self renderItemsButtons. self renderNextLine.
 	self render: #itemsList with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
-	^ self owner.
+	^ self owner
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderAccepted [
+AInvoiceMorphRenderer >> renderAccepted [
 	| m |
 	m := CheckboxMorph
 				on: model
@@ -55,71 +54,18 @@ AContractMorphRenderer >> renderAccepted [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderAddBarcodeButton [
-	self commandPanel addMorphBack:
-			((FButton
-				model: model accountEditor
-				label: (self iconNamed: #add) asMorph 
-				action: #addBarcode
-				help: 'Add Barcode' translated) color: Color transparent; yourself).
-
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderAdditional [
+AInvoiceMorphRenderer >> renderContractNumber [
 	| m |
 	m := FText
 			on: model
-			label: 'Additional' translated
-			selector: #additional.
+			label: 'Contract Number' translated
+			selector: #contractNumber.
 	m extent: 150@40.
 	self owner addMorphBack: m.
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderAdditionalNumber [
-	| m |
-	m := FText
-			on: model
-			label: 'Additional Number' translated
-			selector: #additionalNumber.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderAllChangingButton [
-	self commandPanel addMorphBack:
-		(FButton
-			model: model
-			label: (self iconNamed: #objects) asMorph
-			action: #morphViewAllChangingInWindow
-			help: 'Open All Changing of Document' translated).
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderBarcode [
-	| m |
-	m := FText
-			on: model accountEditor
-			label: 'Barcode' translated
-			selector: #barcode.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderCommandButtons [
-	self renderAccepted.
-	self renderAddBarcodeButton.
-	self renderCopyToClipboard.
-	self renderNewInvoiceButton.
-	self renderNewPaymentButton.
-	self renderAllChangingButton.
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderContractor [
+AInvoiceMorphRenderer >> renderContractor [
 	| m |
 	m := FText
 			on: model
@@ -130,17 +76,7 @@ AContractMorphRenderer >> renderContractor [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderCopyToClipboard [
-	self commandPanel addMorphBack:
-			(FButton
-				model: model items
-				label: (self iconNamed: #smallCopy) asMorph 
-				action: #copyToClipboard
-				help: 'Copy to Clipboard' translated).
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderCurrencyName [
+AInvoiceMorphRenderer >> renderCurrencyName [
 	| m |
 	m := FText
 			on: model
@@ -151,18 +87,18 @@ AContractMorphRenderer >> renderCurrencyName [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderDate [
+AInvoiceMorphRenderer >> renderDate [
 	| m |
 	m := FText
 			on: model
 			label: 'Date' translated
 			selector: #date.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self owner addMorphBack: m
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderItemsButtons [
+AInvoiceMorphRenderer >> renderItemsButtons [
 	self owner addMorphBack:
 			(FButton model: model label: (self iconNamed: #down) asMorph action: #downItem help: 'Down' translated).
 	self owner addMorphBack:
@@ -174,34 +110,14 @@ AContractMorphRenderer >> renderItemsButtons [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderNewInvoiceButton [
-	self commandPanel addMorphBack:
-		(FButton
-			model: model
-			label: (self iconNamed: #komitterSmalltalkhubRemote) asMorph
-			action: #createAndOpenInvoice
-			help: 'New Invoice' translated).
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderNewPaymentButton [
-	self commandPanel addMorphBack:
-		(FButton
-			model: model
-			label: '$'
-			action: #createAndOpenPayment
-			help: 'New Payment' translated).
-]
-
-{ #category : #rendering }
-AContractMorphRenderer >> renderNextLine [
+AInvoiceMorphRenderer >> renderNextLine [
 	| m |
 	m := Morph new extent: 0@0; setProperty: #cr toValue: true.
 	self owner addMorphBack: m
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderNumber [
+AInvoiceMorphRenderer >> renderNumber [
 	| m |
 	m := FText
 			on: model
@@ -212,7 +128,7 @@ AContractMorphRenderer >> renderNumber [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderOrganization [
+AInvoiceMorphRenderer >> renderOrganization [
 	| m |
 	m := FText
 			on: model
@@ -223,12 +139,23 @@ AContractMorphRenderer >> renderOrganization [
 ]
 
 { #category : #rendering }
-AContractMorphRenderer >> renderReceiptName [
+AInvoiceMorphRenderer >> renderReceiptName [
 	| m |
 	m := FText
 			on: model
 			label: 'Receipt Name' translated
 			selector: #receiptName.
+	m extent: 150@40.
+	self owner addMorphBack: m.
+]
+
+{ #category : #rendering }
+AInvoiceMorphRenderer >> renderStore [
+	| m |
+	m := FText
+			on: model
+			label: 'Store' translated
+			selector: #store.
 	m extent: 150@40.
 	self owner addMorphBack: m.
 ]

@@ -85,6 +85,7 @@ ATDictionary >> c [
 'Check Document Journal' -> { 'ru' -> 'Журнал кассовых чеков' } asDictionary.
 'Clone' -> { 'ru' -> 'Клонировать' } asDictionary.
 'Contract' -> { 'ru' -> 'Договор' } asDictionary.
+'Contract Changing' -> { 'ru' -> 'Изменения по контракту' } asDictionary.
 'Contract Journal' -> { 'ru' -> 'Журнал контрактов' } asDictionary.
 'Contract Number' -> { 'ru' -> 'Номер договора'} asDictionary.
 'Contract Report' -> { 'ru' -> 'Отчет по контрактам' } asDictionary.
@@ -230,18 +231,20 @@ ATDictionary >> n [
 
 { #category : #'accessing structure variables' }
 ATDictionary >> o [
-	^ { 
-'Organization' -> { 'ru' -> 'Организация' } asDictionary.
-'Obligation Contract Report' -> { 'ru' -> 'Отчет по обязательствам договора' } asDictionary.
-'Organizer' -> { 'ru' -> 'Органайзер' } asDictionary.
-'Organization Account' -> { 'ru' -> 'Счет организации' } asDictionary.
+	^ {
+'Opan All Changing of Document' -> { 'ru' -> 'Открыть все изменения контракта' } asDictionary.
 'Open Kassa' -> { 'ru' -> 'Открыть кассу' } asDictionary.
+'Obligation Contract Report' -> { 'ru' -> 'Отчет по обязательствам договора' } asDictionary.
+'Organization' -> { 'ru' -> 'Организация' } asDictionary.
+'Organization Account' -> { 'ru' -> 'Счет организации' } asDictionary.
+'Organizer' -> { 'ru' -> 'Органайзер' } asDictionary.
 	 } asDictionary
 ]
 
 { #category : #'accessing structure variables' }
 ATDictionary >> p [
 	^ { 
+'Payment' -> { 'ru' -> 'Платежка' } asDictionary.
 'Payment Journal' -> { 'ru' -> 'Журнал платежек' } asDictionary.
 'Price Account' -> { 'ru' -> 'Счет цен' } asDictionary.
 'Price Document Journal' -> { 'ru' -> 'Журнал документов цен' } asDictionary.
@@ -263,6 +266,7 @@ ATDictionary >> q [
 { #category : #'accessing structure variables' }
 ATDictionary >> r [
 	^ { 
+'Receipt Name' -> { 'ru' -> 'Название расписки' } asDictionary.
 'Request' -> { 'ru' -> 'Заявка' } asDictionary.
 'Retail' -> { 'ru' -> 'Розница' } asDictionary.
 'Report' -> { 'ru' -> 'Отчет' } asDictionary.

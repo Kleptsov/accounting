@@ -34,14 +34,21 @@ Class {
 		'organization',
 		'contractor',
 		'date',
-		'editor',
 		'items',
 		'store',
 		'selectionItem',
-		'accountEditor'
+		'accountEditor',
+		'itemsList',
+		'receiptName',
+		'currencyName'
 	],
 	#category : #'Accounting-Model'
 }
+
+{ #category : #'as yet unclassified' }
+AInvoiceModel class >> baseTitle [
+	^ 'Invoice' translated
+]
 
 { #category : #adding }
 AInvoiceModel class >> documents [
@@ -161,6 +168,17 @@ AInvoiceModel >> createTransfer [
 ]
 
 { #category : #accessing }
+AInvoiceModel >> currencyName [
+	^ currencyName ifNil: [ currencyName := '' ]
+]
+
+{ #category : #accessing }
+AInvoiceModel >> currencyName: anObject [
+	currencyName := anObject.
+	self changed: #currencyName.
+]
+
+{ #category : #accessing }
 AInvoiceModel >> date [
 	^ date ifNil: [ date := '' ]
 ]
@@ -172,8 +190,33 @@ AInvoiceModel >> date: anObject [
 ]
 
 { #category : #actions }
+AInvoiceModel >> downItem [
+	self items downAmount: (self accountEditor makeSwap).
+	self changed: #itemsList with: self.
+]
+
+{ #category : #actions }
 AInvoiceModel >> downItem: aSwap [
 	self items downAmount: aSwap.
+]
+
+{ #category : #accessing }
+AInvoiceModel >> firstName [
+	^ self number, ' - ', self contractNumber
+]
+
+{ #category : #initialization }
+AInvoiceModel >> initialize [
+	super initialize.
+	date := self today.
+]
+
+{ #category : #initialization }
+AInvoiceModel >> initializeSelection: anAnnouncer [
+	anAnnouncer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n|
+								self accountEditor updateEditor: n item ] ].
 ]
 
 { #category : #accessing }
@@ -184,6 +227,87 @@ AInvoiceModel >> items [
 { #category : #accessing }
 AInvoiceModel >> items: someItems [
 	items := someItems.
+]
+
+{ #category : #accessing }
+AInvoiceModel >> itemsList [
+	itemsList := FMorphTreeModel new.
+	
+	self initializeSelection: itemsList announcer. 
+	
+	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
+		c startWidth: 100.
+		v asString asMorph ].
+	
+	itemsList
+		columnLabel: 'Account' translated, ' 1'
+		selector: #yourself
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 200.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col first asString ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList
+		columnLabel: 'Account' translated, ' 2'
+		selector: #yourself
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 200.
+			col := v asOrderedCollection.
+			(col size > 1
+				ifTrue: [ col second asString ]
+				ifFalse: [ '' ]) asMorph ].
+			
+	itemsList
+		columnLabel: 'Price' translated
+		selector: #swapAmount
+		morph: [ :v :c | 
+			c startWidth: 100.
+			v amount asString asMorph ].
+		
+	itemsList
+		columnLabel: 'Currency' translated
+		selector: #swapAmount
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 50.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col first asString ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList rootItems: self items amounts.
+	^ itemsList
+]
+
+{ #category : #rendering }
+AInvoiceModel >> moprhController [
+	^ FDirectController new.
+]
+
+{ #category : #rendering }
+AInvoiceModel >> morphRenderer [
+	^ AInvoiceMorphRenderer new
+]
+
+{ #category : #rendering }
+AInvoiceModel >> morphView [
+	^ self moprhController
+			listen: #yourself from: self.
+]
+
+{ #category : #rendering }
+AInvoiceModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: (self number, '-', self organization, ' - ', self contractor, ' ', 'Invoice' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
 ]
 
 { #category : #accessing }
@@ -213,10 +337,39 @@ AInvoiceModel >> organization: anObject [
 	self changed: #organization.
 ]
 
+{ #category : #accessing }
+AInvoiceModel >> receiptName [
+	^ receiptName ifNil: [ receiptName := '' ]
+]
+
+{ #category : #accessing }
+AInvoiceModel >> receiptName: anObject [
+	receiptName := anObject.
+	self changed: #receiptName
+]
+
 { #category : #actions }
 AInvoiceModel >> removeItem [
 	self items amounts
-		remove: (self accountEditor currentSwap) ifAbsent: [ ]
+		remove: (self accountEditor currentSwap) ifAbsent: [ ].
+	self changed: #itemsList with: self.
+]
+
+{ #category : #actions }
+AInvoiceModel >> removeSwapItem [
+	self items amounts
+			remove: (self accountEditor makeSwap) ifAbsent: [ nil ].
+	self changed: #itemsList with: self.
+]
+
+{ #category : #accessing }
+AInvoiceModel >> secdondName [
+	^ self contractor, ' - ', self organization
+]
+
+{ #category : #accessing }
+AInvoiceModel >> secondName [
+	^ self contractor, ' - ', self organization
 ]
 
 { #category : #accessing }
@@ -242,6 +395,12 @@ AInvoiceModel >> store: anObject [
 ]
 
 { #category : #actions }
+AInvoiceModel >> upItem [
+	self items upAmount: (self accountEditor makeSwap).
+	self changed: #itemsList with: self.
+]
+
+{ #category : #actions }
 AInvoiceModel >> upItem: aSwap [
 	self items upAmount: aSwap.
 ]
@@ -252,4 +411,5 @@ AInvoiceModel >> updateOrAddSwapItem [
 	sw := self accountEditor makeSwap.
 	sw ifNil: [ ^ self ].
 	self items updateOrAddAmount: sw.
+	self changed: #itemsList with: self.
 ]

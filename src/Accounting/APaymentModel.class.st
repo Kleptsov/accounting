@@ -41,6 +41,11 @@ Class {
 }
 
 { #category : #adding }
+APaymentModel class >> baseTitle [
+	^ 'Payment' translated
+]
+
+{ #category : #adding }
 APaymentModel class >> documents [
 	^ self configClass payments2
 ]
@@ -145,6 +150,38 @@ APaymentModel >> firstAmount [
 ]
 
 { #category : #accessing }
+APaymentModel >> firstName [
+	^ self number, ' - ', self contractNumber
+]
+
+{ #category : #rendering }
+APaymentModel >> morphController [
+	^ FDirectController new
+]
+
+{ #category : #rendering }
+APaymentModel >> morphRenderer [
+	^ APaymentMorphRenderer new.
+]
+
+{ #category : #rendering }
+APaymentModel >> morphView [
+	^ self changed: #yourself with: self
+]
+
+{ #category : #rendering }
+APaymentModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: (self number, '-', self organization, ' - ', self contractor, ' ', 'Payment' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
+	
+]
+
+{ #category : #accessing }
 APaymentModel >> number [
 	^ number ifNil: [ number := '' ]
 ]
@@ -188,6 +225,11 @@ APaymentModel >> secondAmount [
 			amount: sum asNumber;
 			add: self currencyName;
 			yourself.
+]
+
+{ #category : #accessing }
+APaymentModel >> secondName [
+	^ self contractor, ' - ', self organization.
 ]
 
 { #category : #accessing }

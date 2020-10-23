@@ -35,10 +35,17 @@ Class {
 		'items',
 		'strongSelection',
 		'accountEditor',
-		'itemsList'
+		'itemsList',
+		'currencyName',
+		'receiptName'
 	],
 	#category : #'Accounting-Model'
 }
+
+{ #category : #'as yet unclassified' }
+AContractModel class >> baseTitle [
+	^ 'Contract' translated.
+]
 
 { #category : #adding }
 AContractModel class >> documents [
@@ -107,6 +114,19 @@ AContractModel >> additionalNumberPrefix [
 ]
 
 { #category : #actions }
+AContractModel >> allChanging [
+	| coll c c2 c3 |
+	coll := OrderedCollection new.
+	c := AConfig contracts2 select: [ :el| el number = self number ].
+	coll addAll: c.
+	c2 := AConfig invoices2 select: [ :el| el contractNumber = self number ].
+	coll addAll: c2.
+	c3 := AConfig payments2 select: [ :el| el contractNumber = self number ].
+	coll addAll: c3.
+	^ coll.
+]
+
+{ #category : #actions }
 AContractModel >> asCSV [
 	| writeStream |
 	writeStream := WriteStream on: ''.
@@ -140,10 +160,19 @@ AContractModel >> createAccounts [
 ]
 
 { #category : #actions }
+AContractModel >> createAndOpenInvoice [
+	| inv |
+	inv := self createInvoice.
+	inv morphViewInWindow.
+	^ inv
+]
+
+{ #category : #actions }
 AContractModel >> createAndOpenPayment [
 	| p |
 	p := self createPayment.
-	p open
+	p morphViewInWindow.
+	^ p.
 ]
 
 { #category : #actions }
@@ -190,6 +219,8 @@ AContractModel >> createInvoice [
 	inv organization: self organization.
 	inv contractor: self contractor.
 	inv contractNumber: self number.
+	inv receiptName: self receiptName.
+	inv currencyName: self currencyName.
 	inv items addAccount: self items.
 	^ inv
 ]
@@ -217,6 +248,8 @@ AContractModel >> createPayment [
 	p organization: self organization.
 	p contractor: self contractor.
 	p contractNumber: self number.
+	p receiptName: self receiptName.
+	p currencyName: self currencyName.
 	sum := self items amounts inject: 0 into: [ :s :each| s + each swapAmount amount ].
 	p sum: sum asString.
 	^ p
@@ -232,6 +265,17 @@ AContractModel >> createSeconds [
 	seconds add: (self monthPrefix, d monthIndex asString).
 	seconds add: (self dayPrefix, d dayOfMonth asString).
 	^ seconds
+]
+
+{ #category : #accessing }
+AContractModel >> currencyName [
+	^ currencyName ifNil: [ currencyName := '' ]
+]
+
+{ #category : #accessing }
+AContractModel >> currencyName: anObject [
+	currencyName := anObject.
+	self changed: #currencyName with: self.
 ]
 
 { #category : #accessing }
@@ -374,6 +418,25 @@ AContractModel >> morphView [
 ]
 
 { #category : #rendering }
+AContractModel >> morphViewAllChanging [
+	| m |
+	m := ADocumentJournalModel new.
+	m documents rootItems: self allChanging.
+	^ m morphView.
+]
+
+{ #category : #rendering }
+AContractModel >> morphViewAllChangingInWindow [
+	| m w |
+	m := self morphViewAllChanging.
+	w := StandardWindow new.
+	w title: ('Contract Changing' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m	
+]
+
+{ #category : #rendering }
 AContractModel >> morphViewInWindow [
 	| m w |
 	m := self morphView.
@@ -409,6 +472,17 @@ AContractModel >> organization [
 AContractModel >> organization: anObject [
 	organization := anObject.
 	self changed: #organization.
+]
+
+{ #category : #accessing }
+AContractModel >> receiptName [
+	^ receiptName ifNil: [ receiptName := '' ]
+]
+
+{ #category : #accessing }
+AContractModel >> receiptName: anObject [
+	receiptName := anObject.
+	self changed: #receiptName with: self.
 ]
 
 { #category : #actions }
