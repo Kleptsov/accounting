@@ -390,7 +390,7 @@ AContractModel >> itemsList [
 				ifFalse: [ col first asString ]
 				ifTrue: [ '' ]) asMorph ].
 			
-	itemsList rootItems: self items amounts.
+	itemsList rootItems: self items sortByPostTime.
 	^ itemsList
 ]
 

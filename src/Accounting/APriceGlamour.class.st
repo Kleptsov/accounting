@@ -158,7 +158,7 @@ APriceGlamour >> initializeBrowserActions [
 		entitled: 'Add Account 1' translated.
 	
 	browser
-		act: [ :p | (p pane port: #entity) value makeKassa open ]
+		act: [ :p | (p pane port: #entity) value makeKassa morphViewInWindow ]
 		icon: GLMUIThemeExtraIcons glamorousBrowse
 		entitled: 'Open Kassa' translated.
 	

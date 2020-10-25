@@ -199,6 +199,21 @@ APriceModel >> makeKassa [
 	^ kassa
 ]
 
+{ #category : #rendering }
+APriceModel >> morphViewKassa [
+	| k |
+	k := self makeKassa.
+	^ k morphController
+			listen: #yourself from: k.
+]
+
+{ #category : #rendering }
+APriceModel >> morphViewKassaInWindow [
+	| k |
+	k := self makeKassa.
+	k morphViewInWindow.
+]
+
 { #category : #accessing }
 APriceModel >> number [
 	^ number ifNil: [ number := '' ]

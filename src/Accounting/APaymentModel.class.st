@@ -182,7 +182,6 @@ APaymentModel >> morphViewInWindow [
 	w addMorph: m frame: LayoutFrame new.
 	w open.
 	^ m
-	
 ]
 
 { #category : #accessing }

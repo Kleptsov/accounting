@@ -38,7 +38,8 @@ Class {
 		'currency',
 		'clientSum',
 		'accountEditor',
-		'barcode'
+		'barcode',
+		'priceFormer'
 	],
 	#category : #'Accounting-Model'
 }
@@ -78,6 +79,21 @@ AKassaModel >> accountEditor: anAccountEditor [
 	accountEditor := anAccountEditor
 ]
 
+{ #category : #action }
+AKassaModel >> addGoods [
+	self priceFormer destination
+		ifNotNil: [ :el| 
+			self items addAmount: el.
+			self accountEditor updateEditor: el.
+			barcode := ''.
+			self
+				changed: #itemsList with: self;
+				changed: #sum;
+				changed: #change;
+				changed: #clientSum;
+				changed: #barcode].
+]
+
 { #category : #operations }
 AKassaModel >> addItem [
 	| a div |
@@ -89,12 +105,17 @@ AKassaModel >> addItem [
 	self changeResult.
 ]
 
-{ #category : #operations }
-AKassaModel >> addNewGoodies [
-	| sw |
-	sw := self accountEditor makeSwap.
-	self items addAmount: sw.
-	self changed: #sum
+{ #category : #accessing }
+AKassaModel >> barcode [
+	^ barcode ifNil: [ barcode := '' ]
+]
+
+{ #category : #accessing }
+AKassaModel >> barcode: aBarcode [
+	barcode := aBarcode.
+	self priceFormer barcode: aBarcode.
+	self addGoods.
+	self changed: #barcode.
 ]
 
 { #category : #operations }
@@ -218,17 +239,8 @@ AKassaModel >> currency [
 { #category : #accessing }
 AKassaModel >> currency: anObject [
 	currency := anObject.
+	self priceFormer currency: currency.
 	self changed: #currency
-]
-
-{ #category : #operations }
-AKassaModel >> currencyRelation [
-	| a p |
-	a := AAccount new add: self currency; yourself.
-	p := self pricesAccount.
-	(p amounts like: a)
-		ifNil: [ ^ 1 ]
-		ifNotNil: [ :acc| ^ acc amount ].
 ]
 
 { #category : #accessing }
@@ -242,13 +254,12 @@ AKassaModel >> date: anObject [
 	self changed: #date
 ]
 
-{ #category : #operations }
-AKassaModel >> goodsRelation: anAccount [
-	| p |
-	p := self pricesAccount.
-	(p amounts like: anAccount)
-		ifNil: [ ^ nil ]
-		ifNotNil: [ :acc| ^ acc amount ].
+{ #category : #initialization }
+AKassaModel >> initializeSelection: anAnnouncer [
+	anAnnouncer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n|
+								self accountEditor updateEditor: n item ] ].
 ]
 
 { #category : #accessing }
@@ -261,23 +272,48 @@ AKassaModel >> items: anObject [
 	items := anObject
 ]
 
-{ #category : #operations }
-AKassaModel >> makeCurrency: somePrices [
-	| cur |
-	cur := somePrices amounts like: (AAccount new add: self currency; yourself).
-	^ cur.
+{ #category : #accessing }
+AKassaModel >> itemsList [
+	| itemsList |
+	itemsList := FMorphTreeModel new.
 	
-]
-
-{ #category : #operations }
-AKassaModel >> makePrices [
-	| acc prices |
-	acc :=  AAccount new
-			add: self priceAccount;
-			add: self organization;
-			yourself.
-	prices := self accounts select: acc.
-	^ prices
+	self initializeSelection: itemsList announcer. 
+	
+	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
+		c startWidth: 50.
+		v asString asMorph ].
+	
+	itemsList
+		columnLabel: 'Goodies' translated
+		selector: #yourself
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 300.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col inject: '' into: [ :sum :el| sum, el asString, ' ' ]  ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList
+		columnLabel: 'Sum' translated
+		selector: #swapAmount
+		morph: [ :v :c| 
+			c startWidth: 50.
+			v amount asString].
+		
+	itemsList
+		columnLabel: 'Goodies' translated, ' 2'
+		selector: #swapAmount
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 50.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col first asString ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList rootItems: self items amounts.
+	^ itemsList
 ]
 
 { #category : #operations }
@@ -289,6 +325,33 @@ AKassaModel >> minusItem [
 	a swapAmount amount: (a swapAmount amount / div) asFloat.
 	self items difAmount: a.
 	self changeResult.
+]
+
+{ #category : #rendering }
+AKassaModel >> morphController [
+	^ FDirectController new.
+]
+
+{ #category : #rendering }
+AKassaModel >> morphRenderer [
+	^ AKassaMorphRenderer new
+]
+
+{ #category : #rendering }
+AKassaModel >> morphView [
+	^ self morphController
+			listen: #yourself from: self.
+]
+
+{ #category : #rendering }
+AKassaModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: (self number, ' ', 'Payment' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
 ]
 
 { #category : #accessing }
@@ -315,6 +378,7 @@ AKassaModel >> organization [
 { #category : #accessing }
 AKassaModel >> organization: anObject [
 	organization := anObject.
+	self priceFormer organization: organization.
 	self changed: #organization
 ]
 
@@ -326,33 +390,17 @@ AKassaModel >> priceAccount [
 { #category : #accessing }
 AKassaModel >> priceAccount: anObject [
 	priceAccount := anObject.
+	self priceFormer priceAccount: anObject.
 	self changed: #priceAccount
 ]
 
-{ #category : #operations }
-AKassaModel >> priceFor: anObject [
-	| prices priceGoods cur sum goods |
-	prices := self makePrices.
-	priceGoods := prices amounts like: anObject.
-	priceGoods ifNil: [ self inform: 'price not found'. ^ false ].
-	cur := self makeCurrency: prices.
-	cur ifNil: [ self inform: 'currency not found'. ^ false ].
-	sum := (cur amount / priceGoods amount) asFloat.
-	goods := anObject clone swapAmount: (cur clone amount: sum); amount: 1.
-	self items addAmount: goods.
-	self inform: 'Added'.
-	^ true.
-	
-]
-
 { #category : #accessing }
-AKassaModel >> pricesAccount [
-	| pt |
-	pt := AAccount new
-		add: self organization;
-		add: self priceAccount;
-		yourself.
-	^ AConfig accounts select: pt.
+AKassaModel >> priceFormer [
+	^ priceFormer ifNil: [ 
+		priceFormer := APriceFormer new
+			currency: self currency;
+			organization: self organization;
+			yourself ]
 ]
 
 { #category : #operations }
@@ -401,23 +449,4 @@ AKassaModel >> sum [
 { #category : #accessing }
 AKassaModel >> sum: aSum [
 	self changed: #sum
-]
-
-{ #category : #operations }
-AKassaModel >> updateAccountItems [
-	| sw |
-	sw := super updateAccountItems.
-	sw isEmpty ifTrue: [ ^ self ].
-	sw := sw asSwap.
-	(self goodsRelation: sw) ifNil: [ ^ self ]
-		ifNotNil: [ :s| sw amount: s ].
-	sw swapAmount amount: self currencyRelation.
-	sw swapAmount amount: (sw swapAmount amount / sw amount).
-	sw amount: 1.
-	sw swapAmount add: self currency.
-	self items addAmount: sw.
-	self accountEditor updateEditor: sw.
-	self changed: #sum.
-	barcode := ''. self changed: #barcode.
-	^ sw
 ]

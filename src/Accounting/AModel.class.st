@@ -23,7 +23,8 @@ Class {
 		'answer',
 		'process',
 		'savedAccounts',
-		'title'
+		'title',
+		'announcer'
 	],
 	#category : #'Accounting-Model'
 }
@@ -135,6 +136,16 @@ AModel >> additional [
 { #category : #accessing }
 AModel >> additional: anObject [
 	additional := anObject
+]
+
+{ #category : #accessing }
+AModel >> announcer [
+	^ announcer ifNil: [ announcer := Announcer new ]
+]
+
+{ #category : #accessing }
+AModel >> announcer: anObject [
+	announcer := anObject
 ]
 
 { #category : #actions }

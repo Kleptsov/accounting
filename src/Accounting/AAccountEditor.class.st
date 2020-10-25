@@ -13,7 +13,8 @@ Class {
 		'currencyItem3',
 		'currentSwap',
 		'currencyItem4',
-		'barcode'
+		'barcode',
+		'announcer'
 	],
 	#category : #'Accounting-Model'
 }
@@ -86,6 +87,16 @@ AAccountEditor >> amountItem [
 AAccountEditor >> amountItem: anObject [
 	amountItem := anObject.
 	self changed: #amountItem
+]
+
+{ #category : #accessing }
+AAccountEditor >> announcer [
+	^ announcer ifNil: [ announcer := Announcer new ]
+]
+
+{ #category : #accessing }
+AAccountEditor >> announcer: anObject [
+	announcer := anObject
 ]
 
 { #category : #accessing }
