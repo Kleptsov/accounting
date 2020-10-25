@@ -75,6 +75,16 @@ ATransferModel >> accept [
 	^ accs
 ]
 
+{ #category : #accessing }
+ATransferModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+ATransferModel >> accountEditor: anObject [
+	accountEditor := anObject
+]
+
 { #category : #actions }
 ATransferModel >> addAccount1: anArray [
 	anArray ifNil: [ ^ self ].

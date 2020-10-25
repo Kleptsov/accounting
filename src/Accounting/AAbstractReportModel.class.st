@@ -20,6 +20,14 @@ Class {
 	#category : #'Accounting-Report'
 }
 
+{ #category : #rendering }
+AAbstractReportModel class >> morphViewInWindow [
+	| r |
+	r := self new.
+	r morphViewInWindow.
+	^ r.
+]
+
 { #category : #configuration }
 AAbstractReportModel >> accounts [
 	^ self configClass accounts

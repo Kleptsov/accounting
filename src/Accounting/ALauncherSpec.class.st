@@ -95,7 +95,7 @@ ALauncherSpec >> subContractMenu [
 			group addItem: [ :item|
 				item name: 'Payment Journal' translated; action: [ (ADocumentJournalModel on: AConfig payments2) morphViewInWindow ] ].
 			group addItem: [ :item|
-				item name: 'Contract Report' translated; action: [ ACommonContractReportGlamour2 openOn: 1 ] ].
+				item name: 'Contract Report' translated; action: [ AContractReportModel morphViewInWindow ] ].
 		]
 ]
 
@@ -119,7 +119,7 @@ ALauncherSpec >> subReportMenu [
 			group addItem: [ :item|
 				item name: 'Common Report' translated; action: [ ACommonReportModel new open. ] ].
 			group addItem: [ :item|
-				item name: 'Contract Report' translated; action: [ ACommonContractReportGlamour2 openOn: 1 ] ].
+				item name: 'Contract Report' translated; action: [ AContractReportModel morphViewInWindow ] ].
 			group addItem: [ :item|
 				item name: 'Request Report' translated; action: [ ARequestReportGlamour openOn: ARequestReportModel new ] ].
 			group addItem: [ :item|
@@ -148,8 +148,8 @@ ALauncherSpec >> subRequestMenu [
 ALauncherSpec >> subRetailMenu [
 	^ MenuModel new
 		addGroup: [ :group|
-			group addItem: [ :item|
-				item name: 'Dictionary' translated; action: [ ADictionaryGlamour openOn: ADictionaryModel new ] ].
+			"group addItem: [ :item|
+				item name: 'Dictionary' translated; action: [ ADictionaryGlamour openOn: ADictionaryModel new ] ]."
 			group addItem: [ :item|
 				item name: 'Kassa' translated; action: [ AKassaModel openNew. ] ].
 			group addItem: [ :item|

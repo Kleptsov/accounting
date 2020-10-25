@@ -93,6 +93,16 @@ ARecordingOfModel >> account3: anObject [
 ]
 
 { #category : #accessing }
+ARecordingOfModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+ARecordingOfModel >> accountEditor: anObject [
+	accountEditor := anObject
+]
+
+{ #category : #accessing }
 ARecordingOfModel >> accountItem1 [
 	^ accountItem1 ifNil: [ accountItem1 := '' ]
 ]
