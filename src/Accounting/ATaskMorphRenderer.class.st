@@ -2,26 +2,26 @@ Class {
 	#name : #ATaskMorphRenderer,
 	#superclass : #FMorphRenderer,
 	#instVars : [
-		'commandMorph'
+		'commandPanel'
 	],
 	#category : #'Accounting-GUI-Facing'
 }
 
 { #category : #accessing }
-ATaskMorphRenderer >> commandMorph [
-	^ commandMorph 	ifNil: [
-			commandMorph := Morph new
+ATaskMorphRenderer >> commandPanel [
+	^ commandPanel 	ifNil: [
+			commandPanel := Morph new
 				layoutPolicy: (FAbsoluteRelativeLayout new direction: #rightDown) ;
 				color: Smalltalk ui theme baseColor;
 				extent: 10@20;
 				hResizing: #spaceFill.
-			self owner addMorphBack: commandMorph.
-			commandMorph ]
+			self owner addMorphBack: commandPanel.
+			commandPanel ]
 ]
 
 { #category : #rendering }
 ATaskMorphRenderer >> render [
-	self commandMorph.
+	self commandPanel.
 	self renderAccepted.
 	self renderCompleteTaskButton.
 	self renderNumber.
@@ -41,9 +41,9 @@ ATaskMorphRenderer >> renderAccepted [
 				on: model
 				selected: #accepted
 				changeSelected: #accepted:.
-	m label: 'Accept' translated.
-	m extent: 100@20.
-	self commandMorph addMorphBack: m.
+	m extent: 20@20.
+	self commandPanel addMorphBack: m.
+	self commandPanel addMorphBack: (model class baseTitle translated asMorph).
 ]
 
 { #category : #rendering }
@@ -76,7 +76,7 @@ ATaskMorphRenderer >> renderCompleteTaskButton [
 				getState: nil 
 				action: #createAndOpenExecuteTask
 				label: #completeTaskButtonName.
-	self commandMorph addMorphBack: m.
+	self commandPanel addMorphBack: m.
 ]
 
 { #category : #rendering }

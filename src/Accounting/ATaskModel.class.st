@@ -37,6 +37,11 @@ Class {
 }
 
 { #category : #adding }
+ATaskModel class >> baseTitle [
+	^ 'Task' translated
+]
+
+{ #category : #adding }
 ATaskModel class >> documents [
 	^ self configClass taskJournal
 ]

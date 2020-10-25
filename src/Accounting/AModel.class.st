@@ -172,7 +172,7 @@ AModel >> dayPrefix [
 
 { #category : #actions }
 AModel >> delete [
-	self cancelAccepted.
+	self accepted: false.
 	self class documents remove: self ifAbsent: [  ].
 ]
 

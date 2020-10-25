@@ -58,13 +58,16 @@ APaymentModel class >> nextIndex [
 { #category : #actions }
 APaymentModel >> accept [
 	| s t |
-	t := Time millisecondsToRun: 
-	[self cancelAccepted.
-	s := self buildSwap.
-	self accounts addAll: s.
-	self savedAccounts: s].
-	self log: self number asString, ' payment is saved. Milliseconds to run: ', t asString, String cr.
-	^ s.
+	t := Time
+		millisecondsToRun: [ self cancelAccepted.
+			s := self buildSwap.
+			self accounts addAll: s.
+			self savedAccounts: s ].
+	self
+		trace:
+			self number asString , ' payment is saved. Milliseconds to run: '
+				, t asString , String cr.
+	^ s
 ]
 
 { #category : #actions }
@@ -132,7 +135,7 @@ APaymentModel >> currencyName: anObject [
 
 { #category : #accessing }
 APaymentModel >> date [
-	^ date ifNil: [ date := '' ]
+	^ date ifNil: [ date := self today ]
 ]
 
 { #category : #accessing }
@@ -166,7 +169,8 @@ APaymentModel >> morphRenderer [
 
 { #category : #rendering }
 APaymentModel >> morphView [
-	^ self changed: #yourself with: self
+	^ self morphController
+		listen: #yourself from: self.
 ]
 
 { #category : #rendering }

@@ -224,7 +224,7 @@ AAccount >> removeAmount: anAmount [
 AAccount >> removeEmptyAmounts [
 	| emptyAmounts |
 	emptyAmounts := amounts select: [:a|
-		a amount = 0	].
+		a amount = 0	 or: [ a amount < 0.0001 and: [ a amount > -0.0001 ] ] ].
 	emptyAmounts do: [ :a| amounts remove: a ].
 ]
 

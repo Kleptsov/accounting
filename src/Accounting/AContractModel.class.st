@@ -115,7 +115,7 @@ AContractModel >> additionalNumberPrefix [
 
 { #category : #actions }
 AContractModel >> allChanging [
-	| coll c c2 c3 |
+	| coll c c2 c3 report |
 	coll := OrderedCollection new.
 	c := AConfig contracts2 select: [ :el| el number = self number ].
 	coll addAll: c.
@@ -123,6 +123,12 @@ AContractModel >> allChanging [
 	coll addAll: c2.
 	c3 := AConfig payments2 select: [ :el| el contractNumber = self number ].
 	coll addAll: c3.
+	report := AContractReportModel new
+		contractNumber: self number;
+		organization: self organization;
+		makeReport;
+		yourself.
+	coll add: report.
 	^ coll.
 ]
 
@@ -180,6 +186,7 @@ AContractModel >> createContractorAccount [
 	| a d addNumber |
 	a := AAccount new.
 	a add: self numberPrefix, self number.
+	a add: self contractName.
 	a add: self contractor.
 	addNumber := self additionalNumber = '' ifTrue: [ '0' ] ifFalse: [ self additionalNumber ].
 	a add: AConfig additionalNumberPrefix, addNumber.
@@ -187,7 +194,7 @@ AContractModel >> createContractorAccount [
 	a add: (self yearPrefix, d year asString).
 	a add: (self monthPrefix, d monthIndex asString).
 	a add: (self dayPrefix, d dayOfMonth asString).
-	self items amounts do: [ :el| a addAmount: (el swapAmount clone) ].
+	self items amounts do: [ :el| a difAmount: (el swapAmount clone) ].
 	^ a.
 ]
 
@@ -216,12 +223,14 @@ AContractModel >> createFirsts [
 AContractModel >> createInvoice [
 	| inv |
 	inv := AInvoiceModel addNew.
-	inv organization: self organization.
-	inv contractor: self contractor.
-	inv contractNumber: self number.
-	inv receiptName: self receiptName.
-	inv currencyName: self currencyName.
+	inv
+		organization: self organization;
+		contractor: self contractor;
+		contractNumber: self number;
+		receiptName: self receiptName;
+	currencyName: self currencyName.
 	inv items addAccount: self items.
+	inv changeReceipt.
 	^ inv
 ]
 
@@ -230,6 +239,7 @@ AContractModel >> createOrganizationAccount [
 	| a d addNumber |
 	a := AAccount new.
 	a add: self numberPrefix, self number.
+	a add: self contractName.
 	a add: self organization.
 	addNumber := self additionalNumber = '' ifTrue: [ '0' ] ifFalse: [ self additionalNumber ].
 	a add: AConfig additionalNumberPrefix, addNumber.
@@ -237,7 +247,7 @@ AContractModel >> createOrganizationAccount [
 	a add: (self yearPrefix, d year asString).
 	a add: (self monthPrefix, d monthIndex asString).
 	a add: (self dayPrefix, d dayOfMonth asString).
-	self items amounts do: [ :el| a addAmount: el asAmount clone].
+	self items amounts do: [ :el| a difAmount: el asAmount clone].
 	^ a.
 ]
 
@@ -348,36 +358,25 @@ AContractModel >> itemsList [
 	self initializeSelection: itemsList announcer. 
 	
 	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
-		c startWidth: 100.
+		c startWidth: 50.
 		v asString asMorph ].
 	
 	itemsList
-		columnLabel: 'Account' translated, ' 1'
+		columnLabel: 'Goodies' translated
 		selector: #yourself
 		morph: [ :v :c | 
 			| col |
-			c startWidth: 200.
+			c startWidth: 300.
 			col := v asOrderedCollection.
 			(col isEmpty
-				ifFalse: [ col first asString ]
+				ifFalse: [ col inject: '' into: [ :sum :el| sum, el asString, ' ' ]  ]
 				ifTrue: [ '' ]) asMorph ].
-			
-	itemsList
-		columnLabel: 'Account' translated, ' 2'
-		selector: #yourself
-		morph: [ :v :c | 
-			| col |
-			c startWidth: 200.
-			col := v asOrderedCollection.
-			(col size > 1
-				ifTrue: [ col second asString ]
-				ifFalse: [ '' ]) asMorph ].
 			
 	itemsList
 		columnLabel: 'Price' translated
 		selector: #swapAmount
 		morph: [ :v :c | 
-			c startWidth: 100.
+			c startWidth: 50.
 			v amount asString asMorph ].
 		
 	itemsList
@@ -385,7 +384,7 @@ AContractModel >> itemsList [
 		selector: #swapAmount
 		morph: [ :v :c | 
 			| col |
-			c startWidth: 50.
+			c startWidth: 100.
 			col := v asOrderedCollection.
 			(col isEmpty
 				ifFalse: [ col first asString ]
@@ -420,8 +419,7 @@ AContractModel >> morphView [
 { #category : #rendering }
 AContractModel >> morphViewAllChanging [
 	| m |
-	m := ADocumentJournalModel new.
-	m documents rootItems: self allChanging.
+	m := ADocumentJournalModel on: [ self allChanging ].
 	^ m morphView.
 ]
 

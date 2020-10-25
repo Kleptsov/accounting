@@ -6,7 +6,7 @@ Class {
 
 { #category : #rendering }
 ACompletedTaskRenderer >> render [
-	self commandMorph.
+	self commandPanel.
 	self renderAccepted.
 	self renderNumber.
 	self renderDate.

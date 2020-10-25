@@ -45,6 +45,11 @@ Class {
 }
 
 { #category : #adding }
+ASwapModel class >> baseTitle [
+	^ 'Swap' translated
+]
+
+{ #category : #adding }
 ASwapModel class >> documents [
 	^ self configClass swaps2
 ]

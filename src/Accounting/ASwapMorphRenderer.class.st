@@ -25,12 +25,15 @@ ASwapMorphRenderer >> render [
 	self renderCommandButtons.
 	self renderNumber.
 	self renderDate.
+	self renderNextLine.
 	self renderOrganization.
 	self renderOrganizationAccount.
 	self renderOrganizationAccount2.
+	self renderNextLine.
 	self renderContractor.
 	self renderContractorAccount.
 	self renderContractorAccount2.
+	self renderNextLine.
 	self renderAdditional.
 	self renderBarcode.
 	self renderNextLine.
@@ -48,9 +51,9 @@ ASwapMorphRenderer >> renderAccepted [
 				on: model
 				selected: #accepted
 				changeSelected: #accepted:.
-	m label: (self iconNamed: #smallOk) asMorph.
-	m extent: 50@20.
+	m extent: 20@20.
 	self commandPanel addMorphBack: m.
+	self commandPanel addMorphBack: (model class baseTitle translated asMorph).
 ]
 
 { #category : #rendering }

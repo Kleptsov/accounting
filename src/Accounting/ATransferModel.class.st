@@ -44,6 +44,11 @@ Class {
 }
 
 { #category : #adding }
+ATransferModel class >> baseTitle [
+	^ 'Transfer' translated
+]
+
+{ #category : #adding }
 ATransferModel class >> documents [
 	^ self configClass transfers
 ]

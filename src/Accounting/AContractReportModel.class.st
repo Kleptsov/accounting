@@ -33,10 +33,22 @@ Class {
 		'year',
 		'organization',
 		'report',
-		'selectedItem'
+		'selectedItem',
+		'itemsList',
+		'accountEditor'
 	],
 	#category : #'Accounting-Report'
 }
+
+{ #category : #accessing }
+AContractReportModel >> accountEditor [
+	^ accountEditor ifNil: [ accountEditor := AAccountEditor new ]
+]
+
+{ #category : #accessing }
+AContractReportModel >> accountEditor: anObject [
+	accountEditor := anObject
+]
 
 { #category : #actions }
 AContractReportModel >> addAccount1: anArray [
@@ -103,24 +115,65 @@ AContractReportModel >> day: anObject [
 	self changed: #day
 ]
 
+{ #category : #accessing }
+AContractReportModel >> firstName [
+	^ ''
+]
+
+{ #category : #initialization }
+AContractReportModel >> initializeSelection: anAnnouncer [
+	anAnnouncer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n|
+								self accountEditor updateEditor: n item ] ].
+]
+
+{ #category : #accessing }
+AContractReportModel >> itemsList [
+	itemsList := FMorphTreeModel new.
+	
+	self initializeSelection: itemsList announcer. 
+	
+	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
+		c startWidth: 50.
+		v asString asMorph ].
+	
+	itemsList
+		columnLabel: 'Goodies' translated
+		selector: #yourself
+		morph: [ :v :c | 
+			| col |
+			c startWidth: 300.
+			col := v asOrderedCollection.
+			(col isEmpty
+				ifFalse: [ col inject: '' into: [ :sum :el| sum, el asString, ' ' ]  ]
+				ifTrue: [ '' ]) asMorph ].
+			
+	itemsList rootItems: self report amounts.
+	^ itemsList
+]
+
 { #category : #actions }
 AContractReportModel >> makeReport [
-	| q c i p t |
+	| q c t |
 	t := Time
-		millisecondsToRun: [ q := self queryContract.
+		millisecondsToRun: [
+			q := self queryContract.
 			c := self accounts select: q.
-			q := self queryInvoice.
+			"q := self queryInvoice.
 			i := self accounts select: q.
 			q := self queryPayment.
 			p := self accounts select: q.
 			c
 				addAccount: i;
-				addAccount: p.
-			report := c ].
+				addAccount: p."
+			c removeEmptyAmounts ].
+		report := c .
 	self
 		trace:
 			'A contract report is created. Milliseconds to run: ' , t asString
 				, String cr.
+	self changed: #itemsList with: self.
 	^ c
 ]
 
@@ -133,6 +186,33 @@ AContractReportModel >> month [
 AContractReportModel >> month: anObject [
 	month := anObject.
 	self changed: #month
+]
+
+{ #category : #rendering }
+AContractReportModel >> morphController [
+	^ FDirectController new
+]
+
+{ #category : #rendering }
+AContractReportModel >> morphRenderer [
+	^ AContractReportMorphRenderer new
+]
+
+{ #category : #rendering }
+AContractReportModel >> morphView [
+	^ self morphController
+			listen: #yourself from: self.
+]
+
+{ #category : #rendering }
+AContractReportModel >> morphViewInWindow [
+	| m w |
+	m := self morphView.
+	w := StandardWindow new.
+	w title: ('Contract Report' translated).
+	w addMorph: m frame: LayoutFrame new.
+	w open.
+	^ m
 ]
 
 { #category : #accessing }
@@ -150,8 +230,7 @@ AContractReportModel >> organization: anObject [
 AContractReportModel >> queryContract [
 	| query |
 	query := Set new.
-	query add: self organization.
-	query add: self contractObligationName.
+	(self organization = '') ifFalse: [ query add: self organization ].
 	(self contractNumber = '') ifFalse: [ query add: self numberPrefix, self contractNumber ].
 	(self additionalContractNumber = '') ifFalse: [ query add: self additionalNumberPrefix, self additionalContractNumber ].
 	(self year = '') ifFalse: [ query add: self yearPrefix, self year ].
@@ -198,6 +277,11 @@ AContractReportModel >> report [
 { #category : #accessing }
 AContractReportModel >> report: anObject [
 	report := anObject
+]
+
+{ #category : #accessing }
+AContractReportModel >> secondName [
+	^ 'Report' translated
 ]
 
 { #category : #accessing }

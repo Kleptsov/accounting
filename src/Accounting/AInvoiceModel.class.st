@@ -63,13 +63,16 @@ AInvoiceModel class >> nextIndex [
 { #category : #actions }
 AInvoiceModel >> accept [
 	| swaps t |
-	t := Time millisecondsToRun:
-	[self cancelAccepted.
-	swaps := self buildSwaps.
-	self accounts addAll: swaps.
-	self savedAccounts: swaps].
-	self log: self number asString, ' invoice is saved. Milliseconds to run: ', t asString, String cr.
-	^ swaps.
+	t := Time
+		millisecondsToRun: [ self cancelAccepted.
+			swaps := self buildSwaps.
+			self accounts addAll: swaps.
+			self savedAccounts: swaps ].
+	self
+		trace:
+			self number asString , ' invoice is saved. Milliseconds to run: '
+				, t asString , String cr.
+	^ swaps
 ]
 
 { #category : #accessing }
@@ -116,6 +119,15 @@ AInvoiceModel >> buildSwaps [
 	w swaps: self items.
 	w common addAll: (ADateTagsBuilder new date: self date; build).
 	^ w build.
+]
+
+{ #category : #actions }
+AInvoiceModel >> changeReceipt [
+	self receiptName = '' ifTrue: [ ^ self ].
+	self items amounts do: [ :el|
+		el swapAmount removeAll.
+		el swapAmount add: self receiptName ].
+	self changed: #itemsList with: self.
 ]
 
 { #category : #accessing }
@@ -236,36 +248,25 @@ AInvoiceModel >> itemsList [
 	self initializeSelection: itemsList announcer. 
 	
 	itemsList columnLabel: 'Count' translated selector: #amount morph: [:v :c|
-		c startWidth: 100.
+		c startWidth: 50.
 		v asString asMorph ].
 	
 	itemsList
-		columnLabel: 'Account' translated, ' 1'
+		columnLabel: 'Goodies' translated
 		selector: #yourself
 		morph: [ :v :c | 
 			| col |
-			c startWidth: 200.
+			c startWidth: 300.
 			col := v asOrderedCollection.
 			(col isEmpty
-				ifFalse: [ col first asString ]
+				ifFalse: [ col inject: '' into: [ :sum :el| sum, el asString, ' ' ]  ]
 				ifTrue: [ '' ]) asMorph ].
-			
-	itemsList
-		columnLabel: 'Account' translated, ' 2'
-		selector: #yourself
-		morph: [ :v :c | 
-			| col |
-			c startWidth: 200.
-			col := v asOrderedCollection.
-			(col size > 1
-				ifTrue: [ col second asString ]
-				ifFalse: [ '' ]) asMorph ].
 			
 	itemsList
 		columnLabel: 'Price' translated
 		selector: #swapAmount
 		morph: [ :v :c | 
-			c startWidth: 100.
+			c startWidth: 50.
 			v amount asString asMorph ].
 		
 	itemsList
@@ -273,7 +274,7 @@ AInvoiceModel >> itemsList [
 		selector: #swapAmount
 		morph: [ :v :c | 
 			| col |
-			c startWidth: 50.
+			c startWidth: 100.
 			col := v asOrderedCollection.
 			(col isEmpty
 				ifFalse: [ col first asString ]

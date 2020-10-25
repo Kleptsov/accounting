@@ -14,6 +14,7 @@ ADocumentJournalRenderer >> render [
 	self renderRemoveButton.
 	self renderUpButton.
 	self renderDownButton.
+	self renderUpdateModelButton.
 	self render: #documents
 		with: [ :m| m setProperty: #relativeExtent toValue: 0.2@1.0. ]
 		finalize: [ :m| m model ifNotNil: [m model announcer unsubscribe: m]. ].
@@ -75,5 +76,16 @@ ADocumentJournalRenderer >> renderUpButton [
 				label: (self iconNamed: #up) asMorph
 				action: #upItem
 				help: 'Up Item' translated.
+	panel addMorphBack: m.
+]
+
+{ #category : #rendering }
+ADocumentJournalRenderer >> renderUpdateModelButton [
+	| m |
+	m := FButton
+				model: model
+				label: (self iconNamed: #smallUpdate) asMorph
+				action: #updateModel
+				help: 'Update' translated.
 	panel addMorphBack: m.
 ]

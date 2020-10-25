@@ -106,7 +106,9 @@ AInvoiceMorphRenderer >> renderItemsButtons [
 	self owner addMorphBack:
 			(FButton model: model label: (self iconNamed: #smallAdd) asMorph action: #updateOrAddSwapItem help: 'Add' translated).
 	self owner addMorphBack:
-			(FButton model: model label: (self iconNamed: #delete) asMorph action: #removeSwapItem help: 'Remove' translated)
+			(FButton model: model label: (self iconNamed: #delete) asMorph action: #removeSwapItem help: 'Remove' translated).
+	self owner addMorphBack:
+			(FButton model: model label: (self iconNamed: #recoverLostChanges) asMorph action: #changeReceipt help: 'Change Receipt translated').
 ]
 
 { #category : #rendering }

@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'documents',
-		'document'
+		'document',
+		'source'
 	],
 	#category : #'Accounting-Model'
 }
@@ -12,7 +13,7 @@ Class {
 ADocumentJournalModel class >> on: aDocumentList [
 	| journal |
 	journal := self new.
-	journal documents rootItems: aDocumentList.
+	journal on: aDocumentList.
 	^ journal.
 ]
 
@@ -26,7 +27,7 @@ ADocumentJournalModel >> addNewSelected [
 	(self document class respondsTo: #addNew)
 			ifFalse: [ ^ self ].
 	self document: self document class addNew.
-	self changed: #documents with: self.
+	self documents: nil.
 ]
 
 { #category : #accessing }
@@ -42,7 +43,8 @@ ADocumentJournalModel >> document: anObject [
 
 { #category : #accessing }
 ADocumentJournalModel >> documents [
-	^ documents ifNil: [ self initializeDocuments. documents ]
+	self initializeDocuments.
+	^ documents
 ]
 
 { #category : #accessing }
@@ -64,18 +66,14 @@ ADocumentJournalModel >> downItem [
 ]
 
 { #category : #initialization }
-ADocumentJournalModel >> initialize [
-	super initialize.
-	self documents announcer
-		when: MorphTreeSelectionChanged
-		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n| self document: n item ] ]
-]
-
-{ #category : #initialization }
 ADocumentJournalModel >> initializeDocuments [
 	documents := FMorphTreeModel new.
 	(documents columnLabel: '#' selector: #firstName) startWidth: 50.
 	documents columnLabel: '' selector: #secondName.
+	documents rootItems: ( source isBlock ifTrue: [ source value ] ifFalse: [ source ] ).
+	documents announcer
+		when: MorphTreeSelectionChanged
+		do: [ :a | (a selection lastSelectedNode) ifNotNil: [ :n| self document: n item ] ]
 ]
 
 { #category : #rendering }
@@ -104,6 +102,12 @@ ADocumentJournalModel >> morphViewInWindow [
 	^ m
 ]
 
+{ #category : #initialization }
+ADocumentJournalModel >> on: aCollectionOrBlock [
+	source := aCollectionOrBlock.
+	self initializeDocuments.
+]
+
 { #category : #accessing }
 ADocumentJournalModel >> removeButtonName [
 	^ 'Remove' translated
@@ -114,8 +118,18 @@ ADocumentJournalModel >> removeSelected [
 	(self document respondsTo: #delete)
 		ifFalse: [ ^ self ].
 	self document delete.
-	self changed: #documents with: self.
+	self documents: nil.
 	self document: nil.
+]
+
+{ #category : #accessing }
+ADocumentJournalModel >> source [
+	^ source ifNil: [ source := [ #() ] ]
+]
+
+{ #category : #accessing }
+ADocumentJournalModel >> source: anObject [
+	source := anObject
 ]
 
 { #category : #actions }
@@ -128,4 +142,9 @@ ADocumentJournalModel >> upItem [
 	items at: index put: (items at: index - 1).
 	items at: index - 1 put: self document.
 	self changed: #documents with: self.
+]
+
+{ #category : #actions }
+ADocumentJournalModel >> updateModel [
+	self documents: nil.
 ]
