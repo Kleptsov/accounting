@@ -38,6 +38,11 @@ Class {
 }
 
 { #category : #adding }
+AExecuteTaskModel class >> baseTitle [
+	^ 'Accepted Task' translated
+]
+
+{ #category : #adding }
 AExecuteTaskModel class >> documents [
 	^ self configClass executeTasks2
 ]

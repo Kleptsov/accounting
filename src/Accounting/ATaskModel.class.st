@@ -116,7 +116,7 @@ ATaskModel >> completeTaskButtonName [
 
 { #category : #actions }
 ATaskModel >> createAndOpenExecuteTask [
-	^ self createExecuteTask open.
+	self createExecuteTask morphViewInWindow.
 ]
 
 { #category : #actions }
