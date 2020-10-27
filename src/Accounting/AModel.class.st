@@ -148,6 +148,16 @@ AModel >> announcer: anObject [
 	announcer := anObject
 ]
 
+{ #category : #accessing }
+AModel >> answer [
+	^ answer ifNil: [ answer := [ :v| ] ].
+]
+
+{ #category : #accessing }
+AModel >> answer: anObject [
+	answer := anObject
+]
+
 { #category : #actions }
 AModel >> cancelAccepted [
 	| res |

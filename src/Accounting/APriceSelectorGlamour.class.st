@@ -129,7 +129,7 @@ APriceSelectorGlamour >> initializeBrowserActions [
 		entitled: 'Add Account 1' translated.
 
 	browser
-		act: [ :p | 	model answer: model selection. browser close ]
+		act: [ :p | 	model return. browser close ]
 		icon: Smalltalk ui icons glamorousUp
 		entitled: 'Return' translated.
 ]

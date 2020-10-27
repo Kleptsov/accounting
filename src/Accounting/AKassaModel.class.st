@@ -79,7 +79,7 @@ AKassaModel >> accountEditor: anAccountEditor [
 	accountEditor := anAccountEditor
 ]
 
-{ #category : #action }
+{ #category : #actions }
 AKassaModel >> addGoods [
 	self priceFormer destination
 		ifNotNil: [ :el| 
@@ -411,10 +411,16 @@ AKassaModel >> removeItem [
 
 { #category : #actions }
 AKassaModel >> searchItem [
-	| p |
-	[p := APriceSelectorModel new openModal.
-	p ifNil: [ ^ self ].
-	self accountEditor updateEditor: p] fork
+	| p m returnAnswer |
+	[
+		returnAnswer := AReturnAnswer new.
+		m := ABarcodeSelectorModel new.
+		m answer: returnAnswer.
+		m open.
+		p := returnAnswer waitAnswer.
+		self priceFormer source: p.
+		self addGoods.
+	] fork.
 ]
 
 { #category : #accessing }

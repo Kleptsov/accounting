@@ -81,7 +81,7 @@ ABarcodeSelectorModel >> removeItem [
 
 { #category : #accessing }
 ABarcodeSelectorModel >> return [
-	^ self answer: self accountEditor makeSwap swapAmount
+	^ self answer answer: self accountEditor makeSwap swapAmount.
 ]
 
 { #category : #accessing }

@@ -29,6 +29,8 @@ AKassaMorphRenderer >> nextLine [
 { #category : #rendering }
 AKassaMorphRenderer >> render [
 	self commandPanel.
+	self renderAddBarcodeButton.
+	self renderSelectItemButton.
 	self nextLine.
 	self renderBarcode.
 	self nextLine.
@@ -42,6 +44,16 @@ AKassaMorphRenderer >> render [
 	self render: #itemsList
 		with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
 	^ self owner
+]
+
+{ #category : #rendering }
+AKassaMorphRenderer >> renderAddBarcodeButton [
+	self commandPanel addMorphBack:
+			((FButton
+				model: model accountEditor
+				label: (self iconNamed: #add) asMorph 
+				action: #addBarcode
+				help: 'Add Barcode' translated) color: Color transparent; yourself).
 ]
 
 { #category : #rendering }
@@ -76,6 +88,16 @@ AKassaMorphRenderer >> renderClientSum [
 			selector: #clientSum.
 	m extent: 150@40.
 	self owner addMorphBack: m
+]
+
+{ #category : #rendering }
+AKassaMorphRenderer >> renderSelectItemButton [
+	self commandPanel addMorphBack:
+			((FButton
+				model: model
+				label: (self iconNamed: #smallFind) asMorph 
+				action: #searchItem
+				help: 'Search Item' translated) color: Color transparent; yourself).
 ]
 
 { #category : #rendering }
