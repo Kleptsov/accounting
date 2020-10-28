@@ -124,6 +124,7 @@ APriceGlamour >> initializeBrowser [
 	] size: 43.
 	browser row: [ :r|
 		r column: #organization.
+		r column: #store.
 		r column: #baseAmount ] size: 43.
 	browser row: [:r|
 		r column: #barcode span: 0.3.
@@ -259,6 +260,20 @@ APriceGlamour >> initializeOrganization [
 ]
 
 { #category : #initialization }
+APriceGlamour >> initializeStore [
+	(browser transmit) to: #store;
+		andShow: [ :composite|
+			composite morph morph: [ :morphPresentation|
+					ALabeledText
+						on: model
+						label:(  'Store' translated)
+						text: #store
+						accept: #store:
+						acceptAction: [ :v| morphPresentation selection: v asString ].
+		] ]
+]
+
+{ #category : #initialization }
 APriceGlamour >> initializeSumItem [
 	(browser transmit) to: #sumItem;
 		andShow: [ :composite|
@@ -287,6 +302,7 @@ APriceGlamour >> initializeTransmit [
 	self initializeCurrencyItem.
 	self initializeItems.
 	self initializeBaseAmount.
+	self initializeStore.
 ]
 
 { #category : #initialization }

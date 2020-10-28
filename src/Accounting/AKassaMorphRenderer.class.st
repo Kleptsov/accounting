@@ -31,6 +31,8 @@ AKassaMorphRenderer >> render [
 	self commandPanel.
 	self renderAddBarcodeButton.
 	self renderSelectItemButton.
+	self renderSettingsButton.
+	self renderNextCheckButton.
 	self nextLine.
 	self renderBarcode.
 	self nextLine.
@@ -40,6 +42,10 @@ AKassaMorphRenderer >> render [
 	self renderSum.
 	self renderClientSum.
 	self renderChange.
+	self nextLine.
+	self renderAddItemButton.
+	self renderMinusItemButton.
+	self renderRemoveItemButton.
 	self nextLine.
 	self render: #itemsList
 		with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
@@ -54,6 +60,16 @@ AKassaMorphRenderer >> renderAddBarcodeButton [
 				label: (self iconNamed: #add) asMorph 
 				action: #addBarcode
 				help: 'Add Barcode' translated) color: Color transparent; yourself).
+]
+
+{ #category : #rendering }
+AKassaMorphRenderer >> renderAddItemButton [
+	self owner addMorphBack:
+			((FButton
+				model: model
+				label: (self iconNamed: #smallAdd) asMorph
+				action: #addItem
+				help: 'Add Item' translated) color: Color transparent; yourself).
 ]
 
 { #category : #rendering }
@@ -91,6 +107,38 @@ AKassaMorphRenderer >> renderClientSum [
 ]
 
 { #category : #rendering }
+AKassaMorphRenderer >> renderMinusItemButton [
+	self owner addMorphBack:
+			((FButton
+				model: model
+				label: (self iconNamed: #remotesManagerRemoveRemote) asMorph
+				action: #minusItem
+				help: 'Minus Item' translated) color: Color transparent; yourself).
+]
+
+{ #category : #rendering }
+AKassaMorphRenderer >> renderNextCheckButton [
+	| nextCheck |
+	nextCheck := [ model morphViewNextCheckInWindow. (owner valueOfProperty: #parentWindow) ifNotNil: [ :w| w close ] ].
+	self commandPanel addMorphBack:
+			((FButton
+				model: "model"nextCheck
+				label: (self iconNamed: #smallNew) asMorph 
+				action: #value
+				help: 'Next Check' translated) color: Color transparent; yourself).
+]
+
+{ #category : #rendering }
+AKassaMorphRenderer >> renderRemoveItemButton [
+	self owner addMorphBack:
+			((FButton
+				model: model
+				label: (self iconNamed: #smallCancel) asMorph
+				action: #removeItem
+				help: 'Remove Item' translated) color: Color transparent; yourself).
+]
+
+{ #category : #rendering }
 AKassaMorphRenderer >> renderSelectItemButton [
 	self commandPanel addMorphBack:
 			((FButton
@@ -98,6 +146,16 @@ AKassaMorphRenderer >> renderSelectItemButton [
 				label: (self iconNamed: #smallFind) asMorph 
 				action: #searchItem
 				help: 'Search Item' translated) color: Color transparent; yourself).
+]
+
+{ #category : #rendering }
+AKassaMorphRenderer >> renderSettingsButton [
+	self commandPanel addMorphBack:
+			((FButton
+				model: model
+				label: (self iconNamed: #smallCogInitialState) asMorph 
+				action: #morphViewSettingsInWindow
+				help: 'Open Settings' translated) color: Color transparent; yourself).
 ]
 
 { #category : #rendering }

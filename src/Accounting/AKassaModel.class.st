@@ -54,7 +54,7 @@ AKassaModel class >> nextIndex [
 	^ self configClass nextKassaCheckIndex
 ]
 
-{ #category : #operations }
+{ #category : #actions }
 AKassaModel >> accept [
 	| sw res |
 	sw := ASwapBuilder new.
@@ -86,12 +86,7 @@ AKassaModel >> addGoods [
 			self items addAmount: el.
 			self accountEditor updateEditor: el.
 			barcode := ''.
-			self
-				changed: #itemsList with: self;
-				changed: #sum;
-				changed: #change;
-				changed: #clientSum;
-				changed: #barcode].
+			self changeResult ].
 ]
 
 { #category : #operations }
@@ -99,6 +94,7 @@ AKassaModel >> addItem [
 	| a div |
 	a := self accountEditor makeSwap.
 	div := a amount.
+	div = 0 ifTrue: [ div := 0.0000001 ].
 	a amount: 1.
 	a swapAmount amount: (a swapAmount amount / div) asFloat.
 	self items addAmount: a.
@@ -138,7 +134,9 @@ AKassaModel >> change: anObject [
 AKassaModel >> changeResult [
 	self changed: #sum;
 		changed: #clientSum;
-		changed: #change.
+		changed: #change;
+		changed: #barcode.
+	self changed: #itemsList with: self.
 ]
 
 { #category : #accessing }
@@ -206,7 +204,7 @@ AKassaModel >> createFirsts [
 	^ firsts.
 ]
 
-{ #category : #copying }
+{ #category : #actions }
 AKassaModel >> createNextCheck [
 	| km |
 	km := self class addNew.
@@ -321,6 +319,7 @@ AKassaModel >> minusItem [
 	| a div |
 	a := self accountEditor makeSwap.
 	div := a amount.
+	div = 0 ifTrue: [ div := 0.0000001 ].
 	a amount: 1.
 	a swapAmount amount: (a swapAmount amount / div) asFloat.
 	self items difAmount: a.
@@ -350,8 +349,26 @@ AKassaModel >> morphViewInWindow [
 	w := StandardWindow new.
 	w title: (self number, ' ', 'Payment' translated).
 	w addMorph: m frame: LayoutFrame new.
+	m setProperty: #parentWindow toValue: w.
 	w open.
 	^ m
+]
+
+{ #category : #rendering }
+AKassaModel >> morphViewNextCheck [
+	| check |
+	check := self createNextCheck.
+	^ check morphView
+]
+
+{ #category : #rendering }
+AKassaModel >> morphViewNextCheckInWindow [
+	^ self createNextCheck morphViewInWindow.
+]
+
+{ #category : #rendering }
+AKassaModel >> morphViewSettingsInWindow [
+	AKassaSettingGlamour openOn: self
 ]
 
 { #category : #accessing }

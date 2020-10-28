@@ -24,7 +24,8 @@ Class {
 		'number',
 		'baseAmount',
 		'selection',
-		'accountEditor'
+		'accountEditor',
+		'store'
 	],
 	#category : #'Accounting-Model'
 }
@@ -192,10 +193,12 @@ APriceModel >> items: anObject [
 APriceModel >> makeKassa [
 	| kassa |
 	kassa := AKassaModel addNew.
-	kassa priceAccount: self configClass priceName , self number.
-	kassa organization: self organization.
-	kassa currency: self baseAmount.
-	kassa contractor: 'User'.
+	kassa
+		priceAccount: (self configClass priceName , self number);
+		organization: self organization;
+		currency: self baseAmount;
+		contractor: 'User';
+		store: self store.
 	^ kassa
 ]
 
@@ -282,4 +285,15 @@ APriceModel >> selection: anObject [
 	self accountEditor updateEditor: sel.
 	selection := sel.
 	self changed: #selection
+]
+
+{ #category : #accessing }
+APriceModel >> store [
+	^ store ifNil: [ store := '' ]
+]
+
+{ #category : #accessing }
+APriceModel >> store: anObject [
+	store := anObject.
+	self changed: #store.
 ]

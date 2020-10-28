@@ -57,6 +57,14 @@ AAmount >> amount: anObject [
 ]
 
 { #category : #converting }
+AAmount >> asAccount [
+	| a |
+	a := AAccount new.
+	a addAll: self.
+	^ a.
+]
+
+{ #category : #converting }
 AAmount >> asAmount [
 	^ self clone
 ]

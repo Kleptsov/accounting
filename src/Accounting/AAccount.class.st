@@ -78,6 +78,11 @@ AAccount >> amounts: anObject [
 	amounts := anObject
 ]
 
+{ #category : #converting }
+AAccount >> asAccount [
+	^ self clone
+]
+
 { #category : #copying }
 AAccount >> asAmounts [
 	| acc |
