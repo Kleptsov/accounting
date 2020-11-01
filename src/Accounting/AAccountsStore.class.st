@@ -36,7 +36,8 @@ AAccountsStore >> accIndexes: anObject [
 { #category : #'adding/removing' }
 AAccountsStore >> add: anAccount [
 	"добавить счет вместе со значением"
-	self addAccIndexes: anAccount.
+	TimeProfiler onBlock: [
+	self addAccIndexes: anAccount].
 ]
 
 { #category : #'adding/removing' }
@@ -46,7 +47,9 @@ AAccountsStore >> addAccIndexes: anAccount [
 	accounts do: [ :a|
 		(accIndexes like: a)
 			ifNil: [ accIndexes add: a clone ]
-			ifNotNil: [ :account| account addAccount: a  ]	
+			ifNotNil: [ :account| account addAccount: a.
+				accIndexes isExternal ifTrue: [ 
+								EIContextInstance value saveObject: account. ]  ]	
 	]
 ]
 
@@ -86,7 +89,9 @@ AAccountsStore >> difference: anAccount [
 	accounts do: [ :a|
 		(accIndexes like: a)
 			ifNil: [ accIndexes add: a clone ]
-			ifNotNil: [ :acc| acc addAccount: a  ]	].
+			ifNotNil: [ :acc| acc addAccount: a.
+							accIndexes isExternal ifTrue: [ 
+								EIContextInstance value saveObject: acc. ]  ]	].
 	^ account
 ]
 
@@ -94,6 +99,11 @@ AAccountsStore >> difference: anAccount [
 AAccountsStore >> initialize [
 	super initialize.
 	accIndexes := Set new.
+]
+
+{ #category : #initialization }
+AAccountsStore >> initializeExtraImage [
+	accIndexes := EISet new.
 ]
 
 { #category : #'adding/removing' }
@@ -107,10 +117,11 @@ AAccountsStore >> removeEmptyAmounts [
 { #category : #enumerating }
 AAccountsStore >> select: aTags [
 	| acc |
+	TimeProfiler onBlock: [
 	acc := AAccount new addAll: aTags; yourself.
 	^ (accIndexes like: acc)
 			ifNil: [ AAccount new ]
-			ifNotNil: [ :account| account clone ]
+			ifNotNil: [ :account| account clone ]]
 ]
 
 { #category : #enumerating }
