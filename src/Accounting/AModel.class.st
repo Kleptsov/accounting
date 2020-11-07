@@ -222,6 +222,11 @@ AModel >> invoicePrefix [
 	^ self configClass invoicePrefix.
 ]
 
+{ #category : #accessing }
+AModel >> menu [
+	^ nil
+]
+
 { #category : #configuration }
 AModel >> monthPrefix [
 	^ self configClass monthPrefix

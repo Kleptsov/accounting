@@ -228,6 +228,11 @@ AAccountEditor >> makeSwap [
 	^ sw
 ]
 
+{ #category : #accessing }
+AAccountEditor >> menu [
+	^ nil
+]
+
 { #category : #rendering }
 AAccountEditor >> morphController [
 	^ FDirectController new

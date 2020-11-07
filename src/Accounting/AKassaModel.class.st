@@ -252,6 +252,11 @@ AKassaModel >> date: anObject [
 	self changed: #date
 ]
 
+{ #category : #accessing }
+AKassaModel >> firstName [
+	^ self number
+]
+
 { #category : #initialization }
 AKassaModel >> initializeSelection: anAnnouncer [
 	anAnnouncer
@@ -438,6 +443,11 @@ AKassaModel >> searchItem [
 		self priceFormer source: p.
 		self addGoods.
 	] fork.
+]
+
+{ #category : #accessing }
+AKassaModel >> secondName [
+	^ self contractor, ' - ', self contractorAccount
 ]
 
 { #category : #accessing }

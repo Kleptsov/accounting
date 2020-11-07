@@ -37,11 +37,11 @@ AKassaMorphRenderer >> render [
 	self renderBarcode.
 	self nextLine.
 	self render: #accountEditor
-		with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
+		with: [ :m| m extent: 1@52; hResizing: #spaceFill ].
 	self nextLine.
-	self renderSum.
-	self renderClientSum.
-	self renderChange.
+	self render: (AText on: model label: 'Sum' selector: #sum).
+	self render: (AText on: model label: 'Client Sum' selector: #clientSum).
+	self render: (AText on: model label: 'Change' selector: #change). 
 	self nextLine.
 	self renderAddItemButton.
 	self renderMinusItemButton.
@@ -75,13 +75,9 @@ AKassaMorphRenderer >> renderAddItemButton [
 { #category : #rendering }
 AKassaMorphRenderer >> renderBarcode [
 	| m |
-	m := FText
-			on: model
-			label: 'Select' translated
-			selector: #barcode.
-	m extent: 150@40;
-		hResizing: #spaceFill.
-	self owner addMorphBack: m
+	m := AText on: model label: 'Select' selector: #barcode.
+	m hResizing: #spaceFill.
+	self render: m.
 ]
 
 { #category : #rendering }

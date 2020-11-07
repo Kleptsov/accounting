@@ -157,7 +157,7 @@ ALauncherSpec >> subRetailMenu [
 			group addItem: [ :item|
 				item name: 'Price Document Journal' translated; action: [ APriceJournalGlamour openOn: AConfig prices ] ].
 			group addItem: [ :item|
-				item name: 'Check Document Journal' translated; action: [ AKassaCheckJournalGlamour openOn: AConfig kassaChecks ] ].
+				item name: 'Check Document Journal' translated; action: [ (ADocumentJournalModel on: AConfig kassaChecks) morphViewInWindow ] ].
 			group addItem: [ :item|
 				item name: 'Report' translated; action: [ self inform: 'Kassa Report' ] ].
 		]

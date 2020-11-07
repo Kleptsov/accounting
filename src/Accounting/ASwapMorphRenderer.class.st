@@ -23,21 +23,21 @@ ASwapMorphRenderer >> commandPanel [
 ASwapMorphRenderer >> render [
 	self commandPanel.
 	self renderCommandButtons.
-	self renderNumber.
-	self renderDate.
+	self render: (AText on: model label: 'Number' selector: #number).
+	self render: (AText on: model label: 'Date' selector: #date).
 	self renderNextLine.
-	self renderOrganization.
-	self renderOrganizationAccount.
-	self renderOrganizationAccount2.
+	self render: (AText on: model label: 'Organization' selector: #organization).
+	self render: (AText on: model label: 'Organization Account' selector: #organizationAccount).
+	self render: (AText on: model label: 'Organization Account' selector: #organizationAccount2).
 	self renderNextLine.
-	self renderContractor.
-	self renderContractorAccount.
-	self renderContractorAccount2.
+	self render: (AText on: model label: 'Contractor' selector: #contractor).
+	self render: (AText on: model label: 'Contractor Account' selector: #contractorAccount).
+	self render: (AText on: model label: 'Contractor Account' selector: #contractorAccount2).
 	self renderNextLine.
-	self renderAdditional.
-	self renderBarcode.
+	self render: (AText on: model label: 'Additional' selector: #additional).
+	self render: (AText on: model accountEditor label: 'Barcode' selector: #barcode).
 	self renderNextLine.
-	self render: #accountEditor with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
+	self render: #accountEditor with: [ :m| m extent: 1@52; hResizing: #spaceFill ].
 	self renderNextLine.
 	self renderItemsButtons. self renderNextLine.
 	self render: #itemsList with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
@@ -68,65 +68,10 @@ ASwapMorphRenderer >> renderAddBarcodeButton [
 ]
 
 { #category : #rendering }
-ASwapMorphRenderer >> renderAdditional [
-	| m |
-	m := FText
-			on: model
-			label: 'Additional' translated
-			selector: #additional.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderBarcode [
-	| m |
-	m := FText
-			on: model accountEditor
-			label: 'Barcode' translated
-			selector: #barcode.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
 ASwapMorphRenderer >> renderCommandButtons [
 	self renderAccepted.
 	self renderAddBarcodeButton.
 	self renderCopyToClipboard.
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderContractor [
-	| m |
-	m := FText
-			on: model
-			label: 'Contractor' translated
-			selector: #contractor.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderContractorAccount [
-	| m |
-	m := FText
-			on: model
-			label: 'Contractor Account' translated, ' 1'
-			selector: #contractorAccount.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderContractorAccount2 [
-	| m |
-	m := FText
-			on: model
-			label: 'Contractor Account' translated, ' 2'
-			selector: #contractorAccount2.
-	m extent: 150@40.
-	self owner addMorphBack: m.
 ]
 
 { #category : #rendering }
@@ -137,17 +82,6 @@ ASwapMorphRenderer >> renderCopyToClipboard [
 				label: (self iconNamed: #smallCopy) asMorph 
 				action: #copyToClipboard
 				help: 'Copy to Clipboard' translated).
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderDate [
-	| m |
-	m := FText
-			on: model
-			label: 'Date' translated
-			selector: #date.
-	m extent: 150@40.
-	self owner addMorphBack: m.
 ]
 
 { #category : #rendering }
@@ -167,48 +101,4 @@ ASwapMorphRenderer >> renderNextLine [
 	| m |
 	m := Morph new extent: 0@0; setProperty: #cr toValue: true.
 	self owner addMorphBack: m
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderNumber [
-	| m |
-	m := FText
-			on: model
-			label: 'Number' translated
-			selector: #number.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderOrganization [
-	| m |
-	m := FText
-			on: model
-			label: 'Organization' translated
-			selector: #organization.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderOrganizationAccount [
-	| m |
-	m := FText
-			on: model
-			label: 'Organization Account' translated, ' 1'
-			selector: #organizationAccount.
-	m extent: 150@40.
-	self owner addMorphBack: m.
-]
-
-{ #category : #rendering }
-ASwapMorphRenderer >> renderOrganizationAccount2 [
-	| m |
-	m := FText
-			on: model
-			label: 'Organization Account' translated, ' 2'
-			selector: #organizationAccount2.
-	m extent: 150@40.
-	self owner addMorphBack: m.
 ]
