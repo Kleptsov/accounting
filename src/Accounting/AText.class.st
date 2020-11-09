@@ -8,7 +8,7 @@ Class {
 AText class >> on: aModel label: aLabel selector: aSelector [
 	| m |
 	m := super on: aModel label: aLabel translated selector: aSelector.
-	m extent: 150@52.
+	m extent: 150@40.
 	^ m.
 	
 		

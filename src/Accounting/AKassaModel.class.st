@@ -111,7 +111,9 @@ AKassaModel >> barcode: aBarcode [
 	barcode := aBarcode.
 	self priceFormer barcode: aBarcode.
 	self addGoods.
-	self changed: #barcode.
+	'' = barcode
+		ifTrue: [ self changed: #barcode with: #forcibly ]
+		ifFalse: [self changed: #barcode].
 ]
 
 { #category : #operations }

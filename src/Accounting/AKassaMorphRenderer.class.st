@@ -37,7 +37,7 @@ AKassaMorphRenderer >> render [
 	self renderBarcode.
 	self nextLine.
 	self render: #accountEditor
-		with: [ :m| m extent: 1@52; hResizing: #spaceFill ].
+		with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
 	self nextLine.
 	self render: (AText on: model label: 'Sum' selector: #sum).
 	self render: (AText on: model label: 'Client Sum' selector: #clientSum).

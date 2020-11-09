@@ -23,17 +23,17 @@ AContractMorphRenderer >> commandPanel [
 AContractMorphRenderer >> render [
 	self commandPanel.
 	self renderCommandButtons.
-	self renderNumber.
-	self renderAdditionalNumber.
-	self renderDate.
+	self render: (AText on: model label: 'Number' selector: #number).
+	self render: (AText on: model label: 'Additional Number' selector: #additionalNumber).
+	self render: (AText on: model label: 'Date' selector: #date).
 	self renderNextLine.
-	self renderOrganization.
-	self renderContractor.
+	self render: (AText on: model label: 'Organization' selector: #organization).
+	self render: (AText on: model label: 'Contractor' selector: #contractor).
 	self renderNextLine.
-	self renderReceiptName.
-	self renderCurrencyName.
-	self renderAdditional.
-	self renderBarcode.
+	self render: (AText on: model label: 'ReceiptName' selector: #receiptName).
+	self render: (AText on: model label: 'Currency Name' selector: #currencyName).
+	self render: (AText on: model label: 'Additional' selector: #additional).
+	self render: (AText on: model accountEditor label: 'Barcode' selector: #barcode).
 	self renderNextLine.
 	self render: #accountEditor with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
 	self renderNextLine.
