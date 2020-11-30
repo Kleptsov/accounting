@@ -78,7 +78,8 @@ Class {
 		'nomenclatures',
 		'nomenclature',
 		'nextNomenclatureIndex',
-		'barcodes'
+		'barcodes',
+		'nextAmountIndex'
 	],
 	#category : #'Accounting-Config'
 }
@@ -239,6 +240,12 @@ AConfig class >> kassaChecks: aKassaChecks [
 { #category : #accessing }
 AConfig class >> monthPrefix [
 	^ monthPrefix ifNil: [ monthPrefix := 'mm' ]
+]
+
+{ #category : #accessing }
+AConfig class >> nextAmountIndex [
+	nextAmountIndex ifNil: [ nextAmountIndex := 0 ].
+	^ nextAmountIndex := nextAmountIndex + 1.
 ]
 
 { #category : #accessing }

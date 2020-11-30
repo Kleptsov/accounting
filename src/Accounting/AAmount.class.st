@@ -98,7 +98,8 @@ AAmount >> difAmount: anAmount [
 { #category : #initialization }
 AAmount >> initialize [
 	super initialize.
-	unixTime := DateAndTime now asUnixTime.
+	"unixTime := DateAndTime now asUnixTime."
+	unixTime := AConfig nextAmountIndex.
 ]
 
 { #category : #initialization }

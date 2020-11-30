@@ -54,20 +54,19 @@ ATags class >> uuidDictionary: aDictionary [
 { #category : #testing }
 ATags >> = aTags [
 	^ self symbolId = aTags symbolId
-	"^ self uuid = aTags uuid"
 ]
 
 { #category : #adding }
 ATags >> add: anObject [
 	super add: anObject asString.
-	self updateHash.
+	symbolId := nil.
 	^ anObject
 ]
 
 { #category : #adding }
 ATags >> addAll: anCollection [
 	super addAll: anCollection.
-	self updateHash.
+	symbolId := nil.
 	^ anCollection
 ]
 
@@ -83,7 +82,6 @@ ATags >> allTags [
 { #category : #comparing }
 ATags >> hash [
 	^ self symbolId hash.
-	"^ self uuid hash"
 ]
 
 { #category : #printing }
@@ -117,5 +115,4 @@ ATags >> updateHash [
 		s nextPutAll: '==>'; nextPutAll: el.
 	].
 	symbolId := s contents asSymbol.
-	"uuid := self class newUUIDFor: symbolId."
 ]
