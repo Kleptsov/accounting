@@ -14,3 +14,16 @@ ATextField class >> on: aModel text: aTextSelector accept: anAcceptSelector acce
 	txtMorph hideScrollBarsIndefinitely.
 	^ txtMorph yourself.
 ]
+
+{ #category : #'model access' }
+ATextField >> setTextBasic: aText [
+	
+	self textMorph contents = aText contents ifTrue: [ ^ self ].
+	((self textMorph contents size = 0) and: [self wrapFlag])
+		ifTrue: [ 
+			self textMorph
+				contents: aText 
+				wrappedTo: self innerExtent x ]
+		ifFalse: [
+			self textMorph newContents: aText].
+]
