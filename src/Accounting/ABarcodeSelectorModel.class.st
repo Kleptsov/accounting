@@ -73,7 +73,7 @@ ABarcodeSelectorModel >> open [
 { #category : #actions }
 ABarcodeSelectorModel >> removeItem [
 	| acc |
-	acc := self accountEditor makeSwap.
+	acc := self accountEditor makeSwap asAccount.
 	self items
 		remove: acc
 		ifAbsent: [ ].

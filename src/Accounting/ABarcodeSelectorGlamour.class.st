@@ -140,7 +140,7 @@ ABarcodeSelectorGlamour >> initializeItems [
 				
 				display: [ :m| m items ];
 				column: 'Barcode' translated evaluated: [:el| el printTags ] width: 250;
-				column: 'Value' translated evaluated: [ :el| el amounts inject: '' into: [ :el1 :el2| el1, el2 printTags, ' ' ] ]
+				column: 'Value' translated evaluated: [ :el| el amounts inject: '' into: [ :el1 :el2| el1, el2 printTags , ' ' ] ]
 		]
 ]
 

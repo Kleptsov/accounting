@@ -38,6 +38,15 @@ ASwap >> addAmount: anAmount [
 											ifNotNil: [ swapAmount amount: swapAmount amount + anAmount swapAmount amount ] ] ]"
 ]
 
+{ #category : #printing }
+ASwap >> asAccount [
+	| a |
+	a := AAccount new.
+	a addAll: self.
+	a addAmount: (self swapAmount clone).
+	^ a.
+]
+
 { #category : #converting }
 ASwap >> asAmount [
 	| inst |
