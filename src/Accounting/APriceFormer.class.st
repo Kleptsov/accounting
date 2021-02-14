@@ -71,7 +71,7 @@ APriceFormer >> makeGoodsRelation [
 			divider := destination amount.
 			destination amount: 1.
 			destination swapAmount
-				amount: (divider = 0 ifFalse: [(1 / divider) asFloat] ifTrue: [ 0.0000000000001 ] );
+				amount: (divider = 0 ifFalse: [(relation / divider) asFloat] ifTrue: [ 0.0000000000001 ] );
 				add: currency ].
 ]
 
