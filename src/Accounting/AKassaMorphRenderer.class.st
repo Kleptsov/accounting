@@ -2,7 +2,8 @@ Class {
 	#name : #AKassaMorphRenderer,
 	#superclass : #FMorphRenderer,
 	#instVars : [
-		'commandPanel'
+		'commandPanel',
+		'bc'
 	],
 	#category : #'Accounting-GUI-Facing'
 }
@@ -49,6 +50,7 @@ AKassaMorphRenderer >> render [
 	self nextLine.
 	self render: #itemsList
 		with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
+	bc keyboardFocusChange: true.
 	^ self owner
 ]
 
@@ -74,10 +76,9 @@ AKassaMorphRenderer >> renderAddItemButton [
 
 { #category : #rendering }
 AKassaMorphRenderer >> renderBarcode [
-	| m |
-	m := AText on: model label: 'Select' selector: #barcode.
-	m hResizing: #spaceFill.
-	self render: m.
+	bc := AText on: model label: 'Select' selector: #barcode.
+	bc hResizing: #spaceFill.
+	self render: bc.
 ]
 
 { #category : #rendering }
