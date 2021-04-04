@@ -105,7 +105,8 @@ AContractModel >> additionalNumber [
 { #category : #accessing }
 AContractModel >> additionalNumber: anObject [
 	additionalNumber := anObject.
-	self changed: #additionalNumber.
+	"self changed: #additionalNumber."
+	self sEvent: #additionalNumber arg: additionalNumber.
 ]
 
 { #category : #accessing }
@@ -149,7 +150,8 @@ AContractModel >> contractor [
 { #category : #accessing }
 AContractModel >> contractor: anObject [
 	contractor := anObject.
-	self changed: #contractor
+	"self changed: #contractor"
+	self sEvent: #contractor arg: contractor.
 ]
 
 { #category : #actions }
@@ -285,7 +287,8 @@ AContractModel >> currencyName [
 { #category : #accessing }
 AContractModel >> currencyName: anObject [
 	currencyName := anObject.
-	self changed: #currencyName with: self.
+	"self changed: #currencyName with: self."
+	self sEvent: #currencyName arg: currencyName.
 ]
 
 { #category : #accessing }
@@ -296,7 +299,8 @@ AContractModel >> date [
 { #category : #accessing }
 AContractModel >> date: anObject [
 	date := anObject.
-	self changed: #date.
+	"self changed: #date."
+	self sEvent: #date arg: date.
 ]
 
 { #category : #actions }
@@ -453,7 +457,8 @@ AContractModel >> number [
 { #category : #accessing }
 AContractModel >> number: anObject [
 	number := anObject.
-	self changed: #number.
+	"self changed: #number."
+	self sEvent: #number arg: number.
 ]
 
 { #category : #actions }
@@ -469,7 +474,8 @@ AContractModel >> organization [
 { #category : #accessing }
 AContractModel >> organization: anObject [
 	organization := anObject.
-	self changed: #organization.
+	"self changed: #organization."
+	self sEvent: #organization arg: organization.
 ]
 
 { #category : #accessing }
@@ -480,7 +486,8 @@ AContractModel >> receiptName [
 { #category : #accessing }
 AContractModel >> receiptName: anObject [
 	receiptName := anObject.
-	self changed: #receiptName with: self.
+	"self changed: #receiptName with: self."
+	self sEvent: #receiptName arg: receiptName
 ]
 
 { #category : #actions }

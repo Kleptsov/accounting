@@ -23,21 +23,22 @@ AContractMorphRenderer >> commandPanel [
 AContractMorphRenderer >> render [
 	self commandPanel.
 	self renderCommandButtons.
-	self render: (AText on: model label: 'Number' selector: #number).
-	self render: (AText on: model label: 'Additional Number' selector: #additionalNumber).
-	self render: (AText on: model label: 'Date' selector: #date).
+	self renderNumber.
+	self renderAdditionalNumber.
+	self renderDate.
 	self renderNextLine.
-	self render: (AText on: model label: 'Organization' selector: #organization).
-	self render: (AText on: model label: 'Contractor' selector: #contractor).
+	self renderOrganization.
+	self renderContractor.
 	self renderNextLine.
-	self render: (AText on: model label: 'ReceiptName' selector: #receiptName).
-	self render: (AText on: model label: 'Currency Name' selector: #currencyName).
-	self render: (AText on: model label: 'Additional' selector: #additional).
-	self render: (AText on: model accountEditor label: 'Barcode' selector: #barcode).
+	self renderReceiptName.
+	self renderCurrencyName.
+	self renderAdditional.
+	self renderBarcode.
 	self renderNextLine.
 	self render: #accountEditor with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
 	self renderNextLine.
-	self renderItemsButtons. self renderNextLine.
+	self renderItemsButtons.
+	self renderNextLine.
 	self render: #itemsList with: [ :m| m extent: 1@10; hResizing: #spaceFill; vResizing: #spaceFill ].
 	^ self owner.
 ]
@@ -68,23 +69,17 @@ AContractMorphRenderer >> renderAddBarcodeButton [
 { #category : #rendering }
 AContractMorphRenderer >> renderAdditional [
 	| m |
-	m := FText
-			on: model
-			label: 'Additional' translated
-			selector: #additional.
+	m := AText2 model: model event: #additional callbackEvent: #updateText label: 'Additional'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
 AContractMorphRenderer >> renderAdditionalNumber [
 	| m |
-	m := FText
-			on: model
-			label: 'Additional Number' translated
-			selector: #additionalNumber.
+	m := AText2 model: model event: #additionalNumber callbackEvent: #updateText label: 'Additional Number'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
@@ -100,12 +95,9 @@ AContractMorphRenderer >> renderAllChangingButton [
 { #category : #rendering }
 AContractMorphRenderer >> renderBarcode [
 	| m |
-	m := FText
-			on: model accountEditor
-			label: 'Barcode' translated
-			selector: #barcode.
+	m := AText2 model: model accountEditor event: #barcode callbackEvent: #updateText label: 'Barcode'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
@@ -121,12 +113,9 @@ AContractMorphRenderer >> renderCommandButtons [
 { #category : #rendering }
 AContractMorphRenderer >> renderContractor [
 	| m |
-	m := FText
-			on: model
-			label: 'Contractor' translated
-			selector: #contractor.
+	m := AText2 model: model event: #contractor callbackEvent: #updateText label: 'Contractor'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
@@ -142,23 +131,17 @@ AContractMorphRenderer >> renderCopyToClipboard [
 { #category : #rendering }
 AContractMorphRenderer >> renderCurrencyName [
 	| m |
-	m := FText
-			on: model
-			label: 'Currency Name' translated
-			selector: #currencyName.
+	m := AText2 model: model event: #currencyName callbackEvent: #updateText label: 'Currency Name'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
 AContractMorphRenderer >> renderDate [
 	| m |
-	m := FText
-			on: model
-			label: 'Date' translated
-			selector: #date.
+	m := AText2 model: model event: #date callbackEvent: #updateText label: 'Date'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
@@ -203,32 +186,23 @@ AContractMorphRenderer >> renderNextLine [
 { #category : #rendering }
 AContractMorphRenderer >> renderNumber [
 	| m |
-	m := FText
-			on: model
-			label: 'Number' translated
-			selector: #number.
+	m := AText2 model: model event: #number callbackEvent: #updateText label: 'Number'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
 AContractMorphRenderer >> renderOrganization [
 	| m |
-	m := FText
-			on: model
-			label: 'Organization' translated
-			selector: #organization.
+	m := AText2 model: model event: #organization callbackEvent: #updateText label: 'Organization'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
 
 { #category : #rendering }
 AContractMorphRenderer >> renderReceiptName [
 	| m |
-	m := FText
-			on: model
-			label: 'Receipt Name' translated
-			selector: #receiptName.
+	m := AText2 model: model event: #receiptName callbackEvent: #updateText label: 'Receipt Name'.
 	m extent: 150@40.
-	self owner addMorphBack: m.
+	self render: m.
 ]
