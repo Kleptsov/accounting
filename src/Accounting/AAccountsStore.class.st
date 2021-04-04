@@ -117,11 +117,11 @@ AAccountsStore >> removeEmptyAmounts [
 { #category : #enumerating }
 AAccountsStore >> select: aTags [
 	| acc |
-	TimeProfiler onBlock: [
+	"TimeProfiler onBlock: ["
 	acc := AAccount new addAll: aTags; yourself.
 	^ (accIndexes like: acc)
 			ifNil: [ AAccount new ]
-			ifNotNil: [ :account| account clone ]]
+			ifNotNil: [ :account| account clone ]"]"
 ]
 
 { #category : #enumerating }
