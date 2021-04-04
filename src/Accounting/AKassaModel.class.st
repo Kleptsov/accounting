@@ -111,9 +111,10 @@ AKassaModel >> barcode: aBarcode [
 	barcode := aBarcode.
 	self priceFormer barcode: aBarcode.
 	self addGoods.
-	'' = barcode
+	self sEvent: #barcode arg: barcode.
+	"'' = barcode
 		ifTrue: [ self changed: #barcode with: #forcibly ]
-		ifFalse: [self changed: #barcode].
+		ifFalse: [self changed: #barcode]."
 ]
 
 { #category : #operations }
@@ -134,10 +135,14 @@ AKassaModel >> change: anObject [
 
 { #category : #operations }
 AKassaModel >> changeResult [
-	self changed: #sum;
+	"self changed: #sum;
 		changed: #clientSum;
 		changed: #change;
-		changed: #barcode.
+		changed: #barcode."
+	self sEvent: #sum arg: self sum.
+	self sEvent: #clientSum arg: self clientSum.
+	self sEvent: #change arg: self change.
+	self sEvent: #barcode arg: self barcode.
 	self changed: #itemsList with: self.
 ]
 

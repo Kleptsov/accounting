@@ -76,7 +76,8 @@ AKassaMorphRenderer >> renderAddItemButton [
 
 { #category : #rendering }
 AKassaMorphRenderer >> renderBarcode [
-	bc := AText on: model label: 'Select' selector: #barcode.
+	"bc := AText on: model label: 'Select' selector: #barcode."
+	bc := AText2 model: model event: #barcode callbackEvent: #updateText label: 'Select'.
 	bc hResizing: #spaceFill.
 	self render: bc.
 ]
@@ -84,10 +85,11 @@ AKassaMorphRenderer >> renderBarcode [
 { #category : #rendering }
 AKassaMorphRenderer >> renderChange [
 	| m |
-	m := FText
+	"m := FText
 			on: model
 			label: 'Change' translated
-			selector: #change.
+			selector: #change."
+	m := AText2 model: model event: #change callbackEvent: #updateText label: 'Change'.
 	m extent: 150@40.
 	self owner addMorphBack: m
 ]
@@ -95,10 +97,11 @@ AKassaMorphRenderer >> renderChange [
 { #category : #rendering }
 AKassaMorphRenderer >> renderClientSum [
 	| m |
-	m := FText
+	m := "FText
 			on: model
 			label: 'Client Sum' translated
-			selector: #clientSum.
+			selector: #clientSum."
+	m := AText2 model: model event: #clienSum callbackEvent: #updateText label: 'Client Sum'.
 	m extent: 150@40.
 	self owner addMorphBack: m
 ]
@@ -158,10 +161,11 @@ AKassaMorphRenderer >> renderSettingsButton [
 { #category : #rendering }
 AKassaMorphRenderer >> renderSum [
 	| m |
-	m := FText
+	"m := FText
 			on: model
 			label: 'Sum' translated
-			selector: #sum.
+			selector: #sum."
+	m := AText2 model: model event: #sum callbackEvent: #updateText label: 'Sum'.
 	m extent: 150@40.
 	self owner addMorphBack: m
 ]
