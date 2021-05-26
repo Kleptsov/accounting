@@ -36,8 +36,8 @@ AAccountsStore >> accIndexes: anObject [
 { #category : #'adding/removing' }
 AAccountsStore >> add: anAccount [
 	"добавить счет вместе со значением"
-	TimeProfiler onBlock: [
-	self addAccIndexes: anAccount].
+	"TimeProfiler onBlock: ["
+	self addAccIndexes: anAccount"]."
 ]
 
 { #category : #'adding/removing' }
