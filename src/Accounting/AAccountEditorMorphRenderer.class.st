@@ -28,10 +28,11 @@ AAccountEditorMorphRenderer >> render [
 { #category : #rendering }
 AAccountEditorMorphRenderer >> renderAccItem1 [
 	| m |
-	m := FText
-			on: model
-			label: 'Account' translated, ' 1'
-			selector: #accItem1.
+	m := AText2
+			model: model
+			event: #accItem1
+			callbackEvent: #updateText
+			label: 'Account' translated, ' 1'.
 	m setProperty: #relativeExtent toValue: 0.3@1.0.
 	self owner addMorphBack: m.
 ]
@@ -39,10 +40,11 @@ AAccountEditorMorphRenderer >> renderAccItem1 [
 { #category : #rendering }
 AAccountEditorMorphRenderer >> renderAccItem2 [
 	| m |
-	m := FText
-			on: model
-			label: 'Account' translated, ' 2'
-			selector: #accItem2.
+	m := AText2
+			model: model
+			event: #accItem2
+			callbackEvent: #updateText
+			label: 'Account' translated, ' 2'.
 	m setProperty: #relativeExtent toValue: 0.3@1.0.
 	self owner addMorphBack: m.
 ]
@@ -50,10 +52,11 @@ AAccountEditorMorphRenderer >> renderAccItem2 [
 { #category : #rendering }
 AAccountEditorMorphRenderer >> renderAmountItem [
 	| m |
-	m := FText
-			on: model
-			label: 'Count' translated
-			selector: #amountItem.
+	m := AText2
+			model: model
+			event: #amountItem
+			callbackEvent: #updateText
+			label: 'Count' translated.
 	m setProperty: #relativeExtent toValue: 0.1@1.0.
 	self owner addMorphBack: m.
 ]
@@ -61,10 +64,11 @@ AAccountEditorMorphRenderer >> renderAmountItem [
 { #category : #rendering }
 AAccountEditorMorphRenderer >> renderCurrencyItem [
 	| m |
-	m := FText
-			on: model
-			label: 'Currency' translated
-			selector: #currencyItem.
+	m := AText2
+			model: model
+			event: #currencyItem
+			callbackEvent: #updateText
+			label: 'Currency' translated.
 	m hResizing: #spaceFill.
 	m vResizing: #spaceFill.
 	self owner addMorphBack: m.
@@ -73,10 +77,11 @@ AAccountEditorMorphRenderer >> renderCurrencyItem [
 { #category : #rendering }
 AAccountEditorMorphRenderer >> renderSumItem [
 	| m |
-	m := FText
-			on: model
-			label: 'Sum' translated
-			selector: #sumItem.
+	m := AText2
+			model: model
+			event: #sumItem
+			callbackEvent: #updateText
+			label: 'Sum' translated.
 	m setProperty: #relativeExtent toValue: 0.1@1.0.
 	self owner addMorphBack: m.
 ]

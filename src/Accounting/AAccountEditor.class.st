@@ -27,7 +27,8 @@ AAccountEditor >> accItem1 [
 { #category : #accessing }
 AAccountEditor >> accItem1: anObject [
 	accItem1 := anObject.
-	self changed: #accItem1
+	"self changed: #accItem1"
+	self sEvent: #accItem1 arg: anObject.
 ]
 
 { #category : #accessing }
@@ -38,7 +39,8 @@ AAccountEditor >> accItem2 [
 { #category : #accessing }
 AAccountEditor >> accItem2: anObject [
 	accItem2 := anObject.
-	self changed: #accItem2.
+	"self changed: #accItem2."
+	self sEvent: #accItem2 arg: anObject.
 ]
 
 { #category : #accessing }
@@ -49,7 +51,8 @@ AAccountEditor >> accItem3 [
 { #category : #accessing }
 AAccountEditor >> accItem3: anObject [
 	accItem3 := anObject.
-	self changed: #accItem3.
+	"self changed: #accItem3."
+	self sEvent: #accItem3 arg: anObject
 ]
 
 { #category : #accessing }
@@ -60,7 +63,8 @@ AAccountEditor >> accItem4 [
 { #category : #accessing }
 AAccountEditor >> accItem4: anObject [
 	accItem4 := anObject.
-	self changed: accItem4.
+	"self changed: #accItem4."
+	self sEvent: #accItem4 arg: anObject
 ]
 
 { #category : #actions }
@@ -86,7 +90,8 @@ AAccountEditor >> amountItem [
 { #category : #accessing }
 AAccountEditor >> amountItem: anObject [
 	amountItem := anObject.
-	self changed: #amountItem
+	"self changed: #amountItem"
+	self sEvent: #amountItem arg: anObject
 ]
 
 { #category : #accessing }
@@ -108,7 +113,8 @@ AAccountEditor >> barcode [
 AAccountEditor >> barcode: aBarcode [
 	barcode := aBarcode.
 	self updateAccountItems.
-	self changed: #barcode.
+	"self changed: #barcode."
+	self sEvent: #barcode arg: aBarcode.
 ]
 
 { #category : #actions }
@@ -139,7 +145,8 @@ AAccountEditor >> currencyItem2 [
 { #category : #accessing }
 AAccountEditor >> currencyItem2: anObject [
 	currencyItem2 := anObject.
-	self changed: #currencyItem2.
+	"self changed: #currencyItem2."
+	self sEvent: #currencyItem2 arg: anObject
 ]
 
 { #category : #accessing }
@@ -150,7 +157,8 @@ AAccountEditor >> currencyItem3 [
 { #category : #accessing }
 AAccountEditor >> currencyItem3: anObject [
 	currencyItem3 := anObject.
-	self changed: #currencyItem3.
+	"self changed: #currencyItem3."
+	self sEvent: #currencyItem3 arg: anObject
 ]
 
 { #category : #accessing }
@@ -161,13 +169,15 @@ AAccountEditor >> currencyItem4 [
 { #category : #accessing }
 AAccountEditor >> currencyItem4: anObject [
 	currencyItem4 := anObject.
-	self changed: #currencyItem4.
+	"self changed: #currencyItem4."
+	self sEvent: #currencyItem4 arg: anObject
 ]
 
 { #category : #accessing }
 AAccountEditor >> currencyItem: anObject [
 	currencyItem := anObject.
-	self changed: #currencyItem.
+	"self changed: #currencyItem."
+	self sEvent: #currencyItem arg: anObject.
 ]
 
 { #category : #accessing }
@@ -268,7 +278,8 @@ AAccountEditor >> sumItem [
 { #category : #accessing }
 AAccountEditor >> sumItem: anObject [
 	sumItem := anObject.
-	self changed: #sumItem.
+	"self changed: #sumItem."
+	self sEvent: #sumItem arg: anObject
 ]
 
 { #category : #actions }

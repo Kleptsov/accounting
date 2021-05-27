@@ -135,10 +135,6 @@ AKassaModel >> change: anObject [
 
 { #category : #operations }
 AKassaModel >> changeResult [
-	"self changed: #sum;
-		changed: #clientSum;
-		changed: #change;
-		changed: #barcode."
 	self sEvent: #sum arg: self sum.
 	self sEvent: #clientSum arg: self clientSum.
 	self sEvent: #change arg: self change.
