@@ -40,9 +40,12 @@ AKassaMorphRenderer >> render [
 	self render: #accountEditor
 		with: [ :m| m extent: 1@40; hResizing: #spaceFill ].
 	self nextLine.
-	self render: (AText on: model label: 'Sum' selector: #sum).
+	self renderSum.
+	self renderClientSum.
+	self renderChange.
+	"self render: (AText on: model label: 'Sum' selector: #sum).
 	self render: (AText on: model label: 'Client Sum' selector: #clientSum).
-	self render: (AText on: model label: 'Change' selector: #change). 
+	self render: (AText on: model label: 'Change' selector: #change). "
 	self nextLine.
 	self renderAddItemButton.
 	self renderMinusItemButton.
@@ -101,7 +104,7 @@ AKassaMorphRenderer >> renderClientSum [
 			on: model
 			label: 'Client Sum' translated
 			selector: #clientSum."
-	m := AText2 model: model event: #clienSum callbackEvent: #updateText label: 'Client Sum'.
+	m := AText2 model: model event: #clientSum callbackEvent: #updateText label: 'Client Sum'.
 	m extent: 150@40.
 	self owner addMorphBack: m
 ]

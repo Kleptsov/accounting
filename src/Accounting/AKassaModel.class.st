@@ -155,8 +155,10 @@ AKassaModel >> clientSum [
 { #category : #accessing }
 AKassaModel >> clientSum: anObject [
 	clientSum := anObject.
-	self changed: #clientSum.
-	self changed: #change.
+	"self changed: #clientSum.
+	self changed: #change."
+	self sEvent: #clientSum arg: clientSum.
+	self sEvent: #change arg: self change.
 ]
 
 { #category : #accessing }
@@ -488,5 +490,6 @@ AKassaModel >> sum [
 
 { #category : #accessing }
 AKassaModel >> sum: aSum [
-	self changed: #sum
+	self changed: #sum.
+	
 ]
