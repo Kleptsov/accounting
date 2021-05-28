@@ -14,10 +14,16 @@ Class {
 		'currentSwap',
 		'currencyItem4',
 		'barcode',
-		'announcer'
+		'announcer',
+		'defaultAmountItem'
 	],
 	#category : #'Accounting-Model'
 }
+
+{ #category : #accessing }
+AAccountEditor class >> defaultAmountItem [
+	^ '1'
+]
 
 { #category : #accessing }
 AAccountEditor >> accItem1 [
@@ -27,7 +33,6 @@ AAccountEditor >> accItem1 [
 { #category : #accessing }
 AAccountEditor >> accItem1: anObject [
 	accItem1 := anObject.
-	"self changed: #accItem1"
 	self sEvent: #accItem1 arg: anObject.
 ]
 
@@ -39,7 +44,6 @@ AAccountEditor >> accItem2 [
 { #category : #accessing }
 AAccountEditor >> accItem2: anObject [
 	accItem2 := anObject.
-	"self changed: #accItem2."
 	self sEvent: #accItem2 arg: anObject.
 ]
 
@@ -51,7 +55,6 @@ AAccountEditor >> accItem3 [
 { #category : #accessing }
 AAccountEditor >> accItem3: anObject [
 	accItem3 := anObject.
-	"self changed: #accItem3."
 	self sEvent: #accItem3 arg: anObject
 ]
 
@@ -63,7 +66,6 @@ AAccountEditor >> accItem4 [
 { #category : #accessing }
 AAccountEditor >> accItem4: anObject [
 	accItem4 := anObject.
-	"self changed: #accItem4."
 	self sEvent: #accItem4 arg: anObject
 ]
 
@@ -84,13 +86,12 @@ AAccountEditor >> addBarcode [
 
 { #category : #accessing }
 AAccountEditor >> amountItem [
-	^ amountItem ifNil: [ amountItem := '' ]
+	^ amountItem ifNil: [ amountItem := self defaultAmountItem ]
 ]
 
 { #category : #accessing }
 AAccountEditor >> amountItem: anObject [
 	amountItem := anObject.
-	"self changed: #amountItem"
 	self sEvent: #amountItem arg: anObject
 ]
 
@@ -188,6 +189,16 @@ AAccountEditor >> currentSwap [
 { #category : #accessing }
 AAccountEditor >> currentSwap: aCurrentSwap [
 	currentSwap := aCurrentSwap
+]
+
+{ #category : #accessing }
+AAccountEditor >> defaultAmountItem [
+	^ defaultAmountItem ifNil: [ defaultAmountItem := self class defaultAmountItem ]
+]
+
+{ #category : #accessing }
+AAccountEditor >> defaultAmountItem: anObject [
+	defaultAmountItem := anObject
 ]
 
 { #category : #actions }
